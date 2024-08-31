@@ -1,0 +1,257 @@
+syntax = "proto3";
+
+package protocol;
+// "../bin/protoc.exe" -I=./ --cpp_out=../../ARPG_Client ./GameClient.proto
+enum MessageCode {
+    LOGIN = 0;
+    S_LOAD = 1; // 유저들 정보 전달
+    S_INSERTPLAYER = 2; // 추가되는 유저 정보
+    S_MOVE = 3; // 이동 
+    S_CHAT = 4; // 채팅
+    S_PLAYERDATA = 5; // 내 정보(추가) 
+    S_CLOSEPLAYER = 6; // 유저 종료
+    S_UNITSTATES = 7; // 여러 유닛(유저, 몬스터) 상태
+    C_ATTACK = 8; // 유저 공격
+    S_UNITDEMAGE = 10; // 유닛(유저, 몬스터) 히트, 데미지
+    S_ROOMQUEST = 12; // 룸 클리어 정보
+    C_MOVEPOTAL = 13; // 포탈 이동
+    S_ENDGAME = 14; // 게임 종료
+    LOGINACCESS = 15; // 로그인 성공 여부
+    CREATEACCOUNT = 16; // 계정 생성
+    C_LOAD = 17; // 클라이언트 인게임 요청
+    CREATECHARACTER = 18; // 캐릭터 생성 요청
+    DROPMESSAGE = 19; // 드롭 흭득 메시지
+
+    C_BUYCHARATER = 20; // 캐릭터 구매
+    C_BUYWEAPON = 21; // 무기 구매
+    C_UPDATEACCOUNT = 22; // 메인캐릭터 선택, 무기 선택, 캐시 사용
+    S_CURRENTINFO = 23; // 캐릭터 정보, 계정정보 업데이트
+    S_BUYRESULT = 24; // 구매 결과
+
+    C_PLAYERJUMP = 25; // 플레이어 점프
+    C_PLAYERAIM = 26; // 플레이어 에임모드
+
+    S_EXPLV = 27; // 경험치, 레벨
+
+    S_LOADINVENTORY = 30; // 인벤토리 로드 메시지
+    C_SELLITEMS = 31; // 인벤토리 아이템 다중 판매
+}
+
+// type
+// 0 : sward
+// 1 : archer
+// 2 : magician
+message Login {
+    string id = 1;
+    string pwd = 2;
+    // 아래는 더미클라만 사용
+    Position position = 100;
+    bool is_dummy = 101;
+}
+
+message CreateAccount {
+    bool success = 1; // 계정 생성 여부
+}
+
+message CreateCharacter {
+    Charater charater = 1; // 캐릭터 생성
+}
+
+message CUpdateAccount {
+    int32 charaterType = 1;
+    int32 weaponType = 2;
+    int32 useCash = 3;
+}
+
+message SCurrentInfo {
+    int32 cash = 1;
+    int32 charaterType = 2;
+    int32 weaponType = 3;
+    Charater charater = 4;
+    int32 exp = 5;
+}
+
+message LoginAccess {
+    bool success = 1; // 로그인 성공 여부
+    repeated Charater charater = 2;
+    int32 curCharaterType = 3;
+    int32 curWeaponType = 4;
+    int32 cash = 5;
+    repeated int32 weaponList = 6;
+}
+
+message Charater {
+    int32 uuid = 1;
+    int32 code = 2;
+    string name = 3;
+    int32 lv = 4;
+}
+
+message Position {
+    float x = 1;
+    float y = 2;
+    float z = 3;
+    float yaw = 4;
+}
+
+message Unit {
+    uint32 uuid = 1;
+    uint32 hp = 2;
+    int32 code = 3;
+    Position position = 4;
+    string name = 5;
+    int32 lv = 6;
+    int32 state = 7;
+    int32 weaponCode = 8;
+}
+
+message SLoad {
+    repeated UnitState unit = 1;
+    int32 room_id = 3;
+}
+
+message CLoad {
+    int32 code = 1;
+    Position position = 100;
+}
+
+message SInsertplayer {
+    Unit player = 1;
+}
+
+message SMove {
+    int32 uuid = 1;
+    Position position = 2;
+    bool is_monster = 3;
+}
+
+message SChat {
+    uint32 type = 1;
+    int32 uuid = 2;
+    string text = 5;
+}
+
+message SPlayerData {
+    Unit player = 1;
+    int32 exp = 2;
+}
+
+message SClosePlayer {
+    int32 uuid = 1;
+}
+
+message UnitState {
+    Unit unit = 1;
+    bool is_monster = 10;
+    Attack attack = 11;
+}
+
+message SUnitStates {
+    repeated UnitState unit_state = 1;
+}
+
+message Attack {
+    int32 uuid = 1;
+    int32 skill_code = 2;
+    int32 target_uuid = 3;
+}
+
+message CAttack {
+    int32 uuid = 1;
+    int32 skill_code = 2;
+    int32 target_uuid = 3;
+    Position position = 4;
+}
+
+message Demage {
+    int32 uuid = 1;
+    int32 demage = 2;
+    Position position = 3;
+    bool is_heal = 4;
+    bool is_monster = 10;
+}
+
+message SUnitDemage {
+    int32 uuid = 1;
+    bool is_monster = 2;
+    repeated Demage demage = 3;
+}
+
+message SRoomQuest {
+    bool is_clear = 1;
+    int32 kill_count = 2;
+    int32 sum_kill = 3;
+}
+
+message CMovePotal {
+    int32 pre_room_id = 1;
+    int32 next_room_id = 2;
+}
+
+message SEndGame {
+    bool end_game = 1;
+}
+
+message CBuyCharater {
+    int32 CharaterType = 1;
+    int32 useCash = 2;
+    string name = 3;
+}
+
+message CBuyWeapon {
+    int32 weaponType = 1;
+    int32 useCash = 2;
+}
+
+message SBuyResult {
+    int32 result = 1;
+    repeated Charater charater = 2;
+    int32 curCharaterType = 3;
+    int32 curWeaponType = 4;
+    int32 cash = 5;
+    repeated int32 weaponList = 6;
+}
+
+message CPlayerJump {
+    bool isJump = 1;
+    int32 uuid = 2;
+}
+
+message CPlayerAim {
+    bool isAim = 1;
+    int32 uuid = 2;
+}
+
+message SExpLv {
+    int32 uuid = 1;
+    int32 lv = 2;
+    int32 exp = 3;
+}
+
+message ItemEquip {
+    int32 item_code = 1;
+}
+
+message ItemEtc {
+    int32 item_code = 1;
+    int32 item_count = 2;
+}
+
+message DropMessage {
+    repeated ItemEquip itemEquips = 1;
+    repeated ItemEtc itemEtcs = 2;
+    int32 gold = 3;
+}
+
+message SLoadInventory {
+    repeated ItemEquip itemEquips = 1;
+    repeated ItemEtc itemEtcs = 2;
+    int32 gold = 3;
+}
+
+message CSellItems {
+    repeated ItemEquip itemEquips = 1;
+    repeated ItemEtc itemEtcs = 2;
+    int32 gold = 3;
+    bool result = 4;
+}
