@@ -40,12 +40,6 @@ void ABJS_LoginMode::LoadSubClass()
 
 	widgetMap.Add(EWidgetEnum::E_WSTORE, UI_STORE_HUD.Class);
 	check(widgetMap[EWidgetEnum::E_WSTORE] != nullptr);
-	
-	static ConstructorHelpers::FClassFinder<UUserWidget> UI_PROMPT_HUD(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/MyGame/UMG/BJS_WBP_Message.BJS_WBP_Message_C'"));
-	if (UI_PROMPT_HUD.Succeeded())
-	{
-		PromptClass = UI_PROMPT_HUD.Class;
-	}
 
 	// 이미지 셋팅
 	static ConstructorHelpers::FObjectFinder<UTexture2D> CHARATER_IMAGE_1(TEXT("/Script/Engine.Texture2D'/Game/MyGame/Assets/Image/CharaterPng1.CharaterPng1'"));
@@ -239,7 +233,7 @@ void ABJS_LoginMode::StartGame()
 		}
 		else
 		{
-			auto PromptWidget = CreateWidget<UUserWidget>(GetWorld(), PromptClass);
+			auto PromptWidget = CreateWidget<UUserWidget>(GetWorld(), instance->GetPrompt());
 			if (PromptWidget)
 			{
 				PromptWidget->AddToViewport();
@@ -252,11 +246,6 @@ void ABJS_LoginMode::StartGame()
 			}
 		}
 	}
-}
-
-TSubclassOf<UUserWidget> ABJS_LoginMode::GetPromptClass()
-{
-	return PromptClass;
 }
 
 void ABJS_LoginMode::SwitchWidget(TSubclassOf<UUserWidget> ChangeWidgetClass)

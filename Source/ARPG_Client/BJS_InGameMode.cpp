@@ -351,7 +351,11 @@ void ABJS_InGameMode::SellItems()
 		sellItem->set_item_count(item.Count);
 	}
 	SocketActor->SendMessage(pkt, protocol::MessageCode::C_SELLITEMS);
+	ResetSellItems();
+}
 
+void ABJS_InGameMode::ResetSellItems()
+{
 	SellEquipItems.Empty();
 	SellEtcItems.Empty();
 }

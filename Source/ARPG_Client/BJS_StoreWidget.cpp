@@ -13,9 +13,9 @@
 void UBJS_StoreWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-	
+
 	btn_back->OnClicked.AddDynamic(this, &UBJS_StoreWidget::OnBackEvent);
-	
+
 	sbtn_1->GetBtn()->OnClicked.AddDynamic(sbtn_1, &UBJS_SelectButton_Widget::OnBuyBtn);
 	sbtn_2->GetBtn()->OnClicked.AddDynamic(sbtn_2, &UBJS_SelectButton_Widget::OnBuyBtn);
 	sbtn_3->GetBtn()->OnClicked.AddDynamic(sbtn_3, &UBJS_SelectButton_Widget::OnBuyBtn);
@@ -96,23 +96,22 @@ void UBJS_StoreWidget::BJS_PromptWidget(int32 code)
 {
 	Super::BJS_PromptWidget(code);
 
-	auto PromptClass = Cast<ABJS_LoginMode>(GetWorld()->GetAuthGameMode())->GetPromptClass();
-	if (PromptClass)
+	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
+	if (!instance) return;
+
+	auto CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), instance->GetPrompt());
+	if (CurrentWidget)
 	{
-		auto CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), PromptClass);
-		if (CurrentWidget)
+		CurrentWidget->AddToViewport();
+		auto widget = Cast<UBJS_PromptWidget>(CurrentWidget);
+		if (widget)
 		{
-			CurrentWidget->AddToViewport();
-			auto widget = Cast<UBJS_PromptWidget>(CurrentWidget);
-			if (widget)
-			{
-				FString str = FString(TEXT("구매 성공"));
-				if (code == 0)
-					str = FString(TEXT("구매 금액이 부족합니다."));
-				else if (code == -1)
-					str = FString(TEXT("이미 존재하는 타입의 캐릭터입니다."));
-				widget->SetText(str);
-			}
+			FString str = FString(TEXT("구매 성공"));
+			if (code == 0)
+				str = FString(TEXT("구매 금액이 부족합니다."));
+			else if (code == -1)
+				str = FString(TEXT("이미 존재하는 타입의 캐릭터입니다."));
+			widget->SetText(str);
 		}
 	}
 }

@@ -3,6 +3,7 @@
 
 #include "BJS_LoginWidget.h"
 
+#include "BJS_GameInstance.h"
 #include "BJS_GameModeBase.h"
 #include "BJS_LoginMode.h"
 #include "BJS_PromptWidget.h"
@@ -14,7 +15,7 @@
 void UBJS_LoginWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-	
+
 	btn_login->OnClicked.AddDynamic(this, &UBJS_LoginWidget::OnLoginEvent);
 	if (APlayerController* PC = GetWorld()->GetFirstPlayerController())
 	{
@@ -42,7 +43,7 @@ void UBJS_LoginWidget::OnLoginEvent()
 	protocol::Login pkt;
 	std::string idStr = TCHAR_TO_UTF8(*ID);
 	std::string pwdStr = TCHAR_TO_UTF8(*PW);
-	
+
 	if (!ID.IsEmpty())
 	{
 		pkt.set_id(idStr);
@@ -55,7 +56,7 @@ void UBJS_LoginWidget::OnLoginEvent()
 		}
 		else
 		{
-		    UE_LOG(LogTemp, Warning, TEXT("SocketActor NotCreate!!!"));
+			UE_LOG(LogTemp, Warning, TEXT("SocketActor NotCreate!!!"));
 		}
 	}
 }
@@ -68,24 +69,23 @@ void UBJS_LoginWidget::LoginCheck(int32 result)
 		CurrentWidget = nullptr;
 	}
 
+	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
+	if (!instance) return;
+
 	if (result == 0 || result == 2)
 	{
 		// 로그인 실패, 계정 생성
-		auto PromptClass = Cast<ABJS_LoginMode>(GetWorld()->GetAuthGameMode())->GetPromptClass();
-		if (PromptClass)
+		CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), instance->GetPrompt());
+		if (CurrentWidget)
 		{
-			CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), PromptClass);
-			if (CurrentWidget)
+			CurrentWidget->AddToViewport();
+			auto widget = Cast<UBJS_PromptWidget>(CurrentWidget);
+			if (widget)
 			{
-				CurrentWidget->AddToViewport();
-				auto widget = Cast<UBJS_PromptWidget>(CurrentWidget);
-				if (widget)
-				{
-					FString str = FString(TEXT("로그인 실패 !!!"));
-					if (result == 2)
-						str = FString(TEXT("계정 생성 !!!"));
-					widget->SetText(str);
-				}
+				FString str = FString(TEXT("로그인 실패 !!!"));
+				if (result == 2)
+					str = FString(TEXT("계정 생성 !!!"));
+				widget->SetText(str);
 			}
 		}
 	}

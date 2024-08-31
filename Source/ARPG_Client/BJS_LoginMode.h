@@ -37,15 +37,10 @@ public:
 	void SetWeaponStoerWidget();
 	void StartGame();
 
-	TSubclassOf<UUserWidget> GetPromptClass();
-
 protected:
 	void SwitchWidget(TSubclassOf<UUserWidget> ChangeWidgetClass);
 
 private:
-	UPROPERTY(EditAnywhere, Category = "Menus")
-	TSubclassOf<UUserWidget> PromptClass;
-	
 	TMap<EWidgetEnum, TSubclassOf<UUserWidget>> widgetMap;
 
 	TArray<USkeletalMesh*> CharaterMeshList;

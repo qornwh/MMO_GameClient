@@ -44,6 +44,7 @@ public:
 	void LoadSkillIcon();
 	void LoadCharaterImg();
 	void LoadItemIcon();
+	void LoadPromptBP();
 
 public:
 	TArray<struct FPlayerStruct*>& GetPlayerStructs();
@@ -59,7 +60,7 @@ public:
 	TMap<int32, class UTexture2D*>& GetItemEquipIconImgMap();
 	TMap<int32, class UTexture2D*>& GetItemEtcIconImgMap();
 	TMap<int32, class UTexture2D*>& GetCharaterImgMap();
-	
+
 	TMap<int32, class USkeletalMesh*>& GetCharaterMeshList();
 	TMap<int32, class USkeletalMesh*>& GetWeaponMeshList();
 	TMap<int32, class UParticleSystem*>& GetParticleSkillMap();
@@ -71,6 +72,9 @@ public:
 	TSubclassOf<class AActor>& GetBuffSkillClass();
 	TSubclassOf<class AActor>& GetPlayerClass();
 	TSubclassOf<class AActor>& GetMonsterClass();
+
+	TSubclassOf<class UUserWidget>& GetPrompt();
+	TSubclassOf<class UUserWidget>& GetPrompt2();
 
 private:
 	TSharedPtr<FInternetAddr> ServerArr;
@@ -108,7 +112,7 @@ private:
 	TMap<int32, class UTexture2D*> SkillIconImgMap;
 	TMap<int32, class UTexture2D*> ItemEquipIconImgMap;
 	TMap<int32, class UTexture2D*> ItemEtcIconImgMap;
-	
+
 	TMap<int32, UTexture2D*> CharaterHeadImageMap;
 
 	// BP_C
@@ -129,4 +133,8 @@ private:
 	TSubclassOf<class AActor> MonsterBullet;
 	TSubclassOf<class AActor> BuffSkill;
 	UParticleSystem* ParticleMuzzleFX;
+
+	// Prompt_BP
+	TSubclassOf<class UUserWidget> PromptClass; // ok type 1
+	TSubclassOf<class UUserWidget> PromptClass2; // ok, cancle type2
 };

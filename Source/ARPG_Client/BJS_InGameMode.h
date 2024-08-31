@@ -38,7 +38,11 @@ public:
 	TMap<int32, TSharedPtr<class BJS_CharaterState>>& GetMonsterStateList();
 	TSharedPtr<class BJS_CharaterState> GetMyState();
 	TSharedPtr<class InventoryItem> GetMyInventory();
+
+	UFUNCTION()
 	void SellItems();
+	UFUNCTION()
+	void ResetSellItems();
 
 public:
 	// 일단 임시로 판매리스트 열어둔다

@@ -36,7 +36,7 @@ public:
 	void SetSelectImage(TArray<UTexture2D*>& CharaterArray, TArray<UTexture2D*>& WeaponArray);
 
 private:
-	void CurrentCharaterWeapon(bool IsCheck, int32 Idx, int32 CurIdx, UBJS_SelectButton_Widget* SBtn);
+	void CurrentCharaterWeapon(bool IsCheck, int32 Idx, int32 CurIdx, class UBJS_SelectButton_Widget* SBtn);
 
 private:
 	UPROPERTY(EditAnywhere, meta=(BindWidget))

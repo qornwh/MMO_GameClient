@@ -26,6 +26,7 @@ void UBJS_PromptWidget::OnClick()
 {
 	UE_LOG(LogTemp, Log, TEXT("OnClick PROMPT !!!"));
 	RemoveFromParent();
+	OnPromptEnd.Execute();
 }
 
 void UBJS_PromptWidget::BJS_UpdateWidget()

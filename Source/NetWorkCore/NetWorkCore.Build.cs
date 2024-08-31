@@ -7,9 +7,8 @@ public class NetWorkCore : ModuleRules
 	{
 		Type = ModuleType.External;
 
-		System.Console.WriteLine("AAA !!!!");
+		System.Console.WriteLine("libprotobuf build !!!!");
 		System.Console.WriteLine(Path.Combine(ModuleDirectory, "lib", "win64", ConfigurationDir(Target.Configuration), "libprotobuf.lib"));
-		System.Console.WriteLine("BBBB !!!!");
 
 		if (ConfigurationDir(Target.Configuration) == "Debug")
 			PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "lib", "win64", ConfigurationDir(Target.Configuration), "libprotobuf.lib"));

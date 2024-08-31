@@ -4,6 +4,7 @@
 #include "BJS_GameInstance.h"
 
 #include "BJS_CharaterState.h"
+#include "BJS_UserWidgetBase.h"
 #include "ExpLvStruct.h"
 #include "InventoryItem.h"
 #include "ItemEquipStruct.h"
@@ -16,6 +17,8 @@
 #include "SocketSubsystem.h"
 #include "Common/TcpSocketBuilder.h"
 #include "Engine/DataTable.h"
+#include "Particles/ParticleSystem.h"
+#include "NiagaraSystem.h"
 
 UBJS_GameInstance::UBJS_GameInstance()
 {
@@ -36,6 +39,7 @@ UBJS_GameInstance::UBJS_GameInstance()
 	LoadDataTable();
 	LoadSkill();
 	LoadCharaterImg();
+	LoadPromptBP();
 }
 
 void UBJS_GameInstance::Init()
@@ -258,12 +262,9 @@ void UBJS_GameInstance::LoadSkill()
 	ConstructorHelpers::FObjectFinder<UNiagaraSystem> Skill_101(TEXT("/Script/Niagara.NiagaraSystem'/Game/WeaponBulletVFX/NS/VFX_Laser.VFX_Laser'"));
 	ConstructorHelpers::FObjectFinder<UNiagaraSystem> Skill_201(TEXT("/Script/Niagara.NiagaraSystem'/Game/WeaponBulletVFX/NS/VFX_PoisonGun.VFX_PoisonGun'"));
 	ConstructorHelpers::FObjectFinder<UNiagaraSystem> Skill_301(TEXT("/Script/Niagara.NiagaraSystem'/Game/WeaponBulletVFX/NS/VFX_SmgBig.VFX_SmgBig'"));
-	ConstructorHelpers::FObjectFinder<UParticleSystem> Skill_102(
-		TEXT("/Script/Engine.ParticleSystem'/Game/FXVarietyPack/Particles/P_ky_magicCircle1.P_ky_magicCircle1'"));
-	ConstructorHelpers::FObjectFinder<UParticleSystem> Skill_202(
-		TEXT("/Script/Engine.ParticleSystem'/Game/FXVarietyPack/Particles/P_ky_healAura.P_ky_healAura'"));
-	ConstructorHelpers::FObjectFinder<UParticleSystem> Skill_302(
-		TEXT("/Script/Engine.ParticleSystem'/Game/FXVarietyPack/Particles/P_ky_healAura.P_ky_healAura'"));
+	ConstructorHelpers::FObjectFinder<UParticleSystem> Skill_102(TEXT("/Script/Engine.ParticleSystem'/Game/FXVarietyPack/Particles/P_ky_magicCircle1.P_ky_magicCircle1'"));
+	ConstructorHelpers::FObjectFinder<UParticleSystem> Skill_202(TEXT("/Script/Engine.ParticleSystem'/Game/FXVarietyPack/Particles/P_ky_healAura.P_ky_healAura'"));
+	ConstructorHelpers::FObjectFinder<UParticleSystem> Skill_302(TEXT("/Script/Engine.ParticleSystem'/Game/FXVarietyPack/Particles/P_ky_healAura.P_ky_healAura'"));
 
 	check(Skill_101.Succeeded());
 	check(Skill_201.Succeeded());
@@ -342,6 +343,17 @@ void UBJS_GameInstance::LoadItemIcon()
 		check(ImgEtc.Object);
 		ItemEtcIconImgMap.Add(item->Code, ImgEtc.Object);
 	}
+}
+
+void UBJS_GameInstance::LoadPromptBP()
+{
+	static ConstructorHelpers::FClassFinder<UUserWidget> UI_PROMPT_HUD(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/MyGame/UMG/BJS_WBP_Message.BJS_WBP_Message_C'"));
+	check(UI_PROMPT_HUD.Succeeded());
+	PromptClass = UI_PROMPT_HUD.Class;
+	
+	static ConstructorHelpers::FClassFinder<UUserWidget> UI_PROMPT2_HUD(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/MyGame/UMG/BJS_WBP_Message2.BJS_WBP_Message2_C'"));
+	check(UI_PROMPT2_HUD.Succeeded());
+	PromptClass2 = UI_PROMPT2_HUD.Class;
 }
 
 TArray<FPlayerStruct*>& UBJS_GameInstance::GetPlayerStructs()
@@ -452,4 +464,14 @@ TSubclassOf<AActor>& UBJS_GameInstance::GetPlayerClass()
 TSubclassOf<AActor>& UBJS_GameInstance::GetMonsterClass()
 {
 	return MonsterClass;
+}
+
+TSubclassOf<UUserWidget>& UBJS_GameInstance::GetPrompt()
+{
+	return PromptClass;
+}
+
+TSubclassOf<UUserWidget>& UBJS_GameInstance::GetPrompt2()
+{
+	return PromptClass2;
 }

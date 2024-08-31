@@ -7,6 +7,7 @@
 #include "BJS_GameInstance.h"
 #include "BJS_InGameMode.h"
 #include "BJS_ItemSlotWidget.h"
+#include "BJS_PromptWidget2.h"
 #include "BJS_StateWidget.h"
 #include "InventoryItem.h"
 #include "Components/Button.h"
@@ -214,7 +215,9 @@ void UBJS_InventoryWidget::InvetoryReset()
 
 void UBJS_InventoryWidget::SellItem()
 {
-	// 그냥 셀렉트된거 판다.
+	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
+	if (!instance) return;
+	
 	auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
 	if (!mode) return;
 	
@@ -226,16 +229,12 @@ void UBJS_InventoryWidget::SellItem()
 			{
 				if ((InventoryModeState & NOTSELL) == InventoryMode::EQUIP)
 				{
-					UE_LOG(LogTemp, Log, TEXT("Select Equip %d !!!"), ItemSlot->GetEquip().Code);
-
 					if (!mode->SellEquipItems.Contains(ItemSlot->GetEquip().Code))
 						mode->SellEquipItems.Add(ItemSlot->GetEquip().Code, TArray<EquipItem>());
 					mode->SellEquipItems.Find(ItemSlot->GetEquip().Code)->Add(ItemSlot->GetEquip());
 				}
 				else
 				{
-					UE_LOG(LogTemp, Log, TEXT("Select Etc %d %d !!!"), ItemSlot->GetEtc().Code, ItemSlot->GetEtc(). Count);
-
 					if (!mode->SellEquipItems.Contains(ItemSlot->GetEquip().Code))
 						mode->SellEtcItems.Add(ItemSlot->GetEquip().Code, ItemSlot->GetEtc());
 				}
@@ -247,6 +246,15 @@ void UBJS_InventoryWidget::SellItem()
 			break;
 		}
 	}
-
-	mode->SellItems();
+	
+	auto widget = CreateWidget<UUserWidget>(GetWorld(), instance->GetPrompt2());
+	if (widget)
+	{
+		auto promptWidget = Cast<UBJS_PromptWidget2>(widget);
+		promptWidget->AddToViewport();
+		FString str = FString(TEXT("판매하시겠습니까?"));
+		promptWidget->SetText(str);
+		promptWidget->OnPromptOk.BindUObject(mode, &ABJS_InGameMode::SellItems);
+		promptWidget->OnPromptCancle.BindUObject(mode, &ABJS_InGameMode::ResetSellItems);
+	}
 }
