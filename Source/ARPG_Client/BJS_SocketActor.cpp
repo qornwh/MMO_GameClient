@@ -135,6 +135,12 @@ void ABJS_SocketActor::HandlePacket(BYTE* Buffer, PacketHeader* Header)
 		{
 			SellItemsHandler(Buffer, Header, static_cast<int32>(sizeof(PacketHeader)));
 		}
+		break;
+	case protocol::MessageCode::S_CHAT:
+		{
+			ChatHandler(Buffer, Header, static_cast<int32>(sizeof(PacketHeader)));
+		}
+		break;
 	}
 }
 
@@ -744,5 +750,15 @@ void ABJS_SocketActor::SellItemsHandler(BYTE* Buffer, PacketHeader* Header, int3
 			
 			mode->GetMyInventory()->SetGold(pkt.gold());
 		}
+	}
+}
+
+void ABJS_SocketActor::ChatHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset)
+{
+	protocol::SChat pkt;
+
+	if (PacketHandlerUtils::ParsePacketHandler(pkt, Buffer, Header->GetSize() - Offset, Offset))
+	{
+		OnChatMessage.Execute(UTF8_TO_TCHAR(pkt.text().c_str()), pkt.type(), pkt.uuid());
 	}
 }

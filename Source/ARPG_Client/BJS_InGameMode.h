@@ -27,6 +27,10 @@ public:
 	void LoadGame();
 	UFUNCTION()
 	void InsertPlayer(bool IsMonster, int32 UUid);
+	UFUNCTION()
+	void SendChatMessage(FString Message, int32 Type);
+	UFUNCTION()
+	void ReadChatMessage(FString Message, int32 Type, int32 Uuid);
 
 	void SetTakeDemageList(TSharedPtr<class BJS_CharaterState> State);
 	void TakeDemage(bool IsMonster, int32 SkillCode, TSharedPtr<class BJS_CharaterState> State);

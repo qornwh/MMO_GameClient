@@ -6,7 +6,7 @@
 #include "BJS_UserWidgetBase.h"
 #include "BJS_GameUI.generated.h"
 
-DECLARE_DELEGATE_TwoParams(FOnChatMessage, FString, int32)
+DECLARE_DELEGATE_TwoParams(FOnChatMessageSend, FString, int32)
 
 /**
  * 
@@ -26,13 +26,17 @@ public:
 	void SetLv(FString Lv);
 	void SetExp(float Exp);
 	void SetHp(float Hp);
+	void ReadChatMessage(const FString& Message, int32 Type, const FString& Name);
 
-	FOnChatMessage OnChatMessage;
+	FOnChatMessageSend OnChatMessageSend;
 
 	virtual void BJS_UpdateWidget() override;
 
 	UFUNCTION()
 	void CoolTimeUpdate(int32 KeyBind, float CoolTime);
+
+	UFUNCTION()
+	void SendChatMessage();
 
 private:
 	UPROPERTY(EditAnywhere, meta=(BindWidget))

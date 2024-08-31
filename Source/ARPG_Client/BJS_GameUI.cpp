@@ -9,8 +9,11 @@
 #include "BJS_InGameMode.h"
 #include "BJS_SkillManagerWidget.h"
 #include "ExpLvStruct.h"
+#include "Components/Button.h"
+#include "Components/EditableTextBox.h"
 #include "Components/Image.h"
 #include "Components/ProgressBar.h"
+#include "Components/ScrollBox.h"
 #include "Components/TextBlock.h"
 
 UBJS_GameUI::UBJS_GameUI()
@@ -22,6 +25,7 @@ void UBJS_GameUI::BJS_InitWidget()
 	Super::BJS_InitWidget();
 	SetImg();
 	skill_manager->BJS_InitWidget();
+	btn_chat->OnClicked.AddDynamic(this, &UBJS_GameUI::SendChatMessage);
 }
 
 void UBJS_GameUI::SetImg()
@@ -64,6 +68,29 @@ void UBJS_GameUI::SetHp(float Hp)
 	pb_hp->SetPercent(Hp);
 }
 
+void UBJS_GameUI::ReadChatMessage(const FString& Message, int32 Type, const FString& Name)
+{
+	UTextBlock* TextBox = NewObject<UTextBlock>(mtb_chatlog);
+		
+	if (TextBox)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("AppendText !!! %s %s"), *Name, *Message);
+		mtb_chatlog->AddChild(TextBox);
+		FString Msg = FString::Printf(TEXT("%s : %s"), *Name, *Message);
+		TextBox->SetText(FText::FromString(Msg));
+		TextBox->SetColorAndOpacity(FLinearColor::White);
+
+		FSlateFontInfo font = TextBox->GetFont();
+		FFontOutlineSettings OutlineSettings;
+		OutlineSettings.OutlineSize = 2; // 외곽선 두께 설정
+		OutlineSettings.OutlineColor = FLinearColor::Black; // 외곽선 색상 설정 (검은색)
+		font.OutlineSettings = OutlineSettings;
+		
+		font.Size = 30; 
+		TextBox->SetFont(font);
+	}
+}
+
 void UBJS_GameUI::BJS_UpdateWidget()
 {
 	Super::BJS_UpdateWidget();
@@ -92,4 +119,10 @@ void UBJS_GameUI::CoolTimeUpdate(int32 KeyBind, float CoolTime)
 	{
 		skill_manager->CoolTimeUpdate(KeyBind, CoolTime);
 	}
+}
+
+void UBJS_GameUI::SendChatMessage()
+{
+	OnChatMessageSend.Execute(tb_chat->GetText().ToString(), 1);
+	tb_chat->SetText(FText());
 }

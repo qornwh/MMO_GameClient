@@ -13,7 +13,8 @@ DECLARE_DELEGATE_OneParam(FOnLoginResultDelegate, int32)
 DECLARE_DELEGATE(FOnLoadDelegate);
 DECLARE_DELEGATE_TwoParams(FOnSpawnDelegate, bool, int32);
 DECLARE_DELEGATE_TwoParams(FOnDemageDelegate, int32, int32);
-DECLARE_DELEGATE_OneParam(OnMoveStartPoint, AActor*);
+DECLARE_DELEGATE_OneParam(FOnMoveStartPoint, AActor*);
+DECLARE_DELEGATE_ThreeParams(FOnChatMessage, FString, int32, int32);
 
 UCLASS()
 class ARPG_CLIENT_API ABJS_SocketActor : public AActor
@@ -33,7 +34,9 @@ public:
 	// 스폰된 몬스터 플레이어 제거용
 	FOnSpawnDelegate OnDeSpawnDelegate;
 	// 캐릭터 포인터로 강제 이동
-	OnMoveStartPoint OnMoveStartPoint;
+	FOnMoveStartPoint OnMoveStartPoint;
+	// 캐릭터 포인터로 강제 이동
+	FOnChatMessage OnChatMessage;
 
 protected:
 	// Called when the game starts or when spawned
@@ -66,6 +69,7 @@ private:
 	void DropMessageHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
 	void LoadInventoryHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
 	void SellItemsHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
+	void ChatHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
 
 private:
 	FSocket* MySocket = nullptr;

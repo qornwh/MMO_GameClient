@@ -68,8 +68,15 @@ void ABJS_InGameMode::BeginPlay()
 		SocketActor->OnSpawnDelegate.BindUObject(this, &ABJS_InGameMode::InsertPlayer);
 		SocketActor->OnDeSpawnDelegate.BindUObject(this, &ABJS_InGameMode::DestroyPlayer);
 		SocketActor->OnMoveStartPoint.BindUObject(this, &ABJS_InGameMode::MoveStartPoint);
+		SocketActor->OnChatMessage.BindUObject(this, &ABJS_InGameMode::ReadChatMessage);
 	}
 	TakeDemageList.Init(nullptr, 10);
+
+	auto ui = Cast<UBJS_GameUI>(MainUi);
+	if (ui)
+	{
+		ui->OnChatMessageSend.BindUObject(this, &ABJS_InGameMode::SendChatMessage);
+	}
 }
 
 void ABJS_InGameMode::Tick(float DeltaSeconds)
@@ -276,6 +283,29 @@ void ABJS_InGameMode::InsertPlayer(bool IsMonster, int32 UUid)
 		FRotator SpawnRotation = FRotator(0.f, State->GetYaw(), 0.f);
 		ABJS_Monster* Player = CustomSpawnActor<ABJS_Monster>(instance->GetMonsterClass(), SpawnLocation, SpawnRotation);
 		Player->SetState(State);
+	}
+}
+
+void ABJS_InGameMode::SendChatMessage(FString Message, int32 Type)
+{
+	protocol::SChat pkt;
+	std::string msgStr = TCHAR_TO_UTF8(*Message);
+	pkt.set_text(msgStr);
+	pkt.set_uuid(MyState->GetUUid());
+	pkt.set_type(Type);
+	SocketActor->SendMessage(pkt, protocol::MessageCode::S_CHAT);
+}
+
+void ABJS_InGameMode::ReadChatMessage(FString Message, int32 Type, int32 Uuid)
+{
+	auto ui = Cast<UBJS_GameUI>(MainUi);
+	if (ui)
+	{
+		auto player = BJSCharaterStateList[Uuid];
+		if (player.IsValid())
+		{
+			ui->ReadChatMessage(Message, Type, player->GetName());
+		}
 	}
 }
 

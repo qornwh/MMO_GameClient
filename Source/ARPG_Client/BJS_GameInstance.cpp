@@ -48,7 +48,7 @@ void UBJS_GameInstance::Init()
 
 	if (IsConnection) return;
 
-	const int32 port = 12129;
+	const int32 port = 12128;
 	const FString Address = TEXT("127.0.0.1");
 	FIPv4Address::Parse(Address, Ip);
 
