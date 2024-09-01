@@ -5,6 +5,8 @@
 
 BJS_Buffer::BJS_Buffer(int32 size)
 {
+	_readPos = 0;
+	_writePos = 0;
 	_buffer.Init(0, size);
 	UE_LOG(LogTemp, Log, TEXT("_buffer init %d !!!"), _buffer.Num());
 	_bufferSize = size;
