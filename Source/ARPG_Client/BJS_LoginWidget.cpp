@@ -82,7 +82,7 @@ void UBJS_LoginWidget::LoginCheck(int32 result)
 			auto widget = Cast<UBJS_PromptWidget>(CurrentWidget);
 			if (widget)
 			{
-				FString str = FString(TEXT("로그인 실패 !!!"));
+				FString str = FString(TEXT("로그인 실패 - 비밀번호가 틀렸습니다 !!!"));
 				if (result == 2)
 					str = FString(TEXT("계정 생성 !!!"));
 				widget->SetText(str);

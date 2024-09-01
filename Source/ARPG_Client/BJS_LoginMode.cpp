@@ -47,7 +47,7 @@ void ABJS_LoginMode::LoadSubClass()
 	static ConstructorHelpers::FObjectFinder<UTexture2D> CHARATER_IMAGE_2(TEXT("/Script/Engine.Texture2D'/Game/MyGame/Assets/Image/CharaterPng2.CharaterPng2'"));
 	CharaterImageList.Add(CHARATER_IMAGE_2.Object);
 	static ConstructorHelpers::FObjectFinder<UTexture2D> CHARATER_IMAGE_3(TEXT("/Script/Engine.Texture2D'/Game/MyGame/Assets/Image/CharaterPng3.CharaterPng3'"));
-	CharaterImageList.Add(CHARATER_IMAGE_2.Object);
+	CharaterImageList.Add(CHARATER_IMAGE_3.Object);
 	check(CharaterImageList.Num() == 3);
 	
 	static ConstructorHelpers::FObjectFinder<UTexture2D> WEAPON_IMAGE_1(TEXT("/Script/Engine.Texture2D'/Game/MyGame/Assets/Image/WeaponPng1.WeaponPng1'"));

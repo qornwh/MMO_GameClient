@@ -24,9 +24,9 @@ void UBJS_PromptWidget::SetText(FString& text)
 
 void UBJS_PromptWidget::OnClick()
 {
-	UE_LOG(LogTemp, Log, TEXT("OnClick PROMPT !!!"));
 	RemoveFromParent();
-	OnPromptEnd.Execute();
+	if (OnPromptEnd.IsBound())
+		OnPromptEnd.Execute();
 }
 
 void UBJS_PromptWidget::BJS_UpdateWidget()
