@@ -28,6 +28,8 @@ public:
 	UFUNCTION()
 	void InsertPlayer(bool IsMonster, int32 UUid);
 	UFUNCTION()
+	void RemovePlayer(bool IsMonster, int32 UUid);
+	UFUNCTION()
 	void SendChatMessage(FString Message, int32 Type);
 	UFUNCTION()
 	void ReadChatMessage(FString Message, int32 Type, int32 Uuid);

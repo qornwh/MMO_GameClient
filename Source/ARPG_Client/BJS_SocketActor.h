@@ -70,6 +70,7 @@ private:
 	void LoadInventoryHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
 	void SellItemsHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
 	void ChatHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
+	void ClosePlayerHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
 
 private:
 	FSocket* MySocket = nullptr;

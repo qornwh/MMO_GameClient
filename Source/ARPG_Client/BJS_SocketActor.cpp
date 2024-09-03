@@ -141,6 +141,11 @@ void ABJS_SocketActor::HandlePacket(BYTE* Buffer, PacketHeader* Header)
 			ChatHandler(Buffer, Header, static_cast<int32>(sizeof(PacketHeader)));
 		}
 		break;
+	case protocol::MessageCode::S_CLOSEPLAYER:
+		{
+			ClosePlayerHandler(Buffer, Header, static_cast<int32>(sizeof(PacketHeader)));
+		}
+		break;
 	}
 }
 
@@ -760,5 +765,17 @@ void ABJS_SocketActor::ChatHandler(BYTE* Buffer, PacketHeader* Header, int32 Off
 	if (PacketHandlerUtils::ParsePacketHandler(pkt, Buffer, Header->GetSize() - Offset, Offset))
 	{
 		OnChatMessage.Execute(UTF8_TO_TCHAR(pkt.text().c_str()), pkt.type(), pkt.uuid());
+	}
+}
+
+void ABJS_SocketActor::ClosePlayerHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset)
+{
+	protocol::SClosePlayer pkt;
+
+	if (PacketHandlerUtils::ParsePacketHandler(pkt, Buffer, Header->GetSize() - Offset, Offset))
+	{
+		int32 removeUUid = pkt.uuid();
+		if (OnDeSpawnDelegate.IsBound())
+			OnDeSpawnDelegate.Execute(false, removeUUid);
 	}
 }

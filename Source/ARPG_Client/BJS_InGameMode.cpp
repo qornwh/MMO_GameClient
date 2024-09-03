@@ -66,7 +66,7 @@ void ABJS_InGameMode::BeginPlay()
 		SocketActor->SendMessage(pkt, protocol::MessageCode::C_LOAD);
 		SocketActor->OnLoadDelegate.BindUObject(this, &ABJS_InGameMode::LoadGame);
 		SocketActor->OnSpawnDelegate.BindUObject(this, &ABJS_InGameMode::InsertPlayer);
-		SocketActor->OnDeSpawnDelegate.BindUObject(this, &ABJS_InGameMode::DestroyPlayer);
+		SocketActor->OnDeSpawnDelegate.BindUObject(this, &ABJS_InGameMode::RemovePlayer);
 		SocketActor->OnMoveStartPoint.BindUObject(this, &ABJS_InGameMode::MoveStartPoint);
 		SocketActor->OnChatMessage.BindUObject(this, &ABJS_InGameMode::ReadChatMessage);
 	}
@@ -279,10 +279,23 @@ void ABJS_InGameMode::InsertPlayer(bool IsMonster, int32 UUid)
 		State->SetSpeed(MonsterStruct->MoveSpeed);
 		State->SetName(MonsterStruct->Name.ToString());
 
-		FVector SpawnLocation = FVector(State->GetX(), State->GetY(), 100.f);
+		FVector SpawnLocation = FVector(State->GetX(), State->GetY(), 120.f);
 		FRotator SpawnRotation = FRotator(0.f, State->GetYaw(), 0.f);
 		ABJS_Monster* Player = CustomSpawnActor<ABJS_Monster>(instance->GetMonsterClass(), SpawnLocation, SpawnRotation);
 		Player->SetState(State);
+	}
+}
+
+void ABJS_InGameMode::RemovePlayer(bool IsMonster, int32 UUid)
+{
+	if (BJSCharaterStateList.Contains(UUid))
+	{
+		auto State = BJSCharaterStateList[UUid];
+		auto Target = State->GetTarget();
+		if (State->GetTarget())
+		{
+			GetWorld()->DestroyActor(Target);
+		}
 	}
 }
 
