@@ -257,7 +257,8 @@ void ABJS_Character::PlayAttack(int32 Code, bool ignore)
 		}
 
 		Weapon->FireStart(GetActorForwardVector());
-		AnimInstance->PlayAttackAM();
+		if (AnimInstance)
+			AnimInstance->PlayAttackAM();
 	}
 }
 
@@ -287,7 +288,8 @@ void ABJS_Character::PlaySkill(int32 Code, bool ignore)
 			}
 
 			Weapon->FireStart(GetActorForwardVector(), Code);
-			AnimInstance->PlayAttackAM();
+			if (AnimInstance)
+				AnimInstance->PlayAttackAM();
 		}
 		else if (Type > 0)
 		{
