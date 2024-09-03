@@ -43,10 +43,6 @@ private:
 	class UAnimMontage* AM_Fire;
 	
 private:
-	// 일단 이거만 외부에서 수정가능하도록
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess=true))
-	float SpeedRatio;
-	
 	// 에임모드
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess=true))
 	bool IsAim;

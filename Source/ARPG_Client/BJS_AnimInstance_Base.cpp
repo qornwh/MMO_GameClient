@@ -50,7 +50,7 @@ void UBJS_AnimInstance_Base::NativeUpdateAnimation(float DeltaSeconds)
 	if (::IsValid(ParentPawn))
 	{
 		IsAim = ParentPawn->GetAim();
-		GroundSpeed = ParentPawn->GetVelocity().Size() * SpeedRatio;
+		GroundSpeed = ParentPawn->GetVelocity().Size();
 		IsJumping = ParentPawn->GetMovementComponent()->IsFalling();
 		VelocityZ = ParentPawn->GetVelocity().Z;
 		
