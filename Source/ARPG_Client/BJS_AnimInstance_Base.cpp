@@ -15,7 +15,6 @@ UBJS_AnimInstance_Base::UBJS_AnimInstance_Base()
 	VelocityZ = 0.f;
 	IsMove = false;
 	IsJumping = false;
-	SpeedRatio = 1.0;
 	IsAim = false;
 	ParentPawn = nullptr;
 
