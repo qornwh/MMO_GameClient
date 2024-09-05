@@ -95,7 +95,6 @@ void ABJS_Character::Move(float DeltaTime)
 		{
 			// 가야되는 거리보다 움직이는 거리가 커지면 그냥 set
 			SetActorLocation(dest);
-			AddMovementInput(direction, 0.0f);
 		}
 		else
 		{
@@ -106,7 +105,6 @@ void ABJS_Character::Move(float DeltaTime)
 	{
 		// 일단 지근거리면 그냥 set
 		SetActorLocation(dest);
-		AddMovementInput(dest, 0.0f);
 	}
 }
 
