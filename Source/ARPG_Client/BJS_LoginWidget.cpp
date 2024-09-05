@@ -70,11 +70,13 @@ void UBJS_LoginWidget::LoginCheck(int32 result)
 	}
 
 	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
-	if (!instance) return;
-
-	if (result == 0 || result == 2)
+	if (result == 1)
 	{
-		// 로그인 실패, 계정 생성
+		// 로그인 성공
+		OnLoginSuccess.Execute();
+	}
+	else
+	{
 		CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), instance->GetPrompt());
 		if (CurrentWidget)
 		{
@@ -82,16 +84,17 @@ void UBJS_LoginWidget::LoginCheck(int32 result)
 			auto widget = Cast<UBJS_PromptWidget>(CurrentWidget);
 			if (widget)
 			{
-				FString str = FString(TEXT("로그인 실패 - 비밀번호가 틀렸습니다 !!!"));
-				if (result == 2)
-					str = FString(TEXT("계정 생성 !!!"));
+				FString str;
+				if (result == 0)
+					str = FString(TEXT("로그인 실패 - 비밀번호가 틀렸습니다 !!!"));
+				else if (result == 2)
+					str = FString(TEXT("로그인 실패 - 계정 생성 성공 !!!"));
+				else if (result == 3)
+					str = FString(TEXT("로그인 실패 - 이미 로그인된 계정 !!!"));
+				else if (result == 4)
+					str = FString(TEXT("로그인 실패 - 계정 생성에 실패 !!!"));
 				widget->SetText(str);
 			}
 		}
-	}
-	else if (result == 1)
-	{
-		// 로그인 성공
-		OnLoginSuccess.Execute();
 	}
 }

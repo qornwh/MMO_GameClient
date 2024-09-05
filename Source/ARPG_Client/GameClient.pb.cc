@@ -20,9 +20,7 @@ namespace protocol {
 constexpr Login::Login(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : id_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
-  , pwd_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
-  , position_(nullptr)
-  , is_dummy_(false){}
+  , pwd_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
 struct LoginDefaultTypeInternal {
   constexpr LoginDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -32,18 +30,6 @@ struct LoginDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT LoginDefaultTypeInternal _Login_default_instance_;
-constexpr CreateAccount::CreateAccount(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : success_(false){}
-struct CreateAccountDefaultTypeInternal {
-  constexpr CreateAccountDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
-  ~CreateAccountDefaultTypeInternal() {}
-  union {
-    CreateAccount _instance;
-  };
-};
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT CreateAccountDefaultTypeInternal _CreateAccount_default_instance_;
 constexpr CreateCharacter::CreateCharacter(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : charater_(nullptr){}
@@ -91,7 +77,7 @@ constexpr LoginAccess::LoginAccess(
   : charater_()
   , weaponlist_()
   , _weaponlist_cached_byte_size_(0)
-  , success_(false)
+  , result_(0)
   , curcharatertype_(0)
   , curweapontype_(0)
   , cash_(0){}
@@ -169,7 +155,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SLoadDefaultTypeInternal _SLoad
 constexpr CLoad::CLoad(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : position_(nullptr)
-  , code_(0){}
+  , uuid_(0){}
 struct CLoadDefaultTypeInternal {
   constexpr CLoadDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -521,6 +507,18 @@ struct CSellItemsDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT CSellItemsDefaultTypeInternal _CSellItems_default_instance_;
+constexpr DLoad::DLoad(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : unit_(nullptr){}
+struct DLoadDefaultTypeInternal {
+  constexpr DLoadDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~DLoadDefaultTypeInternal() {}
+  union {
+    DLoad _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT DLoadDefaultTypeInternal _DLoad_default_instance_;
 }  // namespace protocol
 static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_GameClient_2eproto[36];
 static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_GameClient_2eproto[1];
@@ -535,15 +533,6 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_GameClient_2eproto::offsets[] 
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::protocol::Login, id_),
   PROTOBUF_FIELD_OFFSET(::protocol::Login, pwd_),
-  PROTOBUF_FIELD_OFFSET(::protocol::Login, position_),
-  PROTOBUF_FIELD_OFFSET(::protocol::Login, is_dummy_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::protocol::CreateAccount, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::protocol::CreateAccount, success_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::protocol::CreateCharacter, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -577,7 +566,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_GameClient_2eproto::offsets[] 
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::protocol::LoginAccess, success_),
+  PROTOBUF_FIELD_OFFSET(::protocol::LoginAccess, result_),
   PROTOBUF_FIELD_OFFSET(::protocol::LoginAccess, charater_),
   PROTOBUF_FIELD_OFFSET(::protocol::LoginAccess, curcharatertype_),
   PROTOBUF_FIELD_OFFSET(::protocol::LoginAccess, curweapontype_),
@@ -631,7 +620,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_GameClient_2eproto::offsets[] 
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::protocol::CLoad, code_),
+  PROTOBUF_FIELD_OFFSET(::protocol::CLoad, uuid_),
   PROTOBUF_FIELD_OFFSET(::protocol::CLoad, position_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::protocol::SInsertplayer, _internal_metadata_),
@@ -849,49 +838,55 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_GameClient_2eproto::offsets[] 
   PROTOBUF_FIELD_OFFSET(::protocol::CSellItems, itemetcs_),
   PROTOBUF_FIELD_OFFSET(::protocol::CSellItems, gold_),
   PROTOBUF_FIELD_OFFSET(::protocol::CSellItems, result_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::protocol::DLoad, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::protocol::DLoad, unit_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::protocol::Login)},
-  { 10, -1, -1, sizeof(::protocol::CreateAccount)},
-  { 17, -1, -1, sizeof(::protocol::CreateCharacter)},
-  { 24, -1, -1, sizeof(::protocol::CUpdateAccount)},
-  { 33, -1, -1, sizeof(::protocol::SCurrentInfo)},
-  { 44, -1, -1, sizeof(::protocol::LoginAccess)},
-  { 56, -1, -1, sizeof(::protocol::Charater)},
-  { 66, -1, -1, sizeof(::protocol::Position)},
-  { 76, -1, -1, sizeof(::protocol::Unit)},
-  { 90, -1, -1, sizeof(::protocol::SLoad)},
-  { 98, -1, -1, sizeof(::protocol::CLoad)},
-  { 106, -1, -1, sizeof(::protocol::SInsertplayer)},
-  { 113, -1, -1, sizeof(::protocol::SMove)},
-  { 122, -1, -1, sizeof(::protocol::SChat)},
-  { 131, -1, -1, sizeof(::protocol::SPlayerData)},
-  { 139, -1, -1, sizeof(::protocol::SClosePlayer)},
-  { 146, -1, -1, sizeof(::protocol::UnitState)},
-  { 155, -1, -1, sizeof(::protocol::SUnitStates)},
-  { 162, -1, -1, sizeof(::protocol::Attack)},
-  { 171, -1, -1, sizeof(::protocol::CAttack)},
-  { 181, -1, -1, sizeof(::protocol::Demage)},
-  { 192, -1, -1, sizeof(::protocol::SUnitDemage)},
-  { 201, -1, -1, sizeof(::protocol::SRoomQuest)},
-  { 210, -1, -1, sizeof(::protocol::CMovePotal)},
-  { 218, -1, -1, sizeof(::protocol::SEndGame)},
-  { 225, -1, -1, sizeof(::protocol::CBuyCharater)},
-  { 234, -1, -1, sizeof(::protocol::CBuyWeapon)},
-  { 242, -1, -1, sizeof(::protocol::SBuyResult)},
-  { 254, -1, -1, sizeof(::protocol::CPlayerJump)},
-  { 262, -1, -1, sizeof(::protocol::CPlayerAim)},
-  { 270, -1, -1, sizeof(::protocol::SExpLv)},
-  { 279, -1, -1, sizeof(::protocol::ItemEquip)},
-  { 286, -1, -1, sizeof(::protocol::ItemEtc)},
-  { 294, -1, -1, sizeof(::protocol::DropMessage)},
-  { 303, -1, -1, sizeof(::protocol::SLoadInventory)},
-  { 312, -1, -1, sizeof(::protocol::CSellItems)},
+  { 8, -1, -1, sizeof(::protocol::CreateCharacter)},
+  { 15, -1, -1, sizeof(::protocol::CUpdateAccount)},
+  { 24, -1, -1, sizeof(::protocol::SCurrentInfo)},
+  { 35, -1, -1, sizeof(::protocol::LoginAccess)},
+  { 47, -1, -1, sizeof(::protocol::Charater)},
+  { 57, -1, -1, sizeof(::protocol::Position)},
+  { 67, -1, -1, sizeof(::protocol::Unit)},
+  { 81, -1, -1, sizeof(::protocol::SLoad)},
+  { 89, -1, -1, sizeof(::protocol::CLoad)},
+  { 97, -1, -1, sizeof(::protocol::SInsertplayer)},
+  { 104, -1, -1, sizeof(::protocol::SMove)},
+  { 113, -1, -1, sizeof(::protocol::SChat)},
+  { 122, -1, -1, sizeof(::protocol::SPlayerData)},
+  { 130, -1, -1, sizeof(::protocol::SClosePlayer)},
+  { 137, -1, -1, sizeof(::protocol::UnitState)},
+  { 146, -1, -1, sizeof(::protocol::SUnitStates)},
+  { 153, -1, -1, sizeof(::protocol::Attack)},
+  { 162, -1, -1, sizeof(::protocol::CAttack)},
+  { 172, -1, -1, sizeof(::protocol::Demage)},
+  { 183, -1, -1, sizeof(::protocol::SUnitDemage)},
+  { 192, -1, -1, sizeof(::protocol::SRoomQuest)},
+  { 201, -1, -1, sizeof(::protocol::CMovePotal)},
+  { 209, -1, -1, sizeof(::protocol::SEndGame)},
+  { 216, -1, -1, sizeof(::protocol::CBuyCharater)},
+  { 225, -1, -1, sizeof(::protocol::CBuyWeapon)},
+  { 233, -1, -1, sizeof(::protocol::SBuyResult)},
+  { 245, -1, -1, sizeof(::protocol::CPlayerJump)},
+  { 253, -1, -1, sizeof(::protocol::CPlayerAim)},
+  { 261, -1, -1, sizeof(::protocol::SExpLv)},
+  { 270, -1, -1, sizeof(::protocol::ItemEquip)},
+  { 277, -1, -1, sizeof(::protocol::ItemEtc)},
+  { 285, -1, -1, sizeof(::protocol::DropMessage)},
+  { 294, -1, -1, sizeof(::protocol::SLoadInventory)},
+  { 303, -1, -1, sizeof(::protocol::CSellItems)},
+  { 313, -1, -1, sizeof(::protocol::DLoad)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::protocol::_Login_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::protocol::_CreateAccount_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::protocol::_CreateCharacter_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::protocol::_CUpdateAccount_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::protocol::_SCurrentInfo_default_instance_),
@@ -926,94 +921,94 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::protocol::_DropMessage_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::protocol::_SLoadInventory_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::protocol::_CSellItems_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::protocol::_DLoad_default_instance_),
 };
 
 const char descriptor_table_protodef_GameClient_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\020GameClient.proto\022\010protocol\"X\n\005Login\022\n\n"
-  "\002id\030\001 \001(\t\022\013\n\003pwd\030\002 \001(\t\022$\n\010position\030d \001(\013"
-  "2\022.protocol.Position\022\020\n\010is_dummy\030e \001(\010\" "
-  "\n\rCreateAccount\022\017\n\007success\030\001 \001(\010\"7\n\017Crea"
-  "teCharacter\022$\n\010charater\030\001 \001(\0132\022.protocol"
-  ".Charater\"K\n\016CUpdateAccount\022\024\n\014charaterT"
-  "ype\030\001 \001(\005\022\022\n\nweaponType\030\002 \001(\005\022\017\n\007useCash"
-  "\030\003 \001(\005\"y\n\014SCurrentInfo\022\014\n\004cash\030\001 \001(\005\022\024\n\014"
-  "charaterType\030\002 \001(\005\022\022\n\nweaponType\030\003 \001(\005\022$"
-  "\n\010charater\030\004 \001(\0132\022.protocol.Charater\022\013\n\003"
-  "exp\030\005 \001(\005\"\226\001\n\013LoginAccess\022\017\n\007success\030\001 \001"
-  "(\010\022$\n\010charater\030\002 \003(\0132\022.protocol.Charater"
-  "\022\027\n\017curCharaterType\030\003 \001(\005\022\025\n\rcurWeaponTy"
-  "pe\030\004 \001(\005\022\014\n\004cash\030\005 \001(\005\022\022\n\nweaponList\030\006 \003"
-  "(\005\"@\n\010Charater\022\014\n\004uuid\030\001 \001(\005\022\014\n\004code\030\002 \001"
-  "(\005\022\014\n\004name\030\003 \001(\t\022\n\n\002lv\030\004 \001(\005\"8\n\010Position"
-  "\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\022\t\n\001z\030\003 \001(\002\022\013\n\003yaw"
-  "\030\004 \001(\002\"\221\001\n\004Unit\022\014\n\004uuid\030\001 \001(\r\022\n\n\002hp\030\002 \001("
-  "\r\022\014\n\004code\030\003 \001(\005\022$\n\010position\030\004 \001(\0132\022.prot"
-  "ocol.Position\022\014\n\004name\030\005 \001(\t\022\n\n\002lv\030\006 \001(\005\022"
-  "\r\n\005state\030\007 \001(\005\022\022\n\nweaponCode\030\010 \001(\005\";\n\005SL"
-  "oad\022!\n\004unit\030\001 \003(\0132\023.protocol.UnitState\022\017"
-  "\n\007room_id\030\003 \001(\005\";\n\005CLoad\022\014\n\004code\030\001 \001(\005\022$"
-  "\n\010position\030d \001(\0132\022.protocol.Position\"/\n\r"
-  "SInsertplayer\022\036\n\006player\030\001 \001(\0132\016.protocol"
-  ".Unit\"O\n\005SMove\022\014\n\004uuid\030\001 \001(\005\022$\n\010position"
-  "\030\002 \001(\0132\022.protocol.Position\022\022\n\nis_monster"
-  "\030\003 \001(\010\"1\n\005SChat\022\014\n\004type\030\001 \001(\r\022\014\n\004uuid\030\002 "
-  "\001(\005\022\014\n\004text\030\005 \001(\t\":\n\013SPlayerData\022\036\n\006play"
-  "er\030\001 \001(\0132\016.protocol.Unit\022\013\n\003exp\030\002 \001(\005\"\034\n"
-  "\014SClosePlayer\022\014\n\004uuid\030\001 \001(\005\"_\n\tUnitState"
-  "\022\034\n\004unit\030\001 \001(\0132\016.protocol.Unit\022\022\n\nis_mon"
-  "ster\030\n \001(\010\022 \n\006attack\030\013 \001(\0132\020.protocol.At"
-  "tack\"6\n\013SUnitStates\022\'\n\nunit_state\030\001 \003(\0132"
-  "\023.protocol.UnitState\"\?\n\006Attack\022\014\n\004uuid\030\001"
-  " \001(\005\022\022\n\nskill_code\030\002 \001(\005\022\023\n\013target_uuid\030"
-  "\003 \001(\005\"f\n\007CAttack\022\014\n\004uuid\030\001 \001(\005\022\022\n\nskill_"
-  "code\030\002 \001(\005\022\023\n\013target_uuid\030\003 \001(\005\022$\n\010posit"
-  "ion\030\004 \001(\0132\022.protocol.Position\"q\n\006Demage\022"
-  "\014\n\004uuid\030\001 \001(\005\022\016\n\006demage\030\002 \001(\005\022$\n\010positio"
-  "n\030\003 \001(\0132\022.protocol.Position\022\017\n\007is_heal\030\004"
-  " \001(\010\022\022\n\nis_monster\030\n \001(\010\"Q\n\013SUnitDemage\022"
-  "\014\n\004uuid\030\001 \001(\005\022\022\n\nis_monster\030\002 \001(\010\022 \n\006dem"
-  "age\030\003 \003(\0132\020.protocol.Demage\"D\n\nSRoomQues"
-  "t\022\020\n\010is_clear\030\001 \001(\010\022\022\n\nkill_count\030\002 \001(\005\022"
-  "\020\n\010sum_kill\030\003 \001(\005\"7\n\nCMovePotal\022\023\n\013pre_r"
-  "oom_id\030\001 \001(\005\022\024\n\014next_room_id\030\002 \001(\005\"\034\n\010SE"
-  "ndGame\022\020\n\010end_game\030\001 \001(\010\"C\n\014CBuyCharater"
-  "\022\024\n\014CharaterType\030\001 \001(\005\022\017\n\007useCash\030\002 \001(\005\022"
-  "\014\n\004name\030\003 \001(\t\"1\n\nCBuyWeapon\022\022\n\nweaponTyp"
-  "e\030\001 \001(\005\022\017\n\007useCash\030\002 \001(\005\"\224\001\n\nSBuyResult\022"
-  "\016\n\006result\030\001 \001(\005\022$\n\010charater\030\002 \003(\0132\022.prot"
-  "ocol.Charater\022\027\n\017curCharaterType\030\003 \001(\005\022\025"
-  "\n\rcurWeaponType\030\004 \001(\005\022\014\n\004cash\030\005 \001(\005\022\022\n\nw"
-  "eaponList\030\006 \003(\005\"+\n\013CPlayerJump\022\016\n\006isJump"
-  "\030\001 \001(\010\022\014\n\004uuid\030\002 \001(\005\")\n\nCPlayerAim\022\r\n\005is"
-  "Aim\030\001 \001(\010\022\014\n\004uuid\030\002 \001(\005\"/\n\006SExpLv\022\014\n\004uui"
-  "d\030\001 \001(\005\022\n\n\002lv\030\002 \001(\005\022\013\n\003exp\030\003 \001(\005\"\036\n\tItem"
-  "Equip\022\021\n\titem_code\030\001 \001(\005\"0\n\007ItemEtc\022\021\n\ti"
-  "tem_code\030\001 \001(\005\022\022\n\nitem_count\030\002 \001(\005\"i\n\013Dr"
-  "opMessage\022\'\n\nitemEquips\030\001 \003(\0132\023.protocol"
-  ".ItemEquip\022#\n\010itemEtcs\030\002 \003(\0132\021.protocol."
-  "ItemEtc\022\014\n\004gold\030\003 \001(\005\"l\n\016SLoadInventory\022"
-  "\'\n\nitemEquips\030\001 \003(\0132\023.protocol.ItemEquip"
-  "\022#\n\010itemEtcs\030\002 \003(\0132\021.protocol.ItemEtc\022\014\n"
-  "\004gold\030\003 \001(\005\"x\n\nCSellItems\022\'\n\nitemEquips\030"
-  "\001 \003(\0132\023.protocol.ItemEquip\022#\n\010itemEtcs\030\002"
-  " \003(\0132\021.protocol.ItemEtc\022\014\n\004gold\030\003 \001(\005\022\016\n"
-  "\006result\030\004 \001(\010*\341\003\n\013MessageCode\022\t\n\005LOGIN\020\000"
-  "\022\n\n\006S_LOAD\020\001\022\022\n\016S_INSERTPLAYER\020\002\022\n\n\006S_MO"
-  "VE\020\003\022\n\n\006S_CHAT\020\004\022\020\n\014S_PLAYERDATA\020\005\022\021\n\rS_"
-  "CLOSEPLAYER\020\006\022\020\n\014S_UNITSTATES\020\007\022\014\n\010C_ATT"
-  "ACK\020\010\022\020\n\014S_UNITDEMAGE\020\n\022\017\n\013S_ROOMQUEST\020\014"
-  "\022\017\n\013C_MOVEPOTAL\020\r\022\r\n\tS_ENDGAME\020\016\022\017\n\013LOGI"
-  "NACCESS\020\017\022\021\n\rCREATEACCOUNT\020\020\022\n\n\006C_LOAD\020\021"
-  "\022\023\n\017CREATECHARACTER\020\022\022\017\n\013DROPMESSAGE\020\023\022\021"
-  "\n\rC_BUYCHARATER\020\024\022\017\n\013C_BUYWEAPON\020\025\022\023\n\017C_"
-  "UPDATEACCOUNT\020\026\022\021\n\rS_CURRENTINFO\020\027\022\017\n\013S_"
-  "BUYRESULT\020\030\022\020\n\014C_PLAYERJUMP\020\031\022\017\n\013C_PLAYE"
-  "RAIM\020\032\022\013\n\007S_EXPLV\020\033\022\023\n\017S_LOADINVENTORY\020\036"
-  "\022\017\n\013C_SELLITEMS\020\037b\006proto3"
+  "\n\020GameClient.proto\022\010protocol\" \n\005Login\022\n\n"
+  "\002id\030\001 \001(\t\022\013\n\003pwd\030\002 \001(\t\"7\n\017CreateCharacte"
+  "r\022$\n\010charater\030\001 \001(\0132\022.protocol.Charater\""
+  "K\n\016CUpdateAccount\022\024\n\014charaterType\030\001 \001(\005\022"
+  "\022\n\nweaponType\030\002 \001(\005\022\017\n\007useCash\030\003 \001(\005\"y\n\014"
+  "SCurrentInfo\022\014\n\004cash\030\001 \001(\005\022\024\n\014charaterTy"
+  "pe\030\002 \001(\005\022\022\n\nweaponType\030\003 \001(\005\022$\n\010charater"
+  "\030\004 \001(\0132\022.protocol.Charater\022\013\n\003exp\030\005 \001(\005\""
+  "\225\001\n\013LoginAccess\022\016\n\006result\030\001 \001(\005\022$\n\010chara"
+  "ter\030\002 \003(\0132\022.protocol.Charater\022\027\n\017curChar"
+  "aterType\030\003 \001(\005\022\025\n\rcurWeaponType\030\004 \001(\005\022\014\n"
+  "\004cash\030\005 \001(\005\022\022\n\nweaponList\030\006 \003(\005\"@\n\010Chara"
+  "ter\022\014\n\004uuid\030\001 \001(\005\022\014\n\004code\030\002 \001(\005\022\014\n\004name\030"
+  "\003 \001(\t\022\n\n\002lv\030\004 \001(\005\"8\n\010Position\022\t\n\001x\030\001 \001(\002"
+  "\022\t\n\001y\030\002 \001(\002\022\t\n\001z\030\003 \001(\002\022\013\n\003yaw\030\004 \001(\002\"\221\001\n\004"
+  "Unit\022\014\n\004uuid\030\001 \001(\r\022\n\n\002hp\030\002 \001(\r\022\014\n\004code\030\003"
+  " \001(\005\022$\n\010position\030\004 \001(\0132\022.protocol.Positi"
+  "on\022\014\n\004name\030\005 \001(\t\022\n\n\002lv\030\006 \001(\005\022\r\n\005state\030\007 "
+  "\001(\005\022\022\n\nweaponCode\030\010 \001(\005\";\n\005SLoad\022!\n\004unit"
+  "\030\001 \003(\0132\023.protocol.UnitState\022\017\n\007room_id\030\003"
+  " \001(\005\";\n\005CLoad\022\014\n\004uuid\030\001 \001(\005\022$\n\010position\030"
+  "d \001(\0132\022.protocol.Position\"/\n\rSInsertplay"
+  "er\022\036\n\006player\030\001 \001(\0132\016.protocol.Unit\"O\n\005SM"
+  "ove\022\014\n\004uuid\030\001 \001(\005\022$\n\010position\030\002 \001(\0132\022.pr"
+  "otocol.Position\022\022\n\nis_monster\030\003 \001(\010\"1\n\005S"
+  "Chat\022\014\n\004type\030\001 \001(\r\022\014\n\004uuid\030\002 \001(\005\022\014\n\004text"
+  "\030\005 \001(\t\":\n\013SPlayerData\022\036\n\006player\030\001 \001(\0132\016."
+  "protocol.Unit\022\013\n\003exp\030\002 \001(\005\"\034\n\014SClosePlay"
+  "er\022\014\n\004uuid\030\001 \001(\005\"_\n\tUnitState\022\034\n\004unit\030\001 "
+  "\001(\0132\016.protocol.Unit\022\022\n\nis_monster\030\n \001(\010\022"
+  " \n\006attack\030\013 \001(\0132\020.protocol.Attack\"6\n\013SUn"
+  "itStates\022\'\n\nunit_state\030\001 \003(\0132\023.protocol."
+  "UnitState\"\?\n\006Attack\022\014\n\004uuid\030\001 \001(\005\022\022\n\nski"
+  "ll_code\030\002 \001(\005\022\023\n\013target_uuid\030\003 \001(\005\"f\n\007CA"
+  "ttack\022\014\n\004uuid\030\001 \001(\005\022\022\n\nskill_code\030\002 \001(\005\022"
+  "\023\n\013target_uuid\030\003 \001(\005\022$\n\010position\030\004 \001(\0132\022"
+  ".protocol.Position\"q\n\006Demage\022\014\n\004uuid\030\001 \001"
+  "(\005\022\016\n\006demage\030\002 \001(\005\022$\n\010position\030\003 \001(\0132\022.p"
+  "rotocol.Position\022\017\n\007is_heal\030\004 \001(\010\022\022\n\nis_"
+  "monster\030\n \001(\010\"Q\n\013SUnitDemage\022\014\n\004uuid\030\001 \001"
+  "(\005\022\022\n\nis_monster\030\002 \001(\010\022 \n\006demage\030\003 \003(\0132\020"
+  ".protocol.Demage\"D\n\nSRoomQuest\022\020\n\010is_cle"
+  "ar\030\001 \001(\010\022\022\n\nkill_count\030\002 \001(\005\022\020\n\010sum_kill"
+  "\030\003 \001(\005\"7\n\nCMovePotal\022\023\n\013pre_room_id\030\001 \001("
+  "\005\022\024\n\014next_room_id\030\002 \001(\005\"\034\n\010SEndGame\022\020\n\010e"
+  "nd_game\030\001 \001(\010\"C\n\014CBuyCharater\022\024\n\014Charate"
+  "rType\030\001 \001(\005\022\017\n\007useCash\030\002 \001(\005\022\014\n\004name\030\003 \001"
+  "(\t\"1\n\nCBuyWeapon\022\022\n\nweaponType\030\001 \001(\005\022\017\n\007"
+  "useCash\030\002 \001(\005\"\224\001\n\nSBuyResult\022\016\n\006result\030\001"
+  " \001(\005\022$\n\010charater\030\002 \003(\0132\022.protocol.Charat"
+  "er\022\027\n\017curCharaterType\030\003 \001(\005\022\025\n\rcurWeapon"
+  "Type\030\004 \001(\005\022\014\n\004cash\030\005 \001(\005\022\022\n\nweaponList\030\006"
+  " \003(\005\"+\n\013CPlayerJump\022\016\n\006isJump\030\001 \001(\010\022\014\n\004u"
+  "uid\030\002 \001(\005\")\n\nCPlayerAim\022\r\n\005isAim\030\001 \001(\010\022\014"
+  "\n\004uuid\030\002 \001(\005\"/\n\006SExpLv\022\014\n\004uuid\030\001 \001(\005\022\n\n\002"
+  "lv\030\002 \001(\005\022\013\n\003exp\030\003 \001(\005\"\036\n\tItemEquip\022\021\n\tit"
+  "em_code\030\001 \001(\005\"0\n\007ItemEtc\022\021\n\titem_code\030\001 "
+  "\001(\005\022\022\n\nitem_count\030\002 \001(\005\"i\n\013DropMessage\022\'"
+  "\n\nitemEquips\030\001 \003(\0132\023.protocol.ItemEquip\022"
+  "#\n\010itemEtcs\030\002 \003(\0132\021.protocol.ItemEtc\022\014\n\004"
+  "gold\030\003 \001(\005\"l\n\016SLoadInventory\022\'\n\nitemEqui"
+  "ps\030\001 \003(\0132\023.protocol.ItemEquip\022#\n\010itemEtc"
+  "s\030\002 \003(\0132\021.protocol.ItemEtc\022\014\n\004gold\030\003 \001(\005"
+  "\"x\n\nCSellItems\022\'\n\nitemEquips\030\001 \003(\0132\023.pro"
+  "tocol.ItemEquip\022#\n\010itemEtcs\030\002 \003(\0132\021.prot"
+  "ocol.ItemEtc\022\014\n\004gold\030\003 \001(\005\022\016\n\006result\030\004 \001"
+  "(\010\"%\n\005DLoad\022\034\n\004unit\030e \001(\0132\016.protocol.Uni"
+  "t*\332\003\n\013MessageCode\022\t\n\005LOGIN\020\000\022\n\n\006S_LOAD\020\001"
+  "\022\022\n\016S_INSERTPLAYER\020\002\022\n\n\006S_MOVE\020\003\022\n\n\006S_CH"
+  "AT\020\004\022\020\n\014S_PLAYERDATA\020\005\022\021\n\rS_CLOSEPLAYER\020"
+  "\006\022\020\n\014S_UNITSTATES\020\007\022\014\n\010C_ATTACK\020\010\022\020\n\014S_U"
+  "NITDEMAGE\020\n\022\017\n\013S_ROOMQUEST\020\014\022\017\n\013C_MOVEPO"
+  "TAL\020\r\022\r\n\tS_ENDGAME\020\016\022\017\n\013LOGINACCESS\020\017\022\n\n"
+  "\006C_LOAD\020\021\022\023\n\017CREATECHARACTER\020\022\022\017\n\013DROPME"
+  "SSAGE\020\023\022\021\n\rC_BUYCHARATER\020\024\022\017\n\013C_BUYWEAPO"
+  "N\020\025\022\023\n\017C_UPDATEACCOUNT\020\026\022\021\n\rS_CURRENTINF"
+  "O\020\027\022\017\n\013S_BUYRESULT\020\030\022\020\n\014C_PLAYERJUMP\020\031\022\017"
+  "\n\013C_PLAYERAIM\020\032\022\013\n\007S_EXPLV\020\033\022\023\n\017S_LOADIN"
+  "VENTORY\020\036\022\017\n\013C_SELLITEMS\020\037\022\n\n\006D_LOAD\020eb\006"
+  "proto3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_GameClient_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_GameClient_2eproto = {
-  false, false, 3225, descriptor_table_protodef_GameClient_2eproto, "GameClient.proto", 
+  false, false, 3166, descriptor_table_protodef_GameClient_2eproto, "GameClient.proto", 
   &descriptor_table_GameClient_2eproto_once, nullptr, 0, 36,
   schemas, file_default_instances, TableStruct_GameClient_2eproto::offsets,
   file_level_metadata_GameClient_2eproto, file_level_enum_descriptors_GameClient_2eproto, file_level_service_descriptors_GameClient_2eproto,
@@ -1045,7 +1040,6 @@ bool MessageCode_IsValid(int value) {
     case 13:
     case 14:
     case 15:
-    case 16:
     case 17:
     case 18:
     case 19:
@@ -1059,6 +1053,7 @@ bool MessageCode_IsValid(int value) {
     case 27:
     case 30:
     case 31:
+    case 101:
       return true;
     default:
       return false;
@@ -1070,13 +1065,8 @@ bool MessageCode_IsValid(int value) {
 
 class Login::_Internal {
  public:
-  static const ::protocol::Position& position(const Login* msg);
 };
 
-const ::protocol::Position&
-Login::_Internal::position(const Login* msg) {
-  return *msg->position_;
-}
 Login::Login(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
@@ -1099,22 +1089,12 @@ Login::Login(const Login& from)
     pwd_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_pwd(), 
       GetArenaForAllocation());
   }
-  if (from._internal_has_position()) {
-    position_ = new ::protocol::Position(*from.position_);
-  } else {
-    position_ = nullptr;
-  }
-  is_dummy_ = from.is_dummy_;
   // @@protoc_insertion_point(copy_constructor:protocol.Login)
 }
 
 void Login::SharedCtor() {
 id_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 pwd_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&position_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&is_dummy_) -
-    reinterpret_cast<char*>(&position_)) + sizeof(is_dummy_));
 }
 
 Login::~Login() {
@@ -1128,7 +1108,6 @@ inline void Login::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   id_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   pwd_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (this != internal_default_instance()) delete position_;
 }
 
 void Login::ArenaDtor(void* object) {
@@ -1149,11 +1128,6 @@ void Login::Clear() {
 
   id_.ClearToEmpty();
   pwd_.ClearToEmpty();
-  if (GetArenaForAllocation() == nullptr && position_ != nullptr) {
-    delete position_;
-  }
-  position_ = nullptr;
-  is_dummy_ = false;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -1179,22 +1153,6 @@ const char* Login::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::inte
           auto str = _internal_mutable_pwd();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "protocol.Login.pwd"));
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // .protocol.Position position = 100;
-      case 100:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
-          ptr = ctx->ParseMessage(_internal_mutable_position(), ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // bool is_dummy = 101;
-      case 101:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 40)) {
-          is_dummy_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -1248,20 +1206,6 @@ failure:
         2, this->_internal_pwd(), target);
   }
 
-  // .protocol.Position position = 100;
-  if (this->_internal_has_position()) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        100, _Internal::position(this), target, stream);
-  }
-
-  // bool is_dummy = 101;
-  if (this->_internal_is_dummy() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(101, this->_internal_is_dummy(), target);
-  }
-
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -1292,18 +1236,6 @@ size_t Login::ByteSizeLong() const {
         this->_internal_pwd());
   }
 
-  // .protocol.Position position = 100;
-  if (this->_internal_has_position()) {
-    total_size += 2 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *position_);
-  }
-
-  // bool is_dummy = 101;
-  if (this->_internal_is_dummy() != 0) {
-    total_size += 2 + 1;
-  }
-
   return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
@@ -1331,12 +1263,6 @@ void Login::MergeFrom(const Login& from) {
   }
   if (!from._internal_pwd().empty()) {
     _internal_set_pwd(from._internal_pwd());
-  }
-  if (from._internal_has_position()) {
-    _internal_mutable_position()->::protocol::Position::MergeFrom(from._internal_position());
-  }
-  if (from._internal_is_dummy() != 0) {
-    _internal_set_is_dummy(from._internal_is_dummy());
   }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -1367,196 +1293,12 @@ void Login::InternalSwap(Login* other) {
       &pwd_, lhs_arena,
       &other->pwd_, rhs_arena
   );
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Login, is_dummy_)
-      + sizeof(Login::is_dummy_)
-      - PROTOBUF_FIELD_OFFSET(Login, position_)>(
-          reinterpret_cast<char*>(&position_),
-          reinterpret_cast<char*>(&other->position_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Login::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
       file_level_metadata_GameClient_2eproto[0]);
-}
-
-// ===================================================================
-
-class CreateAccount::_Internal {
- public:
-};
-
-CreateAccount::CreateAccount(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
-  // @@protoc_insertion_point(arena_constructor:protocol.CreateAccount)
-}
-CreateAccount::CreateAccount(const CreateAccount& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  success_ = from.success_;
-  // @@protoc_insertion_point(copy_constructor:protocol.CreateAccount)
-}
-
-void CreateAccount::SharedCtor() {
-success_ = false;
-}
-
-CreateAccount::~CreateAccount() {
-  // @@protoc_insertion_point(destructor:protocol.CreateAccount)
-  if (GetArenaForAllocation() != nullptr) return;
-  SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-}
-
-inline void CreateAccount::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-}
-
-void CreateAccount::ArenaDtor(void* object) {
-  CreateAccount* _this = reinterpret_cast< CreateAccount* >(object);
-  (void)_this;
-}
-void CreateAccount::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
-void CreateAccount::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
-}
-
-void CreateAccount::Clear() {
-// @@protoc_insertion_point(message_clear_start:protocol.CreateAccount)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  success_ = false;
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-}
-
-const char* CreateAccount::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // bool success = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          success_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
-}
-
-::PROTOBUF_NAMESPACE_ID::uint8* CreateAccount::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:protocol.CreateAccount)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // bool success = 1;
-  if (this->_internal_success() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(1, this->_internal_success(), target);
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:protocol.CreateAccount)
-  return target;
-}
-
-size_t CreateAccount::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:protocol.CreateAccount)
-  size_t total_size = 0;
-
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  // bool success = 1;
-  if (this->_internal_success() != 0) {
-    total_size += 1 + 1;
-  }
-
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
-}
-
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData CreateAccount::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
-    CreateAccount::MergeImpl
-};
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*CreateAccount::GetClassData() const { return &_class_data_; }
-
-void CreateAccount::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<CreateAccount *>(to)->MergeFrom(
-      static_cast<const CreateAccount &>(from));
-}
-
-
-void CreateAccount::MergeFrom(const CreateAccount& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:protocol.CreateAccount)
-  GOOGLE_DCHECK_NE(&from, this);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (from._internal_success() != 0) {
-    _internal_set_success(from._internal_success());
-  }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void CreateAccount::CopyFrom(const CreateAccount& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:protocol.CreateAccount)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool CreateAccount::IsInitialized() const {
-  return true;
-}
-
-void CreateAccount::InternalSwap(CreateAccount* other) {
-  using std::swap;
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(success_, other->success_);
-}
-
-::PROTOBUF_NAMESPACE_ID::Metadata CreateAccount::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
-      &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[1]);
 }
 
 // ===================================================================
@@ -1751,7 +1493,7 @@ void CreateCharacter::InternalSwap(CreateCharacter* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata CreateCharacter::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[2]);
+      file_level_metadata_GameClient_2eproto[1]);
 }
 
 // ===================================================================
@@ -1985,7 +1727,7 @@ void CUpdateAccount::InternalSwap(CUpdateAccount* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata CUpdateAccount::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[3]);
+      file_level_metadata_GameClient_2eproto[2]);
 }
 
 // ===================================================================
@@ -2282,7 +2024,7 @@ void SCurrentInfo::InternalSwap(SCurrentInfo* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SCurrentInfo::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[4]);
+      file_level_metadata_GameClient_2eproto[3]);
 }
 
 // ===================================================================
@@ -2307,17 +2049,17 @@ LoginAccess::LoginAccess(const LoginAccess& from)
       charater_(from.charater_),
       weaponlist_(from.weaponlist_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&success_, &from.success_,
+  ::memcpy(&result_, &from.result_,
     static_cast<size_t>(reinterpret_cast<char*>(&cash_) -
-    reinterpret_cast<char*>(&success_)) + sizeof(cash_));
+    reinterpret_cast<char*>(&result_)) + sizeof(cash_));
   // @@protoc_insertion_point(copy_constructor:protocol.LoginAccess)
 }
 
 void LoginAccess::SharedCtor() {
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&success_) - reinterpret_cast<char*>(this)),
+    reinterpret_cast<char*>(&result_) - reinterpret_cast<char*>(this)),
     0, static_cast<size_t>(reinterpret_cast<char*>(&cash_) -
-    reinterpret_cast<char*>(&success_)) + sizeof(cash_));
+    reinterpret_cast<char*>(&result_)) + sizeof(cash_));
 }
 
 LoginAccess::~LoginAccess() {
@@ -2349,9 +2091,9 @@ void LoginAccess::Clear() {
 
   charater_.Clear();
   weaponlist_.Clear();
-  ::memset(&success_, 0, static_cast<size_t>(
+  ::memset(&result_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&cash_) -
-      reinterpret_cast<char*>(&success_)) + sizeof(cash_));
+      reinterpret_cast<char*>(&result_)) + sizeof(cash_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -2361,10 +2103,10 @@ const char* LoginAccess::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // bool success = 1;
+      // int32 result = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          success_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          result_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -2446,10 +2188,10 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // bool success = 1;
-  if (this->_internal_success() != 0) {
+  // int32 result = 1;
+  if (this->_internal_result() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(1, this->_internal_success(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_result(), target);
   }
 
   // repeated .protocol.Charater charater = 2;
@@ -2525,9 +2267,9 @@ size_t LoginAccess::ByteSizeLong() const {
     total_size += data_size;
   }
 
-  // bool success = 1;
-  if (this->_internal_success() != 0) {
-    total_size += 1 + 1;
+  // int32 result = 1;
+  if (this->_internal_result() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32SizePlusOne(this->_internal_result());
   }
 
   // int32 curCharaterType = 3;
@@ -2569,8 +2311,8 @@ void LoginAccess::MergeFrom(const LoginAccess& from) {
 
   charater_.MergeFrom(from.charater_);
   weaponlist_.MergeFrom(from.weaponlist_);
-  if (from._internal_success() != 0) {
-    _internal_set_success(from._internal_success());
+  if (from._internal_result() != 0) {
+    _internal_set_result(from._internal_result());
   }
   if (from._internal_curcharatertype() != 0) {
     _internal_set_curcharatertype(from._internal_curcharatertype());
@@ -2603,15 +2345,15 @@ void LoginAccess::InternalSwap(LoginAccess* other) {
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(LoginAccess, cash_)
       + sizeof(LoginAccess::cash_)
-      - PROTOBUF_FIELD_OFFSET(LoginAccess, success_)>(
-          reinterpret_cast<char*>(&success_),
-          reinterpret_cast<char*>(&other->success_));
+      - PROTOBUF_FIELD_OFFSET(LoginAccess, result_)>(
+          reinterpret_cast<char*>(&result_),
+          reinterpret_cast<char*>(&other->result_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata LoginAccess::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[5]);
+      file_level_metadata_GameClient_2eproto[4]);
 }
 
 // ===================================================================
@@ -2890,7 +2632,7 @@ void Charater::InternalSwap(Charater* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata Charater::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[6]);
+      file_level_metadata_GameClient_2eproto[5]);
 }
 
 // ===================================================================
@@ -3146,7 +2888,7 @@ void Position::InternalSwap(Position* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata Position::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[7]);
+      file_level_metadata_GameClient_2eproto[6]);
 }
 
 // ===================================================================
@@ -3532,7 +3274,7 @@ void Unit::InternalSwap(Unit* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata Unit::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[8]);
+      file_level_metadata_GameClient_2eproto[7]);
 }
 
 // ===================================================================
@@ -3743,7 +3485,7 @@ void SLoad::InternalSwap(SLoad* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SLoad::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[9]);
+      file_level_metadata_GameClient_2eproto[8]);
 }
 
 // ===================================================================
@@ -3774,15 +3516,15 @@ CLoad::CLoad(const CLoad& from)
   } else {
     position_ = nullptr;
   }
-  code_ = from.code_;
+  uuid_ = from.uuid_;
   // @@protoc_insertion_point(copy_constructor:protocol.CLoad)
 }
 
 void CLoad::SharedCtor() {
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&position_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&code_) -
-    reinterpret_cast<char*>(&position_)) + sizeof(code_));
+    0, static_cast<size_t>(reinterpret_cast<char*>(&uuid_) -
+    reinterpret_cast<char*>(&position_)) + sizeof(uuid_));
 }
 
 CLoad::~CLoad() {
@@ -3817,7 +3559,7 @@ void CLoad::Clear() {
     delete position_;
   }
   position_ = nullptr;
-  code_ = 0;
+  uuid_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -3827,10 +3569,10 @@ const char* CLoad::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::inte
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // int32 code = 1;
+      // int32 uuid = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          code_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          uuid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -3872,10 +3614,10 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int32 code = 1;
-  if (this->_internal_code() != 0) {
+  // int32 uuid = 1;
+  if (this->_internal_uuid() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_code(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_uuid(), target);
   }
 
   // .protocol.Position position = 100;
@@ -3909,9 +3651,9 @@ size_t CLoad::ByteSizeLong() const {
         *position_);
   }
 
-  // int32 code = 1;
-  if (this->_internal_code() != 0) {
-    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32SizePlusOne(this->_internal_code());
+  // int32 uuid = 1;
+  if (this->_internal_uuid() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32SizePlusOne(this->_internal_uuid());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
@@ -3939,8 +3681,8 @@ void CLoad::MergeFrom(const CLoad& from) {
   if (from._internal_has_position()) {
     _internal_mutable_position()->::protocol::Position::MergeFrom(from._internal_position());
   }
-  if (from._internal_code() != 0) {
-    _internal_set_code(from._internal_code());
+  if (from._internal_uuid() != 0) {
+    _internal_set_uuid(from._internal_uuid());
   }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -3960,8 +3702,8 @@ void CLoad::InternalSwap(CLoad* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(CLoad, code_)
-      + sizeof(CLoad::code_)
+      PROTOBUF_FIELD_OFFSET(CLoad, uuid_)
+      + sizeof(CLoad::uuid_)
       - PROTOBUF_FIELD_OFFSET(CLoad, position_)>(
           reinterpret_cast<char*>(&position_),
           reinterpret_cast<char*>(&other->position_));
@@ -3970,7 +3712,7 @@ void CLoad::InternalSwap(CLoad* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata CLoad::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[10]);
+      file_level_metadata_GameClient_2eproto[9]);
 }
 
 // ===================================================================
@@ -4165,7 +3907,7 @@ void SInsertplayer::InternalSwap(SInsertplayer* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SInsertplayer::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[11]);
+      file_level_metadata_GameClient_2eproto[10]);
 }
 
 // ===================================================================
@@ -4418,7 +4160,7 @@ void SMove::InternalSwap(SMove* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SMove::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[12]);
+      file_level_metadata_GameClient_2eproto[11]);
 }
 
 // ===================================================================
@@ -4675,7 +4417,7 @@ void SChat::InternalSwap(SChat* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SChat::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[13]);
+      file_level_metadata_GameClient_2eproto[12]);
 }
 
 // ===================================================================
@@ -4902,7 +4644,7 @@ void SPlayerData::InternalSwap(SPlayerData* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SPlayerData::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[14]);
+      file_level_metadata_GameClient_2eproto[13]);
 }
 
 // ===================================================================
@@ -5080,7 +4822,7 @@ void SClosePlayer::InternalSwap(SClosePlayer* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SClosePlayer::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[15]);
+      file_level_metadata_GameClient_2eproto[14]);
 }
 
 // ===================================================================
@@ -5348,7 +5090,7 @@ void UnitState::InternalSwap(UnitState* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata UnitState::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[16]);
+      file_level_metadata_GameClient_2eproto[15]);
 }
 
 // ===================================================================
@@ -5533,7 +5275,7 @@ void SUnitStates::InternalSwap(SUnitStates* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SUnitStates::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[17]);
+      file_level_metadata_GameClient_2eproto[16]);
 }
 
 // ===================================================================
@@ -5767,7 +5509,7 @@ void Attack::InternalSwap(Attack* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata Attack::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[18]);
+      file_level_metadata_GameClient_2eproto[17]);
 }
 
 // ===================================================================
@@ -6042,7 +5784,7 @@ void CAttack::InternalSwap(CAttack* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata CAttack::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[19]);
+      file_level_metadata_GameClient_2eproto[18]);
 }
 
 // ===================================================================
@@ -6339,7 +6081,7 @@ void Demage::InternalSwap(Demage* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata Demage::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[20]);
+      file_level_metadata_GameClient_2eproto[19]);
 }
 
 // ===================================================================
@@ -6584,7 +6326,7 @@ void SUnitDemage::InternalSwap(SUnitDemage* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SUnitDemage::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[21]);
+      file_level_metadata_GameClient_2eproto[20]);
 }
 
 // ===================================================================
@@ -6818,7 +6560,7 @@ void SRoomQuest::InternalSwap(SRoomQuest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SRoomQuest::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[22]);
+      file_level_metadata_GameClient_2eproto[21]);
 }
 
 // ===================================================================
@@ -7030,7 +6772,7 @@ void CMovePotal::InternalSwap(CMovePotal* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata CMovePotal::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[23]);
+      file_level_metadata_GameClient_2eproto[22]);
 }
 
 // ===================================================================
@@ -7208,7 +6950,7 @@ void SEndGame::InternalSwap(SEndGame* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SEndGame::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[24]);
+      file_level_metadata_GameClient_2eproto[23]);
 }
 
 // ===================================================================
@@ -7465,7 +7207,7 @@ void CBuyCharater::InternalSwap(CBuyCharater* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata CBuyCharater::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[25]);
+      file_level_metadata_GameClient_2eproto[24]);
 }
 
 // ===================================================================
@@ -7677,7 +7419,7 @@ void CBuyWeapon::InternalSwap(CBuyWeapon* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata CBuyWeapon::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[26]);
+      file_level_metadata_GameClient_2eproto[25]);
 }
 
 // ===================================================================
@@ -8006,7 +7748,7 @@ void SBuyResult::InternalSwap(SBuyResult* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SBuyResult::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[27]);
+      file_level_metadata_GameClient_2eproto[26]);
 }
 
 // ===================================================================
@@ -8218,7 +7960,7 @@ void CPlayerJump::InternalSwap(CPlayerJump* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata CPlayerJump::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[28]);
+      file_level_metadata_GameClient_2eproto[27]);
 }
 
 // ===================================================================
@@ -8430,7 +8172,7 @@ void CPlayerAim::InternalSwap(CPlayerAim* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata CPlayerAim::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[29]);
+      file_level_metadata_GameClient_2eproto[28]);
 }
 
 // ===================================================================
@@ -8664,7 +8406,7 @@ void SExpLv::InternalSwap(SExpLv* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SExpLv::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[30]);
+      file_level_metadata_GameClient_2eproto[29]);
 }
 
 // ===================================================================
@@ -8842,7 +8584,7 @@ void ItemEquip::InternalSwap(ItemEquip* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata ItemEquip::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[31]);
+      file_level_metadata_GameClient_2eproto[30]);
 }
 
 // ===================================================================
@@ -9054,7 +8796,7 @@ void ItemEtc::InternalSwap(ItemEtc* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata ItemEtc::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[32]);
+      file_level_metadata_GameClient_2eproto[31]);
 }
 
 // ===================================================================
@@ -9298,7 +9040,7 @@ void DropMessage::InternalSwap(DropMessage* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata DropMessage::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[33]);
+      file_level_metadata_GameClient_2eproto[32]);
 }
 
 // ===================================================================
@@ -9542,7 +9284,7 @@ void SLoadInventory::InternalSwap(SLoadInventory* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SLoadInventory::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
-      file_level_metadata_GameClient_2eproto[34]);
+      file_level_metadata_GameClient_2eproto[33]);
 }
 
 // ===================================================================
@@ -9820,6 +9562,201 @@ void CSellItems::InternalSwap(CSellItems* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata CSellItems::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
+      file_level_metadata_GameClient_2eproto[34]);
+}
+
+// ===================================================================
+
+class DLoad::_Internal {
+ public:
+  static const ::protocol::Unit& unit(const DLoad* msg);
+};
+
+const ::protocol::Unit&
+DLoad::_Internal::unit(const DLoad* msg) {
+  return *msg->unit_;
+}
+DLoad::DLoad(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:protocol.DLoad)
+}
+DLoad::DLoad(const DLoad& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if (from._internal_has_unit()) {
+    unit_ = new ::protocol::Unit(*from.unit_);
+  } else {
+    unit_ = nullptr;
+  }
+  // @@protoc_insertion_point(copy_constructor:protocol.DLoad)
+}
+
+void DLoad::SharedCtor() {
+unit_ = nullptr;
+}
+
+DLoad::~DLoad() {
+  // @@protoc_insertion_point(destructor:protocol.DLoad)
+  if (GetArenaForAllocation() != nullptr) return;
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+inline void DLoad::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete unit_;
+}
+
+void DLoad::ArenaDtor(void* object) {
+  DLoad* _this = reinterpret_cast< DLoad* >(object);
+  (void)_this;
+}
+void DLoad::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void DLoad::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void DLoad::Clear() {
+// @@protoc_insertion_point(message_clear_start:protocol.DLoad)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArenaForAllocation() == nullptr && unit_ != nullptr) {
+    delete unit_;
+  }
+  unit_ = nullptr;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* DLoad::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // .protocol.Unit unit = 101;
+      case 101:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 42)) {
+          ptr = ctx->ParseMessage(_internal_mutable_unit(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* DLoad::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:protocol.DLoad)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .protocol.Unit unit = 101;
+  if (this->_internal_has_unit()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        101, _Internal::unit(this), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:protocol.DLoad)
+  return target;
+}
+
+size_t DLoad::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:protocol.DLoad)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .protocol.Unit unit = 101;
+  if (this->_internal_has_unit()) {
+    total_size += 2 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *unit_);
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData DLoad::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    DLoad::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*DLoad::GetClassData() const { return &_class_data_; }
+
+void DLoad::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<DLoad *>(to)->MergeFrom(
+      static_cast<const DLoad &>(from));
+}
+
+
+void DLoad::MergeFrom(const DLoad& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:protocol.DLoad)
+  GOOGLE_DCHECK_NE(&from, this);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_has_unit()) {
+    _internal_mutable_unit()->::protocol::Unit::MergeFrom(from._internal_unit());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void DLoad::CopyFrom(const DLoad& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:protocol.DLoad)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool DLoad::IsInitialized() const {
+  return true;
+}
+
+void DLoad::InternalSwap(DLoad* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(unit_, other->unit_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata DLoad::GetMetadata() const {
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
       file_level_metadata_GameClient_2eproto[35]);
 }
 
@@ -9828,9 +9765,6 @@ void CSellItems::InternalSwap(CSellItems* other) {
 PROTOBUF_NAMESPACE_OPEN
 template<> PROTOBUF_NOINLINE ::protocol::Login* Arena::CreateMaybeMessage< ::protocol::Login >(Arena* arena) {
   return Arena::CreateMessageInternal< ::protocol::Login >(arena);
-}
-template<> PROTOBUF_NOINLINE ::protocol::CreateAccount* Arena::CreateMaybeMessage< ::protocol::CreateAccount >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::protocol::CreateAccount >(arena);
 }
 template<> PROTOBUF_NOINLINE ::protocol::CreateCharacter* Arena::CreateMaybeMessage< ::protocol::CreateCharacter >(Arena* arena) {
   return Arena::CreateMessageInternal< ::protocol::CreateCharacter >(arena);
@@ -9933,6 +9867,9 @@ template<> PROTOBUF_NOINLINE ::protocol::SLoadInventory* Arena::CreateMaybeMessa
 }
 template<> PROTOBUF_NOINLINE ::protocol::CSellItems* Arena::CreateMaybeMessage< ::protocol::CSellItems >(Arena* arena) {
   return Arena::CreateMessageInternal< ::protocol::CSellItems >(arena);
+}
+template<> PROTOBUF_NOINLINE ::protocol::DLoad* Arena::CreateMaybeMessage< ::protocol::DLoad >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::protocol::DLoad >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

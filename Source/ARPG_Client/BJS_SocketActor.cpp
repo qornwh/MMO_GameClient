@@ -56,11 +56,6 @@ void ABJS_SocketActor::HandlePacket(BYTE* Buffer, PacketHeader* Header)
 			LoginAccessHandler(Buffer, Header, static_cast<int32>(sizeof(PacketHeader)));
 		}
 		break;
-	case protocol::MessageCode::CREATEACCOUNT:
-		{
-			CreateAccountHandler(Buffer, Header, static_cast<int32>(sizeof(PacketHeader)));
-		}
-		break;
 	case protocol::MessageCode::S_CURRENTINFO:
 		{
 			CurrentInfoHandler(Buffer, Header, static_cast<int32>(sizeof(PacketHeader)));
@@ -231,7 +226,7 @@ void ABJS_SocketActor::LoginAccessHandler(BYTE* Buffer, PacketHeader* Header, in
 	protocol::LoginAccess pkt;
 	if (PacketHandlerUtils::ParsePacketHandler(pkt, Buffer, Header->GetSize() - Offset, Offset))
 	{
-		if (pkt.success())
+		if (pkt.result() == 1)
 		{
 			if (auto MyInstance = Cast<UBJS_GameInstance>(GetGameInstance()))
 			{
@@ -261,28 +256,8 @@ void ABJS_SocketActor::LoginAccessHandler(BYTE* Buffer, PacketHeader* Header, in
 					i++;
 				}
 			}
-			OnLoginAccess.Execute(1);
 		}
-		else
-		{
-			OnLoginAccess.Execute(0);
-		}
-	}
-}
-
-void ABJS_SocketActor::CreateAccountHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset)
-{
-	protocol::CreateAccount pkt;
-	if (PacketHandlerUtils::ParsePacketHandler(pkt, Buffer, Header->GetSize() - Offset, Offset))
-	{
-		if (pkt.success())
-		{
-			OnLoginAccess.Execute(2);
-		}
-		else
-		{
-			OnLoginAccess.Execute(0);
-		}
+		OnLoginAccess.Execute(pkt.result());
 	}
 }
 

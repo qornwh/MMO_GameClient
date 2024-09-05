@@ -53,7 +53,6 @@ public:
 private:
 	void ReConnectSocket();
 	void LoginAccessHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
-	void CreateAccountHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
 	void CurrentInfoHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
 	void BuyResultHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
 	void PlayerDataHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);

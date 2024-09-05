@@ -17,7 +17,6 @@ enum MessageCode {
     C_MOVEPOTAL = 13; // 포탈 이동
     S_ENDGAME = 14; // 게임 종료
     LOGINACCESS = 15; // 로그인 성공 여부
-    CREATEACCOUNT = 16; // 계정 생성
     C_LOAD = 17; // 클라이언트 인게임 요청
     CREATECHARACTER = 18; // 캐릭터 생성 요청
     DROPMESSAGE = 19; // 드롭 흭득 메시지
@@ -35,22 +34,14 @@ enum MessageCode {
 
     S_LOADINVENTORY = 30; // 인벤토리 로드 메시지
     C_SELLITEMS = 31; // 인벤토리 아이템 다중 판매
+    
+    // 더미용
+    D_LOAD = 101;
 }
 
-// type
-// 0 : sward
-// 1 : archer
-// 2 : magician
 message Login {
     string id = 1;
     string pwd = 2;
-    // 아래는 더미클라만 사용
-    Position position = 100;
-    bool is_dummy = 101;
-}
-
-message CreateAccount {
-    bool success = 1; // 계정 생성 여부
 }
 
 message CreateCharacter {
@@ -72,7 +63,14 @@ message SCurrentInfo {
 }
 
 message LoginAccess {
-    bool success = 1; // 로그인 성공 여부
+    int32 result = 1;
+    /*
+    0 = 로그인 실패
+    1 = 로그인 성공
+    2 = 계정 생성 성공
+    3 = 이미 로그인된 계정
+    4 = 계정 생성 실패
+     */
     repeated Charater charater = 2;
     int32 curCharaterType = 3;
     int32 curWeaponType = 4;
@@ -111,7 +109,7 @@ message SLoad {
 }
 
 message CLoad {
-    int32 code = 1;
+    int32 uuid = 1;
     Position position = 100;
 }
 
@@ -254,4 +252,9 @@ message CSellItems {
     repeated ItemEtc itemEtcs = 2;
     int32 gold = 3;
     bool result = 4;
+}
+
+message DLoad {
+    // 더미클라용 로드
+    Unit unit = 101;
 }
