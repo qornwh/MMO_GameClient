@@ -10,7 +10,10 @@ struct CharaterSkill
 		ASP = 1 << 2,
 	};
 
-	CharaterSkill(int32 Code, float DurationTime, float CoolDownTime) : Code(Code), Duration(DurationTime), CoolDown(CoolDownTime) {}
+	CharaterSkill(int32 SkillCode, float DurationTime, float CoolDownTime) : Code(SkillCode), Duration(DurationTime), CoolDown(CoolDownTime)
+	{
+	}
+
 	void UpdateBuff(float Deltatime)
 	{
 		DurationRemaining -= Deltatime;
@@ -20,6 +23,7 @@ struct CharaterSkill
 		if (CoolDownRemaining <= 0)
 			CoolDownRemaining = 0.f;
 	}
+
 	void Start()
 	{
 		DurationRemaining = Duration;
@@ -49,4 +53,3 @@ struct CharaterSkill
 
 	int32 Code = 0;
 };
-

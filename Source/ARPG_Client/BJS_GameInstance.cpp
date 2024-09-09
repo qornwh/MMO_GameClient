@@ -6,6 +6,7 @@
 #include "BJS_CharaterState.h"
 #include "BJS_UserWidgetBase.h"
 #include "ExpLvStruct.h"
+#include "FriendSystem.h"
 #include "InventoryItem.h"
 #include "ItemEquipStruct.h"
 #include "ItemEtcStruct.h"
@@ -34,6 +35,7 @@ UBJS_GameInstance::UBJS_GameInstance()
 	MyCharaterList.Init(false, 4);
 	MyWeaponList.Init(false, 4);
 	MyInventory = MakeShared<InventoryItem>();
+	MyFriend = MakeShared<FriendSystem>();
 
 	LoadBP();
 	LoadDataTable();
@@ -121,6 +123,11 @@ TArray<bool>& UBJS_GameInstance::GetMyWeaponList()
 TSharedPtr<InventoryItem> UBJS_GameInstance::GetMyInventory()
 {
 	return MyInventory;
+}
+
+TSharedPtr<FriendSystem> UBJS_GameInstance::GetMyFriend()
+{
+	return MyFriend;
 }
 
 int32 UBJS_GameInstance::GetCurCharaterType() const

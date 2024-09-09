@@ -4,10 +4,6 @@
 
 #include "CoreMinimal.h"
 
-/**
- * 
- */
-
 struct EquipItem
 {
 	EquipItem() : Code(0) {}

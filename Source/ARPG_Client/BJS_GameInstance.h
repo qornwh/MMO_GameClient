@@ -31,6 +31,7 @@ public:
 	TArray<bool>& GetMyCharaterList();
 	TArray<bool>& GetMyWeaponList();
 	TSharedPtr<class InventoryItem> GetMyInventory();
+	TSharedPtr<class FriendSystem> GetMyFriend();
 	int32 GetCurCharaterType() const;
 	void SetCurCharaterType(int32 curCharaterType);
 	int32 GetCurWeaponType() const;
@@ -92,6 +93,7 @@ private:
 	int32 CurCharaterType;
 	int32 CurWeaponType;
 	TSharedPtr<class InventoryItem> MyInventory;
+	TSharedPtr<class FriendSystem> MyFriend;
 
 	// Data Struct
 	TArray<struct FPlayerStruct*> PlayerStructs;

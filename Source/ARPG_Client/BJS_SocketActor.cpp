@@ -8,6 +8,7 @@
 #include "BJS_GameInstance.h"
 #include "BJS_InGameMode.h"
 #include "BJS_UserWidgetBase.h"
+#include "FriendSystem.h"
 #include "GameClient.pb.h"
 #include "InventoryItem.h"
 #include "PacketHandlerUtils.h"
@@ -48,7 +49,6 @@ void ABJS_SocketActor::HandlePacket(BYTE* Buffer, PacketHeader* Header)
 {
 	uint16 id = Header->GetId();
 
-	// UE_LOG(LogTemp, Log, TEXT("HandlePacket Code : %d !!!"), id);
 	switch (id)
 	{
 	case protocol::MessageCode::LOGINACCESS:
@@ -141,6 +141,11 @@ void ABJS_SocketActor::HandlePacket(BYTE* Buffer, PacketHeader* Header)
 			ClosePlayerHandler(Buffer, Header, static_cast<int32>(sizeof(PacketHeader)));
 		}
 		break;
+	case protocol::MessageCode::S_FRIENDSYSTEM:
+		{
+			FriendSystemHandler(Buffer, Header, static_cast<int32>(sizeof(PacketHeader)));
+		}
+		break;
 	}
 }
 
@@ -148,7 +153,6 @@ void ABJS_SocketActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// read
 	if (MySocket == nullptr)
 	{
 		ReConnectSocket();
@@ -167,7 +171,6 @@ void ABJS_SocketActor::Tick(float DeltaTime)
 	int32 processLen = 0;
 	while (true)
 	{
-		// 패킷 길이 체크
 		PacketHeader* header = reinterpret_cast<PacketHeader*>(&buffer[processLen]);
 		if (!PacketHandlerUtils::CheckPacketHeader(header, processLen, len))
 			break;
@@ -752,5 +755,36 @@ void ABJS_SocketActor::ClosePlayerHandler(BYTE* Buffer, PacketHeader* Header, in
 		int32 removeUUid = pkt.uuid();
 		if (OnDeSpawnDelegate.IsBound())
 			OnDeSpawnDelegate.Execute(false, removeUUid);
+	}
+}
+
+void ABJS_SocketActor::FriendSystemHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset)
+{
+	protocol::SFriendSystem pkt;
+
+	if (PacketHandlerUtils::ParsePacketHandler(pkt, Buffer, Header->GetSize() - Offset, Offset))
+	{
+		for (auto& myFriend : pkt.friend_())
+		{
+			int32 friendCode = myFriend.playercode();
+			bool access = myFriend.access();
+			int32 add = myFriend.add();
+
+			auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
+			if (mode)
+			{
+				if (add)
+				{
+					TCHAR* nameArr = UTF8_TO_TCHAR(myFriend.playername().c_str());
+					mode->GetMyFriend()->AddFriend(friendCode, access, nameArr);
+					mode->UpdateMyFriendUI(friendCode, 1);
+				}
+				else
+				{
+					mode->GetMyFriend()->UpdateFriend(friendCode, access);
+					mode->UpdateMyFriendUI(friendCode, 2);
+				}
+			}
+		}
 	}
 }

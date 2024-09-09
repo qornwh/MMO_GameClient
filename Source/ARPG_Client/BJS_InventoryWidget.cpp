@@ -250,9 +250,9 @@ void UBJS_InventoryWidget::SellItem()
 	auto widget = CreateWidget<UUserWidget>(GetWorld(), instance->GetPrompt2());
 	if (widget)
 	{
+		FString str = FString(TEXT("판매하시겠습니까?"));
 		auto promptWidget = Cast<UBJS_PromptWidget2>(widget);
 		promptWidget->AddToViewport();
-		FString str = FString(TEXT("판매하시겠습니까?"));
 		promptWidget->SetText(str);
 		promptWidget->OnPromptOk.BindUObject(mode, &ABJS_InGameMode::SellItems);
 		promptWidget->OnPromptCancle.BindUObject(mode, &ABJS_InGameMode::ResetSellItems);

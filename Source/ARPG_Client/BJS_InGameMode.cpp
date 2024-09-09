@@ -4,12 +4,15 @@
 #include "BJS_InGameMode.h"
 
 #include "BJS_CharaterState.h"
+#include "BJS_FriendWidget.h"
 #include "BJS_GameInstance.h"
 #include "BJS_GameUI.h"
 #include "BJS_Monster.h"
 #include "BJS_SocketActor.h"
+#include "BJS_SubWidget.h"
 #include "BJS_UserWidgetBase.h"
 #include "EngineUtils.h"
+#include "FriendSystem.h"
 #include "GameClient.pb.h"
 #include "NiagaraSystem.h"
 #include "PlayerStruct.h"
@@ -37,6 +40,16 @@ ABJS_InGameMode::ABJS_InGameMode()
 	{
 		InventoryUi->AddToViewport();	
 		InventoryUi->SetVisibility(ESlateVisibility::Hidden);
+	}
+	
+	static ConstructorHelpers::FClassFinder<UUserWidget> UI_FRIENDSYSTEM_HUD(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/MyGame/UMG/BJS_SWBP_Friend.BJS_SWBP_Friend_C'"));
+	check(UI_FRIENDSYSTEM_HUD.Succeeded());
+	
+	FriendUi = CreateWidget<UBJS_SubWidget>(GetWorld(), UI_FRIENDSYSTEM_HUD.Class);
+	if (FriendUi)
+	{
+		FriendUi->AddToViewport();	
+		FriendUi->SetVisibility(ESlateVisibility::Hidden);
 	}
 	
 	PrimaryActorTick.bCanEverTick = true;
@@ -77,6 +90,11 @@ void ABJS_InGameMode::BeginPlay()
 	{
 		ui->OnChatMessageSend.BindUObject(this, &ABJS_InGameMode::SendChatMessage);
 	}
+	
+	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
+	MyState = instance->GetMyState();
+	MyInventory = instance->GetMyInventory();
+	MyFriend = instance->GetMyFriend();
 }
 
 void ABJS_InGameMode::Tick(float DeltaSeconds)
@@ -192,12 +210,10 @@ void ABJS_InGameMode::LoadGame()
 		gameUi->SetExp(myState->GetHp());
 		gameUi->BJS_InitWidget();
 	}
-	InventoryUi->BJS_InitWidget();
 
 	BJSCharaterStateList.Add(instance->GetMyState()->GetUUid(), instance->GetMyState());
-	MyState = instance->GetMyState();
-	MyInventory = instance->GetMyInventory();
-
+	InventoryUi->BJS_InitWidget();
+	FriendUi->BJS_InitWidget();
 	for (auto& entry : BJSMonsterStateList)
 	{
 		auto State = entry.Value;
@@ -322,7 +338,7 @@ void ABJS_InGameMode::ReadChatMessage(FString Message, int32 Type, int32 Uuid)
 	}
 }
 
-void ABJS_InGameMode::ChangeInventoryIU()
+void ABJS_InGameMode::ChangeInventoryUI()
 {
 	CurrentWidget->SetVisibility(ESlateVisibility::Hidden);
 	if (IsMainUi)
@@ -338,6 +354,39 @@ void ABJS_InGameMode::ChangeInventoryIU()
 		IsMainUi = true;
 	}
 	CurrentWidget->SetVisibility(ESlateVisibility::Visible);
+}
+
+void ABJS_InGameMode::OpenFriendUI()
+{
+	if (IsMainUi)
+	{
+		SetShowMouseCousor(true);
+		FriendUi->SetVisibility(ESlateVisibility::Visible);
+	}
+}
+
+void ABJS_InGameMode::UpdateMyFriendUI(int32 friendCode, int32 state)
+{
+	auto ui = Cast<UBJS_FriendWidget>(FriendUi);
+	if (ui)
+	{
+		if (state == 1)
+		{
+			// add
+			if (MyFriend.Pin()->GetFriendList().Contains(friendCode))
+			{
+				ui->AddFriend(MyFriend.Pin()->GetFriendList()[friendCode]);
+			}
+		}
+		else if (state == 2)
+		{
+			// update
+			if (MyFriend.Pin()->GetFriendList().Contains(friendCode))
+			{
+				ui->UpdateFriend(MyFriend.Pin()->GetFriendList()[friendCode]);
+			}
+		}
+	}
 }
 
 void ABJS_InGameMode::DestroyPlayer(bool IsMonster, int32 UUid)
@@ -370,7 +419,12 @@ TSharedPtr<BJS_CharaterState> ABJS_InGameMode::GetMyState()
 
 TSharedPtr<InventoryItem> ABJS_InGameMode::GetMyInventory()
 {
-	return MyInventory;
+	return MyInventory.Pin();
+}
+
+TSharedPtr<FriendSystem> ABJS_InGameMode::GetMyFriend()
+{
+	return MyFriend.Pin();
 }
 
 void ABJS_InGameMode::SellItems()

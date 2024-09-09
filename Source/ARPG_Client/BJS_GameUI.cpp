@@ -74,7 +74,6 @@ void UBJS_GameUI::ReadChatMessage(const FString& Message, int32 Type, const FStr
 		
 	if (TextBox)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("AppendText !!! %s %s"), *Name, *Message);
 		mtb_chatlog->AddChild(TextBox);
 		FString Msg = FString::Printf(TEXT("%s : %s"), *Name, *Message);
 		TextBox->SetText(FText::FromString(Msg));
@@ -82,8 +81,8 @@ void UBJS_GameUI::ReadChatMessage(const FString& Message, int32 Type, const FStr
 
 		FSlateFontInfo font = TextBox->GetFont();
 		FFontOutlineSettings OutlineSettings;
-		OutlineSettings.OutlineSize = 2; // 외곽선 두께 설정
-		OutlineSettings.OutlineColor = FLinearColor::Black; // 외곽선 색상 설정 (검은색)
+		OutlineSettings.OutlineSize = 2;
+		OutlineSettings.OutlineColor = FLinearColor::Black;
 		font.OutlineSettings = OutlineSettings;
 		
 		font.Size = 30; 

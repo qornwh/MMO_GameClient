@@ -35,6 +35,8 @@ enum MessageCode {
     S_LOADINVENTORY = 30; // 인벤토리 로드 메시지
     C_SELLITEMS = 31; // 인벤토리 아이템 다중 판매
     
+    S_FRIENDSYSTEM = 32; // 친구 시스템 
+    
     // 더미용
     D_LOAD = 101;
 }
@@ -257,4 +259,15 @@ message CSellItems {
 message DLoad {
     // 더미클라용 로드
     Unit unit = 101;
+}
+
+message Friend {
+    int32 playerCode = 1;
+    string playerName = 2;
+    bool access = 3; // 접속여부
+    bool add = 4; // 추가 삭제 여부
+}
+
+message SFriendSystem {
+    repeated Friend friend = 1;
 }

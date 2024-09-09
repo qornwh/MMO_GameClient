@@ -237,6 +237,11 @@ void ABJS_ControlCharacter::SetInputAction()
 		(TEXT("/Script/EnhancedInput.InputAction'/Game/MyGame/Input/Actions/IA_Inventory.IA_Inventory'"));
 	if (IA_Inventory.Succeeded())
 		InventoryAction = IA_Inventory.Object;
+
+	static ConstructorHelpers::FObjectFinder<UInputAction> IA_O
+		(TEXT("/Script/EnhancedInput.InputAction'/Game/MyGame/Input/Actions/IA_O.IA_O'"));
+	if (IA_O.Succeeded())
+		KeyOAction = IA_O.Object;
 }
 
 void ABJS_ControlCharacter::SendAttackMessage(int32 Code)
@@ -320,7 +325,16 @@ void ABJS_ControlCharacter::ShowInventoryUI()
 	auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
 	if (mode)
 	{
-		mode->ChangeInventoryIU();
+		mode->ChangeInventoryUI();
+	}
+}
+
+void ABJS_ControlCharacter::OpenFriendUI()
+{
+	auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
+	if (mode)
+	{
+		mode->OpenFriendUI();
 	}
 }
 
@@ -346,6 +360,8 @@ void ABJS_ControlCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 		EnhancedInputComponent->BindAction(SkillClickAction, ETriggerEvent::Started, this, &ABJS_ControlCharacter::Skill);
 		//Ivnentory
 		EnhancedInputComponent->BindAction(InventoryAction, ETriggerEvent::Completed, this, &ABJS_ControlCharacter::ShowInventoryUI);
+		//Friend
+		EnhancedInputComponent->BindAction(KeyOAction, ETriggerEvent::Completed, this, &ABJS_ControlCharacter::OpenFriendUI);
 	}
 }
 

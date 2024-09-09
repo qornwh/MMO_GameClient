@@ -55,6 +55,9 @@ class ARPG_CLIENT_API ABJS_ControlCharacter : public ABJS_Character
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* InventoryAction;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* KeyOAction;
 
 public:
 	ABJS_ControlCharacter();
@@ -82,6 +85,7 @@ protected:
 
 public:
 	void ShowInventoryUI();
+	void OpenFriendUI();
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private:

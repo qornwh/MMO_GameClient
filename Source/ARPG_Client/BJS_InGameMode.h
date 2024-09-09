@@ -38,12 +38,16 @@ public:
 	void TakeDemage(bool IsMonster, int32 SkillCode, TSharedPtr<class BJS_CharaterState> State);
 	void TakeHeal(int32 SkillCode, TSharedPtr<class BJS_CharaterState> State);
 	void DestroyPlayer(bool IsMonster, int32 UUid);
-	void ChangeInventoryIU();
+	void ChangeInventoryUI();
+	void OpenFriendUI();
+	void UpdateMyFriendUI(int32 friendCode, int32 state);
 	
 	TMap<int32, TSharedPtr<class BJS_CharaterState>>& GetCharaterStateList();
 	TMap<int32, TSharedPtr<class BJS_CharaterState>>& GetMonsterStateList();
 	TSharedPtr<class BJS_CharaterState> GetMyState();
 	TSharedPtr<class InventoryItem> GetMyInventory();
+	TSharedPtr<class FriendSystem> GetMyFriend();
+
 
 	UFUNCTION()
 	void SellItems();
@@ -59,7 +63,8 @@ private:
 	TMap<int32, TSharedPtr<class BJS_CharaterState>> BJSCharaterStateList;
 	TMap<int32, TSharedPtr<class BJS_CharaterState>> BJSMonsterStateList;
 	TSharedPtr<class BJS_CharaterState> MyState;
-	TSharedPtr<class InventoryItem> MyInventory;
+	TWeakPtr<class InventoryItem> MyInventory;
+	TWeakPtr<class FriendSystem> MyFriend;
 
 	int32 TakeDemageCnt = 0;
 	TArray<TWeakPtr<class BJS_CharaterState>> TakeDemageList;
@@ -67,4 +72,5 @@ private:
 	bool IsMainUi = true;
 	class UBJS_UserWidgetBase* MainUi;
 	class UBJS_UserWidgetBase* InventoryUi;
+	class UBJS_SubWidget* FriendUi;
 };
