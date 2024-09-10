@@ -96,6 +96,7 @@ void ABJS_InGameMode::BeginPlay()
 	MyState = instance->GetMyState();
 	MyInventory = instance->GetMyInventory();
 	MyFriend = instance->GetMyFriend();
+	SetShowMouseCousor(false);
 }
 
 void ABJS_InGameMode::Tick(float DeltaSeconds)

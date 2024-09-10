@@ -9,8 +9,9 @@ ABJS_LoginPawn::ABJS_LoginPawn()
 {
 	CreateCamerCompoent();
 
-	static ConstructorHelpers::FObjectFinder<UAnimBlueprint> AnimInstance(TEXT("/Script/Engine.AnimBlueprint'/Game/MyGame/Assets/Charater/LoginMesh/ABP_LoginMeshAnim.ABP_LoginMeshAnim'"));
-	DefaultSkeletalMeshComponent->SetAnimInstanceClass(AnimInstance.Object->GetAnimBlueprintGeneratedClass());
+	static ConstructorHelpers::FClassFinder<UAnimInstance> AnimInstance(TEXT("/Script/Engine.AnimBlueprint'/Game/MyGame/Assets/Charater/LoginMesh/ABP_LoginMeshAnim.ABP_LoginMeshAnim_C'"));
+	check(AnimInstance.Succeeded());
+	DefaultSkeletalMeshComponent->SetAnimInstanceClass(AnimInstance.Class);
 }
 
 void ABJS_LoginPawn::BeginPlay()

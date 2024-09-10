@@ -12,16 +12,16 @@
 UCLASS()
 class ARPG_CLIENT_API ABJS_LoginPawn : public ABJS_StaticPawn
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
 public:
-	ABJS_LoginPawn();
-	virtual void BeginPlay() override;
+    ABJS_LoginPawn();
+    virtual void BeginPlay() override;
 
-	void CreateWeaponActor(USkeletalMesh* WeaponMesh);
-	virtual void SetVisible(bool Flag) override;
+    void CreateWeaponActor(USkeletalMesh* WeaponMesh);
+    virtual void SetVisible(bool Flag) override;
 
 private:
-	class UAnimInstance* LoginPawnAnimInstance;
-	class ABJS_WeaponActor* Pistol;
+    class UAnimInstance* LoginPawnAnimInstance;
+    class ABJS_WeaponActor* Pistol;
 };

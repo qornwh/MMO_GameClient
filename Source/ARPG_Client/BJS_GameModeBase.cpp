@@ -4,6 +4,7 @@
 #include "BJS_GameModeBase.h"
 
 #include "BJS_SocketActor.h"
+#include "BJS_UserWidgetBase.h"
 #include "EngineUtils.h"
 
 void ABJS_GameModeBase::BeginPlay()
@@ -63,6 +64,17 @@ void ABJS_GameModeBase::SetShowMouseCousor(bool Flag)
 		return;
 	ShowMouseCursor = Flag;
 	control->SetShowMouseCursor(ShowMouseCursor);
+	if (Flag)
+	{
+		if (CurrentWidget)
+		{
+			control->SetInputMode(FInputModeGameAndUI());
+		}
+	}
+	else
+	{
+		control->SetInputMode(FInputModeGameOnly());
+	}
 }
 
 ABJS_GameModeBase::ABJS_GameModeBase()
