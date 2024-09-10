@@ -58,6 +58,11 @@ class ARPG_CLIENT_API ABJS_ControlCharacter : public ABJS_Character
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* KeyOAction;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* KeyCtrlAction;
+	
+	bool ShowMouseCursor = false;
 
 public:
 	ABJS_ControlCharacter();
@@ -72,6 +77,7 @@ protected:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void Skill(const FInputActionValue& Value);
+	void Mouse(const FInputActionValue& Value);
 	virtual void Attack() override;
 	virtual void StopJump() override;
 	virtual void StartJump() override;

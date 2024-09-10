@@ -242,6 +242,11 @@ void ABJS_ControlCharacter::SetInputAction()
 		(TEXT("/Script/EnhancedInput.InputAction'/Game/MyGame/Input/Actions/IA_O.IA_O'"));
 	if (IA_O.Succeeded())
 		KeyOAction = IA_O.Object;
+
+	static ConstructorHelpers::FObjectFinder<UInputAction> IA_Ctrl
+		(TEXT("/Script/EnhancedInput.InputAction'/Game/MyGame/Input/Actions/IA_Ctrl.IA_Ctrl'"));
+	if (IA_Ctrl.Succeeded())
+		KeyCtrlAction = IA_Ctrl.Object;
 }
 
 void ABJS_ControlCharacter::SendAttackMessage(int32 Code)
@@ -362,6 +367,8 @@ void ABJS_ControlCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 		EnhancedInputComponent->BindAction(InventoryAction, ETriggerEvent::Completed, this, &ABJS_ControlCharacter::ShowInventoryUI);
 		//Friend
 		EnhancedInputComponent->BindAction(KeyOAction, ETriggerEvent::Completed, this, &ABJS_ControlCharacter::OpenFriendUI);
+		//OnMouse
+		EnhancedInputComponent->BindAction(KeyCtrlAction, ETriggerEvent::Completed, this, &ABJS_ControlCharacter::Mouse);
 	}
 }
 
@@ -398,6 +405,16 @@ void ABJS_ControlCharacter::Skill(const FInputActionValue& Value)
 			}
 		}
 		PlaySkill(SkillCode);
+	}
+}
+
+void ABJS_ControlCharacter::Mouse(const FInputActionValue& Value)
+{
+	auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
+	if (mode)
+	{
+		ShowMouseCursor = !ShowMouseCursor;
+		mode->SetShowMouseCousor(ShowMouseCursor);
 	}
 }
 
