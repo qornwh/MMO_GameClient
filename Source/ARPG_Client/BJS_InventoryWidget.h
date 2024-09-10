@@ -29,12 +29,14 @@ public:
 	virtual void BJS_InitWidget() override;
 	virtual void BJS_UpdateWidget() override;
 
-	void UpdateEquipInventory();
-	void UpdateEtcInventory();
+	void AddEquipSlot(int32 EquipUnipeId);
+	void RemoveEquipSlot(int32 EquipUnipeId);
+	void UpdateEtcSlot(int32 EtcItemCode);
+	void SetSlot();
+	void SlotResetCheck();
 	void SetGold(int32 Gold);
 	class UBJS_ItemSlotWidget* GetWidgetAtGridPosition(int32 I, int32 J);
 	void GridClear(int32 Idx);
-	void SlotResetCheck();
 
 	UFUNCTION()
 	void ViewInventoryEtc();
@@ -42,17 +44,14 @@ public:
 	void ViewInventoryEquip();
 	UFUNCTION()
 	void InvetoryReset();
-
 	UFUNCTION()
 	void SellItem();
 
 private:
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UImage* img_charater;
-	
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UUniformGridPanel* ugp_ItemSlots;
-	
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UButton* btn_equip;
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
@@ -63,14 +62,15 @@ private:
 	class UButton* btn_sell;
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UTextBlock* tb_gold;
-
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UBJS_StateWidget* wg_state;
 	
 	TSubclassOf<class UBJS_ItemSlotWidget> ItemSlotClass;
 
-	TMap<int32, TArray<class UBJS_ItemSlotWidget*>> ItemEquips;
-	TMap<int32, class UBJS_ItemSlotWidget*> ItemEtcs;
+	TArray<class UBJS_ItemSlotWidget*> EmptyEquipSlot;
+	TArray<class UBJS_ItemSlotWidget*> EmptyEtcSlot;
+	TMap<int32, class UBJS_ItemSlotWidget*> EquipItemSlots;
+	TMap<int32, class UBJS_ItemSlotWidget*> EtcItemSlots;
 	
 	int32 ColSize = 5;
 	int32 RowSize = 4;

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "BJS_GameModeBase.h"
 #include "InventoryItem.h"
+#include "google/protobuf/stubs/port.h"
 #include "BJS_InGameMode.generated.h"
 
 /**
@@ -40,7 +41,10 @@ public:
 	void DestroyPlayer(bool IsMonster, int32 UUid);
 	void ChangeInventoryUI();
 	void OpenFriendUI();
-	void UpdateMyFriendUI(int32 friendCode, int32 state);
+	void UpdateMyFriendUI(int32 FriendCode, int32 State);
+	void UpdateInventoryEquipUI(int32 EquipUnipeId, int32 State);
+	void UpdateInventoryEtcUI(int32 EtcItemCode, int32 State);
+	void UpdateInventoryUI();
 	
 	TMap<int32, TSharedPtr<class BJS_CharaterState>>& GetCharaterStateList();
 	TMap<int32, TSharedPtr<class BJS_CharaterState>>& GetMonsterStateList();
@@ -56,7 +60,7 @@ public:
 
 public:
 	// 일단 임시로 판매리스트 열어둔다
-	TMap<int32, TArray<EquipItem>> SellEquipItems;
+	TMap<int32, EquipItem> SellEquipItems;
 	TMap<int32, EtcItem> SellEtcItems;
 
 private:

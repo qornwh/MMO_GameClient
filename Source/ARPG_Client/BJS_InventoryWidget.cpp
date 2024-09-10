@@ -52,14 +52,12 @@ void UBJS_InventoryWidget::BJS_InitWidget()
 	{
 		for (int32 j = 0; j < ColSize; j++)
 		{
-			auto slot = CreateWidget<UBJS_ItemSlotWidget>(GetWorld(), ItemSlotClass);
-
-			UUniformGridSlot* GridSlot = ugp_ItemSlots->AddChildToUniformGrid(slot, i, j);
-			if (GridSlot)
-			{
-				GridSlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
-				GridSlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Fill);
-			}
+			auto equipSlot = CreateWidget<UBJS_ItemSlotWidget>(GetWorld(), ItemSlotClass);
+			auto etcSlot = CreateWidget<UBJS_ItemSlotWidget>(GetWorld(), ItemSlotClass);
+			equipSlot->ShowImg(false);
+			etcSlot->ShowImg(false);
+			EmptyEquipSlot.Add(equipSlot);
+			EmptyEtcSlot.Add(etcSlot);
 		}
 	}
 
@@ -67,74 +65,186 @@ void UBJS_InventoryWidget::BJS_InitWidget()
 	btn_etc->OnClicked.AddDynamic(this, &UBJS_InventoryWidget::ViewInventoryEtc);
 	btn_sell->OnClicked.AddDynamic(this, &UBJS_InventoryWidget::SellItem);
 	btn_check->OnClicked.AddDynamic(this, &UBJS_InventoryWidget::InvetoryReset);
+	SetSlot();
 }
 
 void UBJS_InventoryWidget::BJS_UpdateWidget()
 {
 	Super::BJS_UpdateWidget();
 
-	if ((InventoryModeState & NOTSELL) == InventoryMode::EQUIP)
-	{
-		UpdateEquipInventory();
-	}
-	else
-	{
-		UpdateEtcInventory();
-	}
-
 	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
 	if (instance)
 	{
 		wg_state->SetAttack(instance->GetMyState()->GetAttack());
 		wg_state->SetSpeed(instance->GetMyState()->GetSpeed());
+
+		SetGold(instance->GetMyInventory()->GetGold());
 	}
 }
 
-void UBJS_InventoryWidget::UpdateEquipInventory()
+void UBJS_InventoryWidget::AddEquipSlot(int32 EquipUnipeId)
 {
-	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
-	if (instance)
+	if (!EmptyEquipSlot.IsEmpty())
 	{
-		auto& ImageMap = instance->GetItemEquipIconImgMap();
-		auto& items = instance->GetMyInventory()->GetEquipItems();
-		int32 idx = 0;
-		for (auto& itemEntry : items)
+		
+		auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
+		if (instance)
 		{
-			for (auto& item : itemEntry.Value)
+			if (instance->GetMyInventory()->GetEquipItems().Contains(EquipUnipeId))
 			{
-				int32 Code = item.Code;
-				auto Current = GetWidgetAtGridPosition(idx / ColSize, idx % ColSize);
-				Current->SetImg(ImageMap[Code]);
-				Current->SetCnt(-1);
-				Current->SetEquip(Code);
-				idx++;
+				auto slot = EmptyEquipSlot.Last();
+				EmptyEquipSlot.Pop();
+				auto& ImageMap = instance->GetItemEquipIconImgMap();
+				auto item = instance->GetMyInventory()->GetEquipItems().Find(EquipUnipeId);
+				slot->SetEquip(*item);
+				slot->SetImg(ImageMap[item->ItemCode]);
+				EquipItemSlots.Add(EquipUnipeId, slot);
 			}
 		}
-		GridClear(idx);
-		SetGold(instance->GetMyInventory()->GetGold());
 	}
 }
 
-void UBJS_InventoryWidget::UpdateEtcInventory()
+void UBJS_InventoryWidget::RemoveEquipSlot(int32 EquipUnipeId)
 {
 	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
 	if (instance)
 	{
-		auto& ImageMap = instance->GetItemEtcIconImgMap();
-		auto& items = instance->GetMyInventory()->GetEtcItems();
-		int32 idx = 0;
-		for (auto& item : items)
+		if (!instance->GetMyInventory()->GetEquipItems().Contains(EquipUnipeId))
 		{
-			int32 Code = item.Value.Code;
-			int32 Cnt = item.Value.Count;
-			auto Current = GetWidgetAtGridPosition(idx / ColSize, idx % ColSize);
-			Current->SetImg(ImageMap[Code]);
-			Current->SetCnt(Cnt);
-			Current->SetEquip(Code, Cnt);
-			idx++;
+			auto slot = EquipItemSlots.Find(EquipUnipeId);
+			EquipItemSlots.Remove(EquipUnipeId);
+			(*slot)->ShowImg(false);
+			EmptyEquipSlot.Add(*slot);
 		}
-		GridClear(idx);
-		SetGold(instance->GetMyInventory()->GetGold());
+	}
+}
+
+void UBJS_InventoryWidget::UpdateEtcSlot(int32 EtcItemCode)
+{
+	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
+	if (instance)
+	{
+		if (instance->GetMyInventory()->GetEtcItems().Contains(EtcItemCode))
+		{
+			// 추가, 업데이트
+			if (EtcItemSlots.Contains(EtcItemCode))
+			{
+				auto item = instance->GetMyInventory()->GetEtcItems().Find(EtcItemCode);
+				auto slot = EtcItemSlots.Find(EtcItemCode);
+				(*slot)->SetCnt(item->Count);
+			}
+			else
+			{
+				auto slot = EmptyEtcSlot.Last();
+				EmptyEtcSlot.Pop();
+				auto& ImageMap = instance->GetItemEtcIconImgMap();
+				auto item = instance->GetMyInventory()->GetEtcItems().Find(EtcItemCode);
+				slot->SetEtc(*item);
+				slot->SetImg(ImageMap[item->ItemCode]);
+				slot->SetCnt(item->Count);
+				EtcItemSlots.Add(EtcItemCode, slot);
+			}
+		}
+		else
+		{
+			// 삭제
+			auto slot = EtcItemSlots.Find(EtcItemCode);
+			(*slot)->ShowImg(false);
+			EmptyEtcSlot.Add(*slot);
+		}
+	}
+}
+
+void UBJS_InventoryWidget::SetSlot()
+{
+	// 인벤토리 업데이트 될때만 처리
+	SlotResetCheck();
+	ugp_ItemSlots->ClearChildren();
+
+	int32 row = 0;
+	int32 col = 0;
+	if ((InventoryModeState & NOTSELL) == InventoryMode::EQUIP)
+	{
+		for (auto equipItemEntry : EquipItemSlots)
+		{
+			UUniformGridSlot* GridSlot = ugp_ItemSlots->AddChildToUniformGrid(equipItemEntry.Value, row, col);
+			col++;
+			if (col >= ColSize)
+			{
+				col = 0;
+				row++;
+			}
+			if (GridSlot)
+			{
+				GridSlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
+				GridSlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Fill);
+			}
+		}
+
+		for (auto empty : EmptyEquipSlot)
+		{
+			UUniformGridSlot* GridSlot = ugp_ItemSlots->AddChildToUniformGrid(empty, row, col);
+			col++;
+			if (col >= ColSize)
+			{
+				col = 0;
+				row++;
+			}
+			if (GridSlot)
+			{
+				GridSlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
+				GridSlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Fill);
+			}
+		}
+	}
+	else
+	{
+		for (auto etcItemEntry : EtcItemSlots)
+		{
+			UUniformGridSlot* GridSlot = ugp_ItemSlots->AddChildToUniformGrid(etcItemEntry.Value, row, col);
+			col++;
+			if (col >= ColSize)
+			{
+				col = 0;
+				row++;
+			}
+			if (GridSlot)
+			{
+				GridSlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
+				GridSlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Fill);
+			}
+		}
+
+		for (auto empty : EmptyEtcSlot)
+		{
+			UUniformGridSlot* GridSlot = ugp_ItemSlots->AddChildToUniformGrid(empty, row, col);
+			col++;
+			if (col >= ColSize)
+			{
+				col = 0;
+				row++;
+			}
+			if (GridSlot)
+			{
+				GridSlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
+				GridSlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Fill);
+			}
+		}
+	}
+}
+
+void UBJS_InventoryWidget::SlotResetCheck()
+{
+	for (auto equipItemEntry : EquipItemSlots)
+	{
+		if (equipItemEntry.Value)
+			equipItemEntry.Value->ResetCheck();
+	}
+	
+	for (auto etcItemEntry : EtcItemSlots)
+	{
+		if (etcItemEntry.Value)
+			etcItemEntry.Value->ResetCheck();
 	}
 }
 
@@ -142,23 +252,6 @@ void UBJS_InventoryWidget::SetGold(int32 Gold)
 {
 	FString str = FString::FromInt(Gold);
 	tb_gold->SetText(FText::FromString(str));
-}
-
-UBJS_ItemSlotWidget* UBJS_InventoryWidget::GetWidgetAtGridPosition(int32 I, int32 J)
-{
-	if (!ugp_ItemSlots) return nullptr;
-
-	for (UWidget* Child : ugp_ItemSlots->GetAllChildren())
-	{
-		if (UUniformGridSlot* GridSlot = Cast<UUniformGridSlot>(Child->Slot))
-		{
-			if (GridSlot->GetRow() == I && GridSlot->GetColumn() == J)
-			{
-				return Cast<UBJS_ItemSlotWidget>(Child);
-			}
-		}
-	}
-	return nullptr;
 }
 
 void UBJS_InventoryWidget::GridClear(int32 Idx)
@@ -176,29 +269,12 @@ void UBJS_InventoryWidget::GridClear(int32 Idx)
 	}
 }
 
-void UBJS_InventoryWidget::SlotResetCheck()
-{
-	for (UWidget* Child : ugp_ItemSlots->GetAllChildren())
-	{
-		if (UBJS_ItemSlotWidget* ItemSlot = Cast<UBJS_ItemSlotWidget>(Child))
-		{
-			if (ItemSlot->GetCheck())
-			{
-				ItemSlot->ResetCheck();
-			}
-		}
-		else
-		{
-			break;
-		}
-	}
-}
-
 void UBJS_InventoryWidget::ViewInventoryEtc()
 {
 	InventoryModeState = InventoryModeState & InventoryMode::EMPTY;
 	InventoryModeState += InventoryMode::ETC;
 	SlotResetCheck();
+	SetSlot();
 }
 
 void UBJS_InventoryWidget::ViewInventoryEquip()
@@ -206,6 +282,7 @@ void UBJS_InventoryWidget::ViewInventoryEquip()
 	InventoryModeState = InventoryModeState & InventoryMode::EMPTY;
 	InventoryModeState += InventoryMode::EQUIP;
 	SlotResetCheck();
+	SetSlot();
 }
 
 void UBJS_InventoryWidget::InvetoryReset()
@@ -229,14 +306,11 @@ void UBJS_InventoryWidget::SellItem()
 			{
 				if ((InventoryModeState & NOTSELL) == InventoryMode::EQUIP)
 				{
-					if (!mode->SellEquipItems.Contains(ItemSlot->GetEquip().Code))
-						mode->SellEquipItems.Add(ItemSlot->GetEquip().Code, TArray<EquipItem>());
-					mode->SellEquipItems.Find(ItemSlot->GetEquip().Code)->Add(ItemSlot->GetEquip());
+					mode->SellEquipItems.Add(ItemSlot->GetEquip().UniqueId, ItemSlot->GetEquip());
 				}
 				else
 				{
-					if (!mode->SellEquipItems.Contains(ItemSlot->GetEquip().Code))
-						mode->SellEtcItems.Add(ItemSlot->GetEquip().Code, ItemSlot->GetEtc());
+					mode->SellEtcItems.Add(ItemSlot->GetEtc().ItemCode, ItemSlot->GetEtc());
 				}
 				ItemSlot->ResetCheck();
 			}

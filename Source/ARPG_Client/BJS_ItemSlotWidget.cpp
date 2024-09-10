@@ -7,7 +7,7 @@
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
 
-UBJS_ItemSlotWidget::UBJS_ItemSlotWidget() :EquipItem(-1), EtcItem(-1, 0)
+UBJS_ItemSlotWidget::UBJS_ItemSlotWidget()
 {
 }
 
@@ -21,30 +21,24 @@ void UBJS_ItemSlotWidget::BJS_SubUpdateWidget()
 	Super::BJS_SubUpdateWidget();
 }
 
-void UBJS_ItemSlotWidget::SetEquip(int32 Code)
+void UBJS_ItemSlotWidget::SetEquip(EquipItem& Item)
 {
-	EtcItem.Code = -1;
-	EtcItem.Count = 0;
-
-	EquipItem.Code = Code;
+	CurEquipItem = Item;
 }
 
-void UBJS_ItemSlotWidget::SetEquip(int32 Code, int32 Count)
+void UBJS_ItemSlotWidget::SetEtc(EtcItem& Item)
 {
-	EquipItem.Code = -1;
-	
-	EtcItem.Code = Code;
-	EtcItem.Count = Count;
+	CurEtcItem = Item;
 }
 
 EquipItem& UBJS_ItemSlotWidget::GetEquip()
 {
-	return EquipItem;
+	return CurEquipItem;
 }
 
 EtcItem& UBJS_ItemSlotWidget::GetEtc()
 {
-	return EtcItem;
+	return CurEtcItem;
 }
 
 void UBJS_ItemSlotWidget::SetImg(UTexture2D* Image)
@@ -62,7 +56,7 @@ void UBJS_ItemSlotWidget::SetImg(UTexture2D* Image)
 
 void UBJS_ItemSlotWidget::SetCnt(int32 Cnt)
 {
-	if (Cnt > 0)
+	if (Cnt > 1)
 	{
 		FString str = FString::FromInt(Cnt);
 		tb_cnt->SetText(FText::FromString(str));
@@ -92,15 +86,4 @@ void UBJS_ItemSlotWidget::ShowImg(bool Flag)
 void UBJS_ItemSlotWidget::ResetCheck()
 {
 	cb_check->SetCheckedState(ECheckBoxState::Unchecked);
-}
-
-void UBJS_ItemSlotWidget::OnMouseClickHandler(FGeometry MyGeometry, const FPointerEvent& MouseEvent)
-{
-	// 부모 바인딩
-}
-
-FReply UBJS_ItemSlotWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
-{
-    OnMouseClickHandler(InGeometry, InMouseEvent);
-	return Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
 }

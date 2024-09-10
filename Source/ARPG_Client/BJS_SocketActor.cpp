@@ -572,7 +572,7 @@ void ABJS_SocketActor::CharaterDemageHandler(BYTE* Buffer, PacketHeader* Header,
 		check(mode);
 		auto& MonsterState = mode->GetMonsterStateList();
 		auto& PlayerState = mode->GetCharaterStateList();
-		
+
 		for (auto& demage : pkt.demage())
 		{
 			bool isMonster = demage.is_monster();
@@ -678,14 +678,24 @@ void ABJS_SocketActor::DropMessageHandler(BYTE* Buffer, PacketHeader* Header, in
 		{
 			for (auto& item : pkt.itemequips())
 			{
-				mode->GetMyInventory()->AddEquipItem(item.item_code());
+				mode->GetMyInventory()->AddEquipItem(
+					item.unipeid(),
+					item.item_code(),
+					item.item_type(),
+					item.attack(),
+					item.speed(),
+					item.is_equip(),
+					0);
+				mode->UpdateInventoryEquipUI(item.unipeid(), 1);
 			}
-			
+
 			for (auto& item : pkt.itemetcs())
 			{
-				mode->GetMyInventory()->AddEtcItem(item.item_code(), item.item_count());
+				mode->GetMyInventory()->AddEtcItem(item.item_code(), item.item_type(), item.item_count());
+				mode->UpdateInventoryEtcUI(item.item_code(), 1);
 			}
 			mode->GetMyInventory()->AddGold(pkt.gold());
+			mode->UpdateInventoryUI();
 		}
 	}
 }
@@ -700,14 +710,24 @@ void ABJS_SocketActor::LoadInventoryHandler(BYTE* Buffer, PacketHeader* Header, 
 		{
 			for (auto& item : pkt.itemequips())
 			{
-				mode->GetMyInventory()->AddEquipItem(item.item_code());
+				mode->GetMyInventory()->AddEquipItem(
+					item.unipeid(),
+					item.item_code(),
+					item.item_type(),
+					item.attack(),
+					item.speed(),
+					item.is_equip(),
+					0);
+				mode->UpdateInventoryEquipUI(item.unipeid(), 1);
 			}
-			
+
 			for (auto& item : pkt.itemetcs())
 			{
-				mode->GetMyInventory()->AddEtcItem(item.item_code(), item.item_count());
+				mode->GetMyInventory()->AddEtcItem(item.item_code(), item.item_type(), item.item_count());
+				mode->UpdateInventoryEtcUI(item.item_code(), 1);
 			}
 			mode->GetMyInventory()->SetGold(pkt.gold());
+			mode->UpdateInventoryUI();
 		}
 	}
 }
@@ -723,15 +743,18 @@ void ABJS_SocketActor::SellItemsHandler(BYTE* Buffer, PacketHeader* Header, int3
 		{
 			for (auto& item : pkt.itemequips())
 			{
-				mode->GetMyInventory()->UseEquipItem(item.item_code());
+				mode->GetMyInventory()->UseEquipItem(item.unipeid());
+				mode->UpdateInventoryEquipUI(item.unipeid(), 0);
 			}
-				
+
 			for (auto& item : pkt.itemetcs())
 			{
 				mode->GetMyInventory()->UseEtcItem(item.item_code(), item.item_count());
+				mode->UpdateInventoryEtcUI(item.item_code(), 0);
 			}
-			
+
 			mode->GetMyInventory()->SetGold(pkt.gold());
+			mode->UpdateInventoryUI();
 		}
 	}
 }

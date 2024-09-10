@@ -6,19 +6,32 @@
 
 struct EquipItem
 {
-	EquipItem() : Code(0) {}
-	EquipItem(int32 Code) : Code(Code) {}
-	EquipItem(const EquipItem& other) : Code(other.Code) {}
-	int32 Code = 0;
+	EquipItem(int32 uniqueId, int32 itemCode, int32 equipType, int32 attack, int32 speed, int32 isEquip, int32 use);
+	~EquipItem();
+
+	EquipItem& operator=(const EquipItem& other);
+
+    void UpdateItem(int32 use = 1);
+	int32 UniqueId;
+	int32 ItemCode;
+	int32 EquipType;
+	int32 Attack;
+	int32 Speed;
+	int32 IsEquip;
+    int32 Use;
 };
 
 struct EtcItem
 {
-	EtcItem() : Code(0), Count(0) {}
-	EtcItem(int32 Code, int32 Count) : Code(Code), Count(Count) {}
-	EtcItem(const EtcItem& other) : Code(other.Code), Count(other.Count) {}
-	int32 Code = 0;
-	int32 Count = 0;
+	EtcItem(int32 itemCode, int32 type, int32 count);
+	~EtcItem();
+
+	EtcItem& operator=(const EtcItem& other);
+
+	void UpdateItem(int32 count = 1);
+	int32 ItemCode;
+	int32 Count;
+	int32 Type;
 };
 
 class ARPG_CLIENT_API InventoryItem : public TSharedFromThis<InventoryItem>
@@ -27,21 +40,23 @@ public:
 	InventoryItem();
 	~InventoryItem();
 
-	void AddEquipItem(int32 Code);
-	void AddEtcItem(int32 Code, int32 Count);
-	bool UseEquipItem(int32 Code);
+	EquipItem& AddEquipItem(int32 uniqueId, int32 itemCode, int32 equipType, int32 attack, int32 speed, int32 isEquip, int32 use);
+	EtcItem& AddEtcItem(int32 itemCode, int32 type, int32 count);
+	EquipItem& AddEquipItem(EquipItem& Equip);
+	EtcItem& AddEtcItem(EtcItem& Etc);
+	bool UseEquipItem(int32 UniqueId);
 	bool UseEtcItem(int32 Code, int32 Count);
 
 	void AddGold(int32 gold);
 	void UseGold(int32 gold);
 	void SetGold(int32 gold);
 
-	TMap<int32, TArray<EquipItem>>& GetEquipItems() { return EquipItems; }
+	TMap<int32, EquipItem>& GetEquipItems() { return EquipItems; }
 	TMap<int32, EtcItem>& GetEtcItems() { return EtcItems; }
 	int32 GetGold() { return Gold; }
 
 private:
-	TMap<int32, TArray<EquipItem>> EquipItems;
+	TMap<int32, EquipItem> EquipItems;
 	TMap<int32, EtcItem> EtcItems;
 	int32 Gold = 0;
 };

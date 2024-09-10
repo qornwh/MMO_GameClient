@@ -7,6 +7,7 @@
 #include "BJS_FriendWidget.h"
 #include "BJS_GameInstance.h"
 #include "BJS_GameUI.h"
+#include "BJS_InventoryWidget.h"
 #include "BJS_Monster.h"
 #include "BJS_SocketActor.h"
 #include "BJS_SubWidget.h"
@@ -365,27 +366,64 @@ void ABJS_InGameMode::OpenFriendUI()
 	}
 }
 
-void ABJS_InGameMode::UpdateMyFriendUI(int32 friendCode, int32 state)
+void ABJS_InGameMode::UpdateMyFriendUI(int32 FriendCode, int32 State)
 {
 	auto ui = Cast<UBJS_FriendWidget>(FriendUi);
 	if (ui)
 	{
-		if (state == 1)
+		if (State == 1)
 		{
 			// add
-			if (MyFriend.Pin()->GetFriendList().Contains(friendCode))
+			if (MyFriend.Pin()->GetFriendList().Contains(FriendCode))
 			{
-				ui->AddFriend(MyFriend.Pin()->GetFriendList()[friendCode]);
+				ui->AddFriend(MyFriend.Pin()->GetFriendList()[FriendCode]);
 			}
 		}
-		else if (state == 2)
+		else if (State == 2)
 		{
 			// update
-			if (MyFriend.Pin()->GetFriendList().Contains(friendCode))
+			if (MyFriend.Pin()->GetFriendList().Contains(FriendCode))
 			{
-				ui->UpdateFriend(MyFriend.Pin()->GetFriendList()[friendCode]);
+				ui->UpdateFriend(MyFriend.Pin()->GetFriendList()[FriendCode]);
 			}
 		}
+	}
+}
+
+void ABJS_InGameMode::UpdateInventoryEquipUI(int32 EquipUnipeId, int32 State)
+{
+	auto ui = Cast<UBJS_InventoryWidget>(InventoryUi);
+	if (ui)
+	{
+		if (State == 1)
+		{
+			// add
+			ui->AddEquipSlot(EquipUnipeId);
+		}
+		else if (State == 0)
+		{
+			// delete
+			ui->RemoveEquipSlot(EquipUnipeId);
+		}
+	}
+}
+
+void ABJS_InGameMode::UpdateInventoryEtcUI(int32 EtcItemCode, int32 State)
+{
+	auto ui = Cast<UBJS_InventoryWidget>(InventoryUi);
+	if (ui)
+	{
+		// etc는 그냥 업데이트만 한다.
+		ui->UpdateEtcSlot(EtcItemCode);
+	}
+}
+
+void ABJS_InGameMode::UpdateInventoryUI()
+{
+	auto ui = Cast<UBJS_InventoryWidget>(InventoryUi);
+	if (ui)
+	{
+		ui->SetSlot();
 	}
 }
 
@@ -433,18 +471,19 @@ void ABJS_InGameMode::SellItems()
 
 	for (auto& itemEntry : SellEquipItems)
 	{
-		for (auto& item : itemEntry.Value)
-		{
-			protocol::ItemEquip* sellItem = pkt.add_itemequips();
-			sellItem->set_item_code(item.Code);
-		}
+		protocol::ItemEquip* sellItem = pkt.add_itemequips();
+		sellItem->set_unipeid(itemEntry.Value.UniqueId);
+		sellItem->set_item_code(itemEntry.Value.ItemCode);
+		sellItem->set_attack(itemEntry.Value.Attack);
+		sellItem->set_speed(itemEntry.Value.Speed);
+		sellItem->set_item_type(itemEntry.Value.EquipType);
 	}
 
 	for (auto& itemEntry : SellEtcItems)
 	{
 		auto& item = itemEntry.Value;
 		protocol::ItemEtc* sellItem = pkt.add_itemetcs();
-		sellItem->set_item_code(item.Code);
+		sellItem->set_item_code(item.ItemCode);
 		sellItem->set_item_count(item.Count);
 	}
 	SocketActor->SendMessage(pkt, protocol::MessageCode::C_SELLITEMS);

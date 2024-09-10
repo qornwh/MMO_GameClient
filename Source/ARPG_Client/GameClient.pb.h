@@ -5538,6 +5538,11 @@ class ItemEquip final :
 
   enum : int {
     kItemCodeFieldNumber = 1,
+    kItemTypeFieldNumber = 2,
+    kAttackFieldNumber = 3,
+    kSpeedFieldNumber = 4,
+    kIsEquipFieldNumber = 5,
+    kUnipeIdFieldNumber = 6,
   };
   // int32 item_code = 1;
   void clear_item_code();
@@ -5548,6 +5553,51 @@ class ItemEquip final :
   void _internal_set_item_code(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
+  // int32 item_type = 2;
+  void clear_item_type();
+  ::PROTOBUF_NAMESPACE_ID::int32 item_type() const;
+  void set_item_type(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_item_type() const;
+  void _internal_set_item_type(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int32 attack = 3;
+  void clear_attack();
+  ::PROTOBUF_NAMESPACE_ID::int32 attack() const;
+  void set_attack(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_attack() const;
+  void _internal_set_attack(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int32 speed = 4;
+  void clear_speed();
+  ::PROTOBUF_NAMESPACE_ID::int32 speed() const;
+  void set_speed(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_speed() const;
+  void _internal_set_speed(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int32 is_equip = 5;
+  void clear_is_equip();
+  ::PROTOBUF_NAMESPACE_ID::int32 is_equip() const;
+  void set_is_equip(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_is_equip() const;
+  void _internal_set_is_equip(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int32 unipeId = 6;
+  void clear_unipeid();
+  ::PROTOBUF_NAMESPACE_ID::int32 unipeid() const;
+  void set_unipeid(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_unipeid() const;
+  void _internal_set_unipeid(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:protocol.ItemEquip)
  private:
   class _Internal;
@@ -5556,6 +5606,11 @@ class ItemEquip final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::int32 item_code_;
+  ::PROTOBUF_NAMESPACE_ID::int32 item_type_;
+  ::PROTOBUF_NAMESPACE_ID::int32 attack_;
+  ::PROTOBUF_NAMESPACE_ID::int32 speed_;
+  ::PROTOBUF_NAMESPACE_ID::int32 is_equip_;
+  ::PROTOBUF_NAMESPACE_ID::int32 unipeid_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_GameClient_2eproto;
 };
@@ -5682,6 +5737,7 @@ class ItemEtc final :
   enum : int {
     kItemCodeFieldNumber = 1,
     kItemCountFieldNumber = 2,
+    kItemTypeFieldNumber = 3,
   };
   // int32 item_code = 1;
   void clear_item_code();
@@ -5701,6 +5757,15 @@ class ItemEtc final :
   void _internal_set_item_count(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
+  // int32 item_type = 3;
+  void clear_item_type();
+  ::PROTOBUF_NAMESPACE_ID::int32 item_type() const;
+  void set_item_type(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_item_type() const;
+  void _internal_set_item_type(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:protocol.ItemEtc)
  private:
   class _Internal;
@@ -5710,6 +5775,7 @@ class ItemEtc final :
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::int32 item_code_;
   ::PROTOBUF_NAMESPACE_ID::int32 item_count_;
+  ::PROTOBUF_NAMESPACE_ID::int32 item_type_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_GameClient_2eproto;
 };
@@ -9789,6 +9855,106 @@ inline void ItemEquip::set_item_code(::PROTOBUF_NAMESPACE_ID::int32 value) {
   // @@protoc_insertion_point(field_set:protocol.ItemEquip.item_code)
 }
 
+// int32 item_type = 2;
+inline void ItemEquip::clear_item_type() {
+  item_type_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ItemEquip::_internal_item_type() const {
+  return item_type_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ItemEquip::item_type() const {
+  // @@protoc_insertion_point(field_get:protocol.ItemEquip.item_type)
+  return _internal_item_type();
+}
+inline void ItemEquip::_internal_set_item_type(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  item_type_ = value;
+}
+inline void ItemEquip::set_item_type(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_item_type(value);
+  // @@protoc_insertion_point(field_set:protocol.ItemEquip.item_type)
+}
+
+// int32 attack = 3;
+inline void ItemEquip::clear_attack() {
+  attack_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ItemEquip::_internal_attack() const {
+  return attack_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ItemEquip::attack() const {
+  // @@protoc_insertion_point(field_get:protocol.ItemEquip.attack)
+  return _internal_attack();
+}
+inline void ItemEquip::_internal_set_attack(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  attack_ = value;
+}
+inline void ItemEquip::set_attack(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_attack(value);
+  // @@protoc_insertion_point(field_set:protocol.ItemEquip.attack)
+}
+
+// int32 speed = 4;
+inline void ItemEquip::clear_speed() {
+  speed_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ItemEquip::_internal_speed() const {
+  return speed_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ItemEquip::speed() const {
+  // @@protoc_insertion_point(field_get:protocol.ItemEquip.speed)
+  return _internal_speed();
+}
+inline void ItemEquip::_internal_set_speed(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  speed_ = value;
+}
+inline void ItemEquip::set_speed(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_speed(value);
+  // @@protoc_insertion_point(field_set:protocol.ItemEquip.speed)
+}
+
+// int32 is_equip = 5;
+inline void ItemEquip::clear_is_equip() {
+  is_equip_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ItemEquip::_internal_is_equip() const {
+  return is_equip_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ItemEquip::is_equip() const {
+  // @@protoc_insertion_point(field_get:protocol.ItemEquip.is_equip)
+  return _internal_is_equip();
+}
+inline void ItemEquip::_internal_set_is_equip(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  is_equip_ = value;
+}
+inline void ItemEquip::set_is_equip(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_is_equip(value);
+  // @@protoc_insertion_point(field_set:protocol.ItemEquip.is_equip)
+}
+
+// int32 unipeId = 6;
+inline void ItemEquip::clear_unipeid() {
+  unipeid_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ItemEquip::_internal_unipeid() const {
+  return unipeid_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ItemEquip::unipeid() const {
+  // @@protoc_insertion_point(field_get:protocol.ItemEquip.unipeId)
+  return _internal_unipeid();
+}
+inline void ItemEquip::_internal_set_unipeid(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  unipeid_ = value;
+}
+inline void ItemEquip::set_unipeid(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_unipeid(value);
+  // @@protoc_insertion_point(field_set:protocol.ItemEquip.unipeId)
+}
+
 // -------------------------------------------------------------------
 
 // ItemEtc
@@ -9831,6 +9997,26 @@ inline void ItemEtc::_internal_set_item_count(::PROTOBUF_NAMESPACE_ID::int32 val
 inline void ItemEtc::set_item_count(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_item_count(value);
   // @@protoc_insertion_point(field_set:protocol.ItemEtc.item_count)
+}
+
+// int32 item_type = 3;
+inline void ItemEtc::clear_item_type() {
+  item_type_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ItemEtc::_internal_item_type() const {
+  return item_type_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ItemEtc::item_type() const {
+  // @@protoc_insertion_point(field_get:protocol.ItemEtc.item_type)
+  return _internal_item_type();
+}
+inline void ItemEtc::_internal_set_item_type(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  item_type_ = value;
+}
+inline void ItemEtc::set_item_type(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_item_type(value);
+  // @@protoc_insertion_point(field_set:protocol.ItemEtc.item_type)
 }
 
 // -------------------------------------------------------------------
