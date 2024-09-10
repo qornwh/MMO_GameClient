@@ -143,7 +143,7 @@ void UBJS_InventoryWidget::UpdateEtcSlot(int32 EtcItemCode)
 				auto& ImageMap = instance->GetItemEtcIconImgMap();
 				auto item = instance->GetMyInventory()->GetEtcItems().Find(EtcItemCode);
 				slot->SetEtc(*item);
-				slot->SetImg(ImageMap[item->ItemCode]);
+				slot->SetImg(ImageMap[EtcItemCode]);
 				slot->SetCnt(item->Count);
 				EtcItemSlots.Add(EtcItemCode, slot);
 			}
