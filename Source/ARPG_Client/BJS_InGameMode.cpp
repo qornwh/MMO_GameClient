@@ -306,13 +306,28 @@ void ABJS_InGameMode::InsertPlayer(bool IsMonster, int32 UUid)
 
 void ABJS_InGameMode::RemovePlayer(bool IsMonster, int32 UUid)
 {
-	if (BJSCharaterStateList.Contains(UUid))
+	if (!IsMonster)
 	{
-		auto State = BJSCharaterStateList[UUid];
-		auto Target = State->GetTarget();
-		if (State->GetTarget())
+		if (BJSCharaterStateList.Contains(UUid))
 		{
-			GetWorld()->DestroyActor(Target);
+			auto State = BJSCharaterStateList[UUid];
+			auto Target = State->GetTarget();
+			if (State->GetTarget())
+			{
+				GetWorld()->DestroyActor(Target);
+			}
+		}
+	}
+	else
+	{
+		if (BJSMonsterStateList.Contains(UUid))
+		{
+			auto State = BJSMonsterStateList[UUid];
+			auto Target = State->GetTarget();
+			if (State->GetTarget())
+			{
+				GetWorld()->DestroyActor(Target);
+			}
 		}
 	}
 }
