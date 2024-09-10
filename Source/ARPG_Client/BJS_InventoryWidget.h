@@ -35,8 +35,6 @@ public:
 	void SetSlot();
 	void SlotResetCheck();
 	void SetGold(int32 Gold);
-	class UBJS_ItemSlotWidget* GetWidgetAtGridPosition(int32 I, int32 J);
-	void GridClear(int32 Idx);
 
 	UFUNCTION()
 	void ViewInventoryEtc();
@@ -53,6 +51,8 @@ private:
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UUniformGridPanel* ugp_ItemSlots;
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
+	class UUniformGridPanel* ugp_EquipItemSlots;
+	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UButton* btn_equip;
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UButton* btn_etc;
@@ -66,7 +66,6 @@ private:
 	class UBJS_StateWidget* wg_state;
 	
 	TSubclassOf<class UBJS_ItemSlotWidget> ItemSlotClass;
-
 	TArray<class UBJS_ItemSlotWidget*> EmptyEquipSlot;
 	TArray<class UBJS_ItemSlotWidget*> EmptyEtcSlot;
 	TMap<int32, class UBJS_ItemSlotWidget*> EquipItemSlots;
@@ -75,4 +74,7 @@ private:
 	int32 ColSize = 5;
 	int32 RowSize = 4;
 	int32 InventoryModeState = 0;
+	
+	// 계속 위젯의 메모리가 오염된다. 이유는 일단 모르겠고, empty의 slot이 빠지면서 삭제되는 버그인거 같은데 아래처럼 전부 일단 들고있는걸로 한다.
+	TArray<class UBJS_ItemSlotWidget*> ConstSlot;
 };

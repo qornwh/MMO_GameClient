@@ -776,8 +776,7 @@ void ABJS_SocketActor::ClosePlayerHandler(BYTE* Buffer, PacketHeader* Header, in
 	if (PacketHandlerUtils::ParsePacketHandler(pkt, Buffer, Header->GetSize() - Offset, Offset))
 	{
 		int32 removeUUid = pkt.uuid();
-		if (OnDeSpawnDelegate.IsBound())
-			OnDeSpawnDelegate.Execute(false, removeUUid);
+		OnDeSpawnDelegate.Execute(false, removeUUid);
 	}
 }
 

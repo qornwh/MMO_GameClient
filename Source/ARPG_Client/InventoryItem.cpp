@@ -76,7 +76,7 @@ EtcItem& InventoryItem::AddEtcItem(int32 itemCode, int32 type, int32 count)
 	auto it = EtcItems.Find(itemCode);
 	if (EtcItems.Contains(itemCode))
 	{
-		it->UpdateItem(it->Count);
+		it->UpdateItem(count);
 	}
 	else
 	{
