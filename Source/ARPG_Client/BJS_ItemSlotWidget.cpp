@@ -45,9 +45,10 @@ void UBJS_ItemSlotWidget::SetImg(UTexture2D* Image)
 {
 	if (!Image)
 	{
-		ShowImg(false);
+		SetSlots(false);
+		return;
 	}
-	ShowImg(true);
+	SetSlots(true);
 	FSlateBrush Brush;
 	Brush.SetResourceObject(Image);
 	Brush.ImageSize = FVector2D(Image->GetSizeX(), Image->GetSizeY());
@@ -67,7 +68,7 @@ void UBJS_ItemSlotWidget::SetCnt(int32 Cnt)
 	}
 }
 
-void UBJS_ItemSlotWidget::ShowImg(bool Flag)
+void UBJS_ItemSlotWidget::SetSlots(bool Flag)
 {
 	if (Flag)
 	{

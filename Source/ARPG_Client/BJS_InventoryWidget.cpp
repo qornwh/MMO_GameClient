@@ -54,8 +54,8 @@ void UBJS_InventoryWidget::BJS_InitWidget()
 		{
 			auto equipSlot = CreateWidget<UBJS_ItemSlotWidget>(GetWorld(), ItemSlotClass);
 			auto etcSlot = CreateWidget<UBJS_ItemSlotWidget>(GetWorld(), ItemSlotClass);
-			equipSlot->ShowImg(false);
-			etcSlot->ShowImg(false);
+			equipSlot->SetSlots(false);
+			etcSlot->SetSlots(false);
 			ConstSlot.Add(equipSlot);
 			ConstSlot.Add(etcSlot);
 			EmptyEquipSlot.Add(equipSlot);
@@ -115,7 +115,7 @@ void UBJS_InventoryWidget::RemoveEquipSlot(int32 EquipUnipeId)
 		{
 			auto slot = EquipItemSlots.Find(EquipUnipeId);
 			EquipItemSlots.Remove(EquipUnipeId);
-			(*slot)->ShowImg(false);
+			(*slot)->SetSlots(false);
 			EmptyEquipSlot.Add(*slot);
 		}
 	}
@@ -153,7 +153,7 @@ void UBJS_InventoryWidget::UpdateEtcSlot(int32 EtcItemCode)
 			// 삭제
 			auto slot = EtcItemSlots.Find(EtcItemCode);
 			EtcItemSlots.Remove(EtcItemCode);
-			(*slot)->ShowImg(false);
+			(*slot)->SetSlots(false);
 			EmptyEtcSlot.Add(*slot);
 		}
 	}

@@ -29,7 +29,7 @@ public:
 
 	void SetImg(UTexture2D* Image);
 	void SetCnt(int32 Cnt);
-	void ShowImg(bool Flag);
+	void SetSlots(bool Flag);
 	class UButton* GetButton() { return btn_item; }
 	void ResetCheck();
 	bool GetCheck() const { return cb_check->GetCheckedState() == ECheckBoxState::Checked; };
