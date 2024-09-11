@@ -58,6 +58,15 @@ private:
 	class UButton* btn_mail;
 	
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
+	class UButton* btn_iventory;
+	
+	UPROPERTY(EditAnywhere, meta=(BindWidget))
+	class UButton* btn_friends;
+	
+	UPROPERTY(EditAnywhere, meta=(BindWidget))
+	class UButton* btn_logout;
+	
+	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UEditableTextBox* tb_chat;
 	
 	UPROPERTY(EditAnywhere, meta=(BindWidget))

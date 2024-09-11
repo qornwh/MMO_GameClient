@@ -71,6 +71,7 @@ private:
 	void ChatHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
 	void ClosePlayerHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
 	void FriendSystemHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
+	void UpdateItemsHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
 
 private:
 	FSocket* MySocket = nullptr;

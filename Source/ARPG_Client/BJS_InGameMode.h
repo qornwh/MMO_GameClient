@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "BJS_GameModeBase.h"
+#include "BJS_ItemSlotWidget.h"
 #include "InventoryItem.h"
 #include "google/protobuf/stubs/port.h"
 #include "BJS_InGameMode.generated.h"
@@ -45,14 +46,14 @@ public:
 	void UpdateInventoryEquipUI(int32 EquipUnipeId, int32 State);
 	void UpdateInventoryEtcUI(int32 EtcItemCode, int32 State);
 	void UpdateInventoryUI();
+	void SendEquippedItem(const EquipItem& TargetItem);
 	
 	TMap<int32, TSharedPtr<class BJS_CharaterState>>& GetCharaterStateList();
 	TMap<int32, TSharedPtr<class BJS_CharaterState>>& GetMonsterStateList();
 	TSharedPtr<class BJS_CharaterState> GetMyState();
 	TSharedPtr<class InventoryItem> GetMyInventory();
 	TSharedPtr<class FriendSystem> GetMyFriend();
-
-
+	
 	UFUNCTION()
 	void SellItems();
 	UFUNCTION()

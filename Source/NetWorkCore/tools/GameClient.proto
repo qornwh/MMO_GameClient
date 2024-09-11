@@ -37,6 +37,8 @@ enum MessageCode {
     
     S_FRIENDSYSTEM = 32; // 친구 시스템 
     
+    C_UPDATEITEMS = 33; // 인벤토리 아이템 장착, 장착해제등
+    
     // 더미용
     D_LOAD = 101;
 }
@@ -276,4 +278,8 @@ message Friend {
 
 message SFriendSystem {
     repeated Friend friend = 1;
+}
+
+message CUpdateItems {
+    repeated ItemEquip itemEquips = 1; // 업데이트(장착, 장착해제) 내용
 }

@@ -19,8 +19,7 @@ class ARPG_CLIENT_API UBJS_ItemSlotWidget : public UBJS_SubWidget
 public:
 	UBJS_ItemSlotWidget();
 
-	virtual void BJS_InitWidget() override;
-	virtual void BJS_SubUpdateWidget() override;
+	virtual void NativeConstruct() override;
 
 	void SetEquip(EquipItem& Item);
 	void SetEtc(EtcItem& Item);
@@ -30,13 +29,18 @@ public:
 	void SetImg(UTexture2D* Image);
 	void SetCnt(int32 Cnt);
 	void SetSlots(bool Flag);
-	class UButton* GetButton() { return btn_item; }
 	void ResetCheck();
-	bool GetCheck() const { return cb_check->GetCheckedState() == ECheckBoxState::Checked; };
+	bool GetCheck() const { return cb_check->GetCheckedState() == ECheckBoxState::Checked; }
+	void SetEmptyEquip();
+	void SetEtcEquip();
+
+	void SetSocket(bool Flag);
+	UFUNCTION()
+	void SendItemEquipped();
 
 private:
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
-	class UButton* btn_item;
+	class UCustomButton* btn_item;
 
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UImage* img_item;
@@ -47,6 +51,6 @@ private:
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UCheckBox* cb_check;
 
-	EquipItem CurEquipItem{-1,-1,-1,0,0,0,0};
+	EquipItem CurEquipItem{-1, -1, -1, 0, 0, 0, 0};
 	EtcItem CurEtcItem{-1, 0, 0};
 };

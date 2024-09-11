@@ -30,6 +30,7 @@ public:
 	virtual void BJS_UpdateWidget() override;
 
 	void AddEquipSlot(int32 EquipUnipeId);
+	void UpdateEquipSlot(int32 EquipUnipeId);
 	void RemoveEquipSlot(int32 EquipUnipeId);
 	void UpdateEtcSlot(int32 EtcItemCode);
 	void SetSlot();
@@ -65,6 +66,11 @@ private:
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UBJS_StateWidget* wg_state;
 	
+	UPROPERTY(EditAnywhere, meta=(BindWidget))
+	class UBJS_ItemSlotWidget* slot_attsocket;
+	UPROPERTY(EditAnywhere, meta=(BindWidget))
+	class UBJS_ItemSlotWidget* slot_spesocket;
+	
 	TSubclassOf<class UBJS_ItemSlotWidget> ItemSlotClass;
 	TArray<class UBJS_ItemSlotWidget*> EmptyEquipSlot;
 	TArray<class UBJS_ItemSlotWidget*> EmptyEtcSlot;
@@ -74,7 +80,4 @@ private:
 	int32 ColSize = 5;
 	int32 RowSize = 4;
 	int32 InventoryModeState = 0;
-	
-	// 계속 위젯의 메모리가 오염된다. 이유는 일단 모르겠고, empty의 slot이 빠지면서 삭제되는 버그인거 같은데 아래처럼 전부 일단 들고있는걸로 한다.
-	TArray<class UBJS_ItemSlotWidget*> ConstSlot;
 };

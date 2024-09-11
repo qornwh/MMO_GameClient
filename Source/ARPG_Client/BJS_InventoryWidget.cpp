@@ -56,8 +56,6 @@ void UBJS_InventoryWidget::BJS_InitWidget()
 			auto etcSlot = CreateWidget<UBJS_ItemSlotWidget>(GetWorld(), ItemSlotClass);
 			equipSlot->SetSlots(false);
 			etcSlot->SetSlots(false);
-			ConstSlot.Add(equipSlot);
-			ConstSlot.Add(etcSlot);
 			EmptyEquipSlot.Add(equipSlot);
 			EmptyEtcSlot.Add(etcSlot);
 		}
@@ -67,6 +65,8 @@ void UBJS_InventoryWidget::BJS_InitWidget()
 	btn_etc->OnClicked.AddDynamic(this, &UBJS_InventoryWidget::ViewInventoryEtc);
 	btn_sell->OnClicked.AddDynamic(this, &UBJS_InventoryWidget::SellItem);
 	btn_check->OnClicked.AddDynamic(this, &UBJS_InventoryWidget::InvetoryReset);
+	slot_attsocket->SetSocket(false);
+	slot_spesocket->SetSocket(false);
 	SetSlot();
 	ViewInventoryEquip();
 }
@@ -94,13 +94,71 @@ void UBJS_InventoryWidget::AddEquipSlot(int32 EquipUnipeId)
 		{
 			if (instance->GetMyInventory()->GetEquipItems().Contains(EquipUnipeId))
 			{
-				auto slot = EmptyEquipSlot.Last();
-				EmptyEquipSlot.Pop();
-				auto& ImageMap = instance->GetItemEquipIconImgMap();
 				auto item = instance->GetMyInventory()->GetEquipItems().Find(EquipUnipeId);
-				slot->SetEquip(*item);
-				slot->SetImg(ImageMap[item->ItemCode]);
-				EquipItemSlots.Add(EquipUnipeId, slot);
+				auto& ImageMap = instance->GetItemEquipIconImgMap();
+
+				if (item->IsEquip == 0)
+				{
+					auto slot = EmptyEquipSlot.Last();
+					EmptyEquipSlot.Pop();
+					slot->SetEquip(*item);
+					slot->SetSlots(true);
+					slot->SetImg(ImageMap[item->ItemCode]);
+					EquipItemSlots.Add(EquipUnipeId, slot);
+				}
+				else if (item->IsEquip == 1)
+				{
+					if (item->EquipType == 1)
+					{
+						slot_attsocket->SetEquip(*item);
+						slot_attsocket->SetSocket(true);
+						slot_attsocket->SetImg(ImageMap[item->ItemCode]);
+					}
+					else if (item->EquipType == 2)
+					{
+						slot_spesocket->SetEquip(*item);
+						slot_spesocket->SetSocket(true);
+						slot_spesocket->SetImg(ImageMap[item->ItemCode]);
+					}
+
+					if (EquipItemSlots.Contains(EquipUnipeId))
+					{
+						auto slot = EquipItemSlots.Find(EquipUnipeId);
+						EquipItemSlots.Remove(EquipUnipeId);
+						(*slot)->SetSlots(false);
+						EmptyEquipSlot.Add(*slot);
+					}
+				}
+			}
+		}
+	}
+}
+
+void UBJS_InventoryWidget::UpdateEquipSlot(int32 EquipUnipeId)
+{
+	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
+	if (instance)
+	{
+		if (instance->GetMyInventory()->GetEquipItems().Contains(EquipUnipeId))
+		{
+			auto item = instance->GetMyInventory()->GetEquipItems().Find(EquipUnipeId);
+			int32 isEquip = item->IsEquip;
+			if (isEquip == 1)
+			{
+				// 장착
+				if (EquipItemSlots.Contains(EquipUnipeId))
+				{
+					AddEquipSlot(EquipUnipeId);
+				}
+			}
+			else
+			{
+				// 장착해제
+				if (!EquipItemSlots.Contains(EquipUnipeId))
+				{
+					RemoveEquipSlot(EquipUnipeId);
+					AddEquipSlot(EquipUnipeId);
+				}
 			}
 		}
 	}
@@ -117,6 +175,26 @@ void UBJS_InventoryWidget::RemoveEquipSlot(int32 EquipUnipeId)
 			EquipItemSlots.Remove(EquipUnipeId);
 			(*slot)->SetSlots(false);
 			EmptyEquipSlot.Add(*slot);
+		}
+		else
+		{
+			auto item = instance->GetMyInventory()->GetEquipItems().Find(EquipUnipeId);
+			if (item->EquipType == 1)
+			{
+				if (slot_attsocket->GetEquip().UniqueId == EquipUnipeId)
+				{
+					slot_attsocket->SetSocket(false);
+					slot_attsocket->SetEmptyEquip();
+				}
+			}
+			else if (item->EquipType == 2)
+			{
+				if (slot_spesocket->GetEquip().UniqueId == EquipUnipeId)
+				{
+					slot_spesocket->SetSocket(false);
+					slot_spesocket->SetEmptyEquip();
+				}
+			}
 		}
 	}
 }
@@ -143,6 +221,7 @@ void UBJS_InventoryWidget::UpdateEtcSlot(int32 EtcItemCode)
 				auto& ImageMap = instance->GetItemEtcIconImgMap();
 				auto item = instance->GetMyInventory()->GetEtcItems().Find(EtcItemCode);
 				slot->SetEtc(*item);
+				slot->SetSlots(true);
 				slot->SetImg(ImageMap[EtcItemCode]);
 				slot->SetCnt(item->Count);
 				EtcItemSlots.Add(EtcItemCode, slot);
@@ -240,16 +319,21 @@ void UBJS_InventoryWidget::SetSlot()
 
 void UBJS_InventoryWidget::SlotResetCheck()
 {
-	for (auto equipItemEntry : EquipItemSlots)
+	if ((InventoryModeState && InventoryMode::EQUIP) == InventoryMode::EQUIP)
 	{
-		if (equipItemEntry.Value)
-			equipItemEntry.Value->ResetCheck();
+		for (auto equipItemEntry : EquipItemSlots)
+		{
+			if (equipItemEntry.Value)
+				equipItemEntry.Value->ResetCheck();
+		}
 	}
-	
-	for (auto etcItemEntry : EtcItemSlots)
+	else if ((InventoryModeState && InventoryMode::ETC) == InventoryMode::ETC)
 	{
-		if (etcItemEntry.Value)
-			etcItemEntry.Value->ResetCheck();
+		for (auto etcItemEntry : EtcItemSlots)
+		{
+			if (etcItemEntry.Value)
+				etcItemEntry.Value->ResetCheck();
+		}
 	}
 }
 
@@ -261,9 +345,9 @@ void UBJS_InventoryWidget::SetGold(int32 Gold)
 
 void UBJS_InventoryWidget::ViewInventoryEtc()
 {
+	SlotResetCheck();
 	InventoryModeState = InventoryModeState & InventoryMode::EMPTY;
 	InventoryModeState += InventoryMode::ETC;
-	SlotResetCheck();
 	SetSlot();
 	ugp_EquipItemSlots->SetVisibility(ESlateVisibility::Hidden);
 	ugp_ItemSlots->SetVisibility(ESlateVisibility::Visible);
@@ -271,9 +355,9 @@ void UBJS_InventoryWidget::ViewInventoryEtc()
 
 void UBJS_InventoryWidget::ViewInventoryEquip()
 {
+	SlotResetCheck();
 	InventoryModeState = InventoryModeState & InventoryMode::EMPTY;
 	InventoryModeState += InventoryMode::EQUIP;
-	SlotResetCheck();
 	SetSlot();
 	ugp_EquipItemSlots->SetVisibility(ESlateVisibility::Visible);
 	ugp_ItemSlots->SetVisibility(ESlateVisibility::Hidden);

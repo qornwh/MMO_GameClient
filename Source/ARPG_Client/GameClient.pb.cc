@@ -552,8 +552,20 @@ struct SFriendSystemDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SFriendSystemDefaultTypeInternal _SFriendSystem_default_instance_;
+constexpr CUpdateItems::CUpdateItems(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : itemequips_(){}
+struct CUpdateItemsDefaultTypeInternal {
+  constexpr CUpdateItemsDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~CUpdateItemsDefaultTypeInternal() {}
+  union {
+    CUpdateItems _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT CUpdateItemsDefaultTypeInternal _CUpdateItems_default_instance_;
 }  // namespace protocol
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_GameClient_2eproto[38];
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_GameClient_2eproto[39];
 static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_GameClient_2eproto[1];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_GameClient_2eproto = nullptr;
 
@@ -901,6 +913,13 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_GameClient_2eproto::offsets[] 
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::protocol::SFriendSystem, friend__),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::protocol::CUpdateItems, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::protocol::CUpdateItems, itemequips_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::protocol::Login)},
@@ -941,6 +960,7 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 319, -1, -1, sizeof(::protocol::DLoad)},
   { 326, -1, -1, sizeof(::protocol::Friend)},
   { 336, -1, -1, sizeof(::protocol::SFriendSystem)},
+  { 343, -1, -1, sizeof(::protocol::CUpdateItems)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -982,6 +1002,7 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::protocol::_DLoad_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::protocol::_Friend_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::protocol::_SFriendSystem_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::protocol::_CUpdateItems_default_instance_),
 };
 
 const char descriptor_table_protodef_GameClient_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
@@ -1057,25 +1078,27 @@ const char descriptor_table_protodef_GameClient_2eproto[] PROTOBUF_SECTION_VARIA
   "nit\030e \001(\0132\016.protocol.Unit\"M\n\006Friend\022\022\n\np"
   "layerCode\030\001 \001(\005\022\022\n\nplayerName\030\002 \001(\t\022\016\n\006a"
   "ccess\030\003 \001(\010\022\013\n\003add\030\004 \001(\010\"1\n\rSFriendSyste"
-  "m\022 \n\006friend\030\001 \003(\0132\020.protocol.Friend*\356\003\n\013"
-  "MessageCode\022\t\n\005LOGIN\020\000\022\n\n\006S_LOAD\020\001\022\022\n\016S_"
-  "INSERTPLAYER\020\002\022\n\n\006S_MOVE\020\003\022\n\n\006S_CHAT\020\004\022\020"
-  "\n\014S_PLAYERDATA\020\005\022\021\n\rS_CLOSEPLAYER\020\006\022\020\n\014S"
-  "_UNITSTATES\020\007\022\014\n\010C_ATTACK\020\010\022\020\n\014S_UNITDEM"
-  "AGE\020\n\022\017\n\013S_ROOMQUEST\020\014\022\017\n\013C_MOVEPOTAL\020\r\022"
-  "\r\n\tS_ENDGAME\020\016\022\017\n\013LOGINACCESS\020\017\022\n\n\006C_LOA"
-  "D\020\021\022\023\n\017CREATECHARACTER\020\022\022\017\n\013DROPMESSAGE\020"
-  "\023\022\021\n\rC_BUYCHARATER\020\024\022\017\n\013C_BUYWEAPON\020\025\022\023\n"
-  "\017C_UPDATEACCOUNT\020\026\022\021\n\rS_CURRENTINFO\020\027\022\017\n"
-  "\013S_BUYRESULT\020\030\022\020\n\014C_PLAYERJUMP\020\031\022\017\n\013C_PL"
-  "AYERAIM\020\032\022\013\n\007S_EXPLV\020\033\022\023\n\017S_LOADINVENTOR"
-  "Y\020\036\022\017\n\013C_SELLITEMS\020\037\022\022\n\016S_FRIENDSYSTEM\020 "
-  "\022\n\n\006D_LOAD\020eb\006proto3"
+  "m\022 \n\006friend\030\001 \003(\0132\020.protocol.Friend\"7\n\014C"
+  "UpdateItems\022\'\n\nitemEquips\030\001 \003(\0132\023.protoc"
+  "ol.ItemEquip*\201\004\n\013MessageCode\022\t\n\005LOGIN\020\000\022"
+  "\n\n\006S_LOAD\020\001\022\022\n\016S_INSERTPLAYER\020\002\022\n\n\006S_MOV"
+  "E\020\003\022\n\n\006S_CHAT\020\004\022\020\n\014S_PLAYERDATA\020\005\022\021\n\rS_C"
+  "LOSEPLAYER\020\006\022\020\n\014S_UNITSTATES\020\007\022\014\n\010C_ATTA"
+  "CK\020\010\022\020\n\014S_UNITDEMAGE\020\n\022\017\n\013S_ROOMQUEST\020\014\022"
+  "\017\n\013C_MOVEPOTAL\020\r\022\r\n\tS_ENDGAME\020\016\022\017\n\013LOGIN"
+  "ACCESS\020\017\022\n\n\006C_LOAD\020\021\022\023\n\017CREATECHARACTER\020"
+  "\022\022\017\n\013DROPMESSAGE\020\023\022\021\n\rC_BUYCHARATER\020\024\022\017\n"
+  "\013C_BUYWEAPON\020\025\022\023\n\017C_UPDATEACCOUNT\020\026\022\021\n\rS"
+  "_CURRENTINFO\020\027\022\017\n\013S_BUYRESULT\020\030\022\020\n\014C_PLA"
+  "YERJUMP\020\031\022\017\n\013C_PLAYERAIM\020\032\022\013\n\007S_EXPLV\020\033\022"
+  "\023\n\017S_LOADINVENTORY\020\036\022\017\n\013C_SELLITEMS\020\037\022\022\n"
+  "\016S_FRIENDSYSTEM\020 \022\021\n\rC_UPDATEITEMS\020!\022\n\n\006"
+  "D_LOAD\020eb\006proto3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_GameClient_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_GameClient_2eproto = {
-  false, false, 3420, descriptor_table_protodef_GameClient_2eproto, "GameClient.proto", 
-  &descriptor_table_GameClient_2eproto_once, nullptr, 0, 38,
+  false, false, 3496, descriptor_table_protodef_GameClient_2eproto, "GameClient.proto", 
+  &descriptor_table_GameClient_2eproto_once, nullptr, 0, 39,
   schemas, file_default_instances, TableStruct_GameClient_2eproto::offsets,
   file_level_metadata_GameClient_2eproto, file_level_enum_descriptors_GameClient_2eproto, file_level_service_descriptors_GameClient_2eproto,
 };
@@ -1120,6 +1143,7 @@ bool MessageCode_IsValid(int value) {
     case 30:
     case 31:
     case 32:
+    case 33:
     case 101:
       return true;
     default:
@@ -10435,6 +10459,191 @@ void SFriendSystem::InternalSwap(SFriendSystem* other) {
       file_level_metadata_GameClient_2eproto[37]);
 }
 
+// ===================================================================
+
+class CUpdateItems::_Internal {
+ public:
+};
+
+CUpdateItems::CUpdateItems(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
+  itemequips_(arena) {
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:protocol.CUpdateItems)
+}
+CUpdateItems::CUpdateItems(const CUpdateItems& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      itemequips_(from.itemequips_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:protocol.CUpdateItems)
+}
+
+void CUpdateItems::SharedCtor() {
+}
+
+CUpdateItems::~CUpdateItems() {
+  // @@protoc_insertion_point(destructor:protocol.CUpdateItems)
+  if (GetArenaForAllocation() != nullptr) return;
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+inline void CUpdateItems::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+}
+
+void CUpdateItems::ArenaDtor(void* object) {
+  CUpdateItems* _this = reinterpret_cast< CUpdateItems* >(object);
+  (void)_this;
+}
+void CUpdateItems::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void CUpdateItems::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void CUpdateItems::Clear() {
+// @@protoc_insertion_point(message_clear_start:protocol.CUpdateItems)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  itemequips_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* CUpdateItems::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // repeated .protocol.ItemEquip itemEquips = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_itemequips(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* CUpdateItems::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:protocol.CUpdateItems)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated .protocol.ItemEquip itemEquips = 1;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->_internal_itemequips_size()); i < n; i++) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(1, this->_internal_itemequips(i), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:protocol.CUpdateItems)
+  return target;
+}
+
+size_t CUpdateItems::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:protocol.CUpdateItems)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated .protocol.ItemEquip itemEquips = 1;
+  total_size += 1UL * this->_internal_itemequips_size();
+  for (const auto& msg : this->itemequips_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData CUpdateItems::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    CUpdateItems::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*CUpdateItems::GetClassData() const { return &_class_data_; }
+
+void CUpdateItems::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<CUpdateItems *>(to)->MergeFrom(
+      static_cast<const CUpdateItems &>(from));
+}
+
+
+void CUpdateItems::MergeFrom(const CUpdateItems& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:protocol.CUpdateItems)
+  GOOGLE_DCHECK_NE(&from, this);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  itemequips_.MergeFrom(from.itemequips_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void CUpdateItems::CopyFrom(const CUpdateItems& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:protocol.CUpdateItems)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool CUpdateItems::IsInitialized() const {
+  return true;
+}
+
+void CUpdateItems::InternalSwap(CUpdateItems* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  itemequips_.InternalSwap(&other->itemequips_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata CUpdateItems::GetMetadata() const {
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
+      file_level_metadata_GameClient_2eproto[38]);
+}
+
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace protocol
 PROTOBUF_NAMESPACE_OPEN
@@ -10551,6 +10760,9 @@ template<> PROTOBUF_NOINLINE ::protocol::Friend* Arena::CreateMaybeMessage< ::pr
 }
 template<> PROTOBUF_NOINLINE ::protocol::SFriendSystem* Arena::CreateMaybeMessage< ::protocol::SFriendSystem >(Arena* arena) {
   return Arena::CreateMessageInternal< ::protocol::SFriendSystem >(arena);
+}
+template<> PROTOBUF_NOINLINE ::protocol::CUpdateItems* Arena::CreateMaybeMessage< ::protocol::CUpdateItems >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::protocol::CUpdateItems >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

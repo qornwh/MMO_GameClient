@@ -47,7 +47,7 @@ struct TableStruct_GameClient_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[38]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[39]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -85,6 +85,9 @@ extern CSellItemsDefaultTypeInternal _CSellItems_default_instance_;
 class CUpdateAccount;
 struct CUpdateAccountDefaultTypeInternal;
 extern CUpdateAccountDefaultTypeInternal _CUpdateAccount_default_instance_;
+class CUpdateItems;
+struct CUpdateItemsDefaultTypeInternal;
+extern CUpdateItemsDefaultTypeInternal _CUpdateItems_default_instance_;
 class Charater;
 struct CharaterDefaultTypeInternal;
 extern CharaterDefaultTypeInternal _Charater_default_instance_;
@@ -181,6 +184,7 @@ template<> ::protocol::CPlayerAim* Arena::CreateMaybeMessage<::protocol::CPlayer
 template<> ::protocol::CPlayerJump* Arena::CreateMaybeMessage<::protocol::CPlayerJump>(Arena*);
 template<> ::protocol::CSellItems* Arena::CreateMaybeMessage<::protocol::CSellItems>(Arena*);
 template<> ::protocol::CUpdateAccount* Arena::CreateMaybeMessage<::protocol::CUpdateAccount>(Arena*);
+template<> ::protocol::CUpdateItems* Arena::CreateMaybeMessage<::protocol::CUpdateItems>(Arena*);
 template<> ::protocol::Charater* Arena::CreateMaybeMessage<::protocol::Charater>(Arena*);
 template<> ::protocol::CreateCharacter* Arena::CreateMaybeMessage<::protocol::CreateCharacter>(Arena*);
 template<> ::protocol::DLoad* Arena::CreateMaybeMessage<::protocol::DLoad>(Arena*);
@@ -241,6 +245,7 @@ enum MessageCode : int {
   S_LOADINVENTORY = 30,
   C_SELLITEMS = 31,
   S_FRIENDSYSTEM = 32,
+  C_UPDATEITEMS = 33,
   D_LOAD = 101,
   MessageCode_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   MessageCode_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
@@ -6824,6 +6829,158 @@ class SFriendSystem final :
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_GameClient_2eproto;
 };
+// -------------------------------------------------------------------
+
+class CUpdateItems final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:protocol.CUpdateItems) */ {
+ public:
+  inline CUpdateItems() : CUpdateItems(nullptr) {}
+  ~CUpdateItems() override;
+  explicit constexpr CUpdateItems(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  CUpdateItems(const CUpdateItems& from);
+  CUpdateItems(CUpdateItems&& from) noexcept
+    : CUpdateItems() {
+    *this = ::std::move(from);
+  }
+
+  inline CUpdateItems& operator=(const CUpdateItems& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CUpdateItems& operator=(CUpdateItems&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CUpdateItems& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const CUpdateItems* internal_default_instance() {
+    return reinterpret_cast<const CUpdateItems*>(
+               &_CUpdateItems_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    38;
+
+  friend void swap(CUpdateItems& a, CUpdateItems& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(CUpdateItems* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(CUpdateItems* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline CUpdateItems* New() const final {
+    return new CUpdateItems();
+  }
+
+  CUpdateItems* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<CUpdateItems>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const CUpdateItems& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const CUpdateItems& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(CUpdateItems* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "protocol.CUpdateItems";
+  }
+  protected:
+  explicit CUpdateItems(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kItemEquipsFieldNumber = 1,
+  };
+  // repeated .protocol.ItemEquip itemEquips = 1;
+  int itemequips_size() const;
+  private:
+  int _internal_itemequips_size() const;
+  public:
+  void clear_itemequips();
+  ::protocol::ItemEquip* mutable_itemequips(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protocol::ItemEquip >*
+      mutable_itemequips();
+  private:
+  const ::protocol::ItemEquip& _internal_itemequips(int index) const;
+  ::protocol::ItemEquip* _internal_add_itemequips();
+  public:
+  const ::protocol::ItemEquip& itemequips(int index) const;
+  ::protocol::ItemEquip* add_itemequips();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protocol::ItemEquip >&
+      itemequips() const;
+
+  // @@protoc_insertion_point(class_scope:protocol.CUpdateItems)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protocol::ItemEquip > itemequips_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_GameClient_2eproto;
+};
 // ===================================================================
 
 
@@ -10599,9 +10756,55 @@ SFriendSystem::friend_() const {
   return friend__;
 }
 
+// -------------------------------------------------------------------
+
+// CUpdateItems
+
+// repeated .protocol.ItemEquip itemEquips = 1;
+inline int CUpdateItems::_internal_itemequips_size() const {
+  return itemequips_.size();
+}
+inline int CUpdateItems::itemequips_size() const {
+  return _internal_itemequips_size();
+}
+inline void CUpdateItems::clear_itemequips() {
+  itemequips_.Clear();
+}
+inline ::protocol::ItemEquip* CUpdateItems::mutable_itemequips(int index) {
+  // @@protoc_insertion_point(field_mutable:protocol.CUpdateItems.itemEquips)
+  return itemequips_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protocol::ItemEquip >*
+CUpdateItems::mutable_itemequips() {
+  // @@protoc_insertion_point(field_mutable_list:protocol.CUpdateItems.itemEquips)
+  return &itemequips_;
+}
+inline const ::protocol::ItemEquip& CUpdateItems::_internal_itemequips(int index) const {
+  return itemequips_.Get(index);
+}
+inline const ::protocol::ItemEquip& CUpdateItems::itemequips(int index) const {
+  // @@protoc_insertion_point(field_get:protocol.CUpdateItems.itemEquips)
+  return _internal_itemequips(index);
+}
+inline ::protocol::ItemEquip* CUpdateItems::_internal_add_itemequips() {
+  return itemequips_.Add();
+}
+inline ::protocol::ItemEquip* CUpdateItems::add_itemequips() {
+  ::protocol::ItemEquip* _add = _internal_add_itemequips();
+  // @@protoc_insertion_point(field_add:protocol.CUpdateItems.itemEquips)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protocol::ItemEquip >&
+CUpdateItems::itemequips() const {
+  // @@protoc_insertion_point(field_list:protocol.CUpdateItems.itemEquips)
+  return itemequips_;
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

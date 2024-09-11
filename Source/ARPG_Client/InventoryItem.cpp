@@ -35,6 +35,17 @@ void EquipItem::UpdateItem(int32 use)
     Use = use;
 }
 
+void EquipItem::SetEmptyItem()
+{
+	UniqueId = -1;
+	ItemCode = -1;
+	EquipType = -1;
+	Attack = -1;
+	Speed = -1;
+	IsEquip = -1;
+	Use = -1;
+}
+
 EtcItem::EtcItem(int32 itemCode, int32 type, int32 count): ItemCode(itemCode), Count(count), Type(type)
 {
 }
@@ -54,6 +65,13 @@ EtcItem& EtcItem::operator=(const EtcItem& other)
 void EtcItem::UpdateItem(int32 count)
 {
     Count = count;
+}
+
+void EtcItem::SetEmptyItem()
+{
+	ItemCode = -1;
+	Count = -1;
+	Type = -1;
 }
 
 InventoryItem::InventoryItem() : Gold(0)
@@ -115,7 +133,17 @@ bool InventoryItem::UseEquipItem(int32 UniqueId)
 	}
 
 	EquipItems.Remove(UniqueId);
-	return false;
+	return true;
+}
+
+bool InventoryItem::ItemEquipped(int32 UniqueId, int32 Equipped)
+{
+	if (!EquipItems.Contains(UniqueId))
+	{
+		return false;
+	}
+	EquipItems.Find(UniqueId)->IsEquip = Equipped;
+	return true;
 }
 
 bool InventoryItem::UseEtcItem(int32 Code, int32 Count)

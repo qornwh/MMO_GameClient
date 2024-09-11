@@ -12,6 +12,7 @@ struct EquipItem
 	EquipItem& operator=(const EquipItem& other);
 
     void UpdateItem(int32 use = 1);
+	void SetEmptyItem();
 	int32 UniqueId;
 	int32 ItemCode;
 	int32 EquipType;
@@ -29,6 +30,7 @@ struct EtcItem
 	EtcItem& operator=(const EtcItem& other);
 
 	void UpdateItem(int32 count = 1);
+	void SetEmptyItem();
 	int32 ItemCode;
 	int32 Count;
 	int32 Type;
@@ -45,6 +47,7 @@ public:
 	EquipItem& AddEquipItem(EquipItem& Equip);
 	EtcItem& AddEtcItem(EtcItem& Etc);
 	bool UseEquipItem(int32 UniqueId);
+	bool ItemEquipped(int32 UniqueId, int32 Equipped);
 	bool UseEtcItem(int32 Code, int32 Count);
 
 	void AddGold(int32 gold);

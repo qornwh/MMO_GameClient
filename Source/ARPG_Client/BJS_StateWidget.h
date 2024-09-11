@@ -22,6 +22,12 @@ public:
 
 private:
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
+	class UTextBlock* tb_name;
+
+	UPROPERTY(EditAnywhere, meta=(BindWidget))
+	class UTextBlock* tb_lv;
+	
+	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UTextBlock* tb_attack;
 
 	UPROPERTY(EditAnywhere, meta=(BindWidget))

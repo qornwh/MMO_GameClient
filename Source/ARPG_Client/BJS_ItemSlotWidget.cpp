@@ -3,6 +3,8 @@
 
 #include "BJS_ItemSlotWidget.h"
 
+#include "BJS_InGameMode.h"
+#include "CustomButton.h"
 #include "Components/CheckBox.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
@@ -11,14 +13,9 @@ UBJS_ItemSlotWidget::UBJS_ItemSlotWidget()
 {
 }
 
-void UBJS_ItemSlotWidget::BJS_InitWidget()
+void UBJS_ItemSlotWidget::NativeConstruct()
 {
-	Super::BJS_InitWidget();
-}
-
-void UBJS_ItemSlotWidget::BJS_SubUpdateWidget()
-{
-	Super::BJS_SubUpdateWidget();
+	Super::NativeConstruct();
 }
 
 void UBJS_ItemSlotWidget::SetEquip(EquipItem& Item)
@@ -48,7 +45,6 @@ void UBJS_ItemSlotWidget::SetImg(UTexture2D* Image)
 		SetSlots(false);
 		return;
 	}
-	SetSlots(true);
 	FSlateBrush Brush;
 	Brush.SetResourceObject(Image);
 	Brush.ImageSize = FVector2D(Image->GetSizeX(), Image->GetSizeY());
@@ -75,16 +71,58 @@ void UBJS_ItemSlotWidget::SetSlots(bool Flag)
 		img_item->SetVisibility(ESlateVisibility::Visible);
 		tb_cnt->SetVisibility(ESlateVisibility::Visible);
 		cb_check->SetVisibility(ESlateVisibility::Visible);
+	
+		btn_item->OnRightClick.AddDynamic(this, &UBJS_ItemSlotWidget::SendItemEquipped);
+		btn_item->OnDoubleClick.AddDynamic(this, &UBJS_ItemSlotWidget::SendItemEquipped);
 	}
 	else
 	{
 		img_item->SetVisibility(ESlateVisibility::Hidden);
 		tb_cnt->SetVisibility(ESlateVisibility::Hidden);
 		cb_check->SetVisibility(ESlateVisibility::Hidden);
+		btn_item->OnRightClick.RemoveAll(this);
 	}
 }
 
 void UBJS_ItemSlotWidget::ResetCheck()
 {
 	cb_check->SetCheckedState(ECheckBoxState::Unchecked);
+}
+
+void UBJS_ItemSlotWidget::SetEmptyEquip()
+{
+	CurEquipItem.SetEmptyItem();
+}
+
+void UBJS_ItemSlotWidget::SetEtcEquip()
+{
+	CurEtcItem.SetEmptyItem();
+}
+
+void UBJS_ItemSlotWidget::SetSocket(bool Flag)
+{
+	if (Flag)
+	{
+		img_item->SetVisibility(ESlateVisibility::Visible);
+		btn_item->OnRightClick.AddDynamic(this, &UBJS_ItemSlotWidget::SendItemEquipped);
+	}
+	else
+	{
+		img_item->SetVisibility(ESlateVisibility::Hidden);
+		btn_item->OnRightClick.RemoveAll(this);
+	}
+	cb_check->SetVisibility(ESlateVisibility::Hidden);
+	tb_cnt->SetVisibility(ESlateVisibility::Hidden);
+}
+
+void UBJS_ItemSlotWidget::SendItemEquipped()
+{
+	auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
+	if (mode)
+	{
+		if (CurEquipItem.UniqueId > 0)
+		{
+			mode->SendEquippedItem(CurEquipItem);
+		}
+	}
 }

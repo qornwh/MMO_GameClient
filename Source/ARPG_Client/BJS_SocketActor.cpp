@@ -146,6 +146,11 @@ void ABJS_SocketActor::HandlePacket(BYTE* Buffer, PacketHeader* Header)
 			FriendSystemHandler(Buffer, Header, static_cast<int32>(sizeof(PacketHeader)));
 		}
 		break;
+	case protocol::MessageCode::C_UPDATEITEMS:
+		{
+			UpdateItemsHandler(Buffer, Header, static_cast<int32>(sizeof(PacketHeader)));
+		}
+		break;
 	}
 }
 
@@ -807,6 +812,26 @@ void ABJS_SocketActor::FriendSystemHandler(BYTE* Buffer, PacketHeader* Header, i
 					mode->UpdateMyFriendUI(friendCode, 2);
 				}
 			}
+		}
+	}
+}
+
+void ABJS_SocketActor::UpdateItemsHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset)
+{
+	protocol::CUpdateItems pkt;
+
+	if (PacketHandlerUtils::ParsePacketHandler(pkt, Buffer, Header->GetSize() - Offset, Offset))
+	{
+		auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
+		if (mode)
+		{
+			for (auto& item : pkt.itemequips())
+			{
+				mode->GetMyInventory()->ItemEquipped(item.unipeid(), item.is_equip());
+				mode->UpdateInventoryEquipUI(item.unipeid(), 2);
+			}
+
+			mode->UpdateInventoryUI();
 		}
 	}
 }

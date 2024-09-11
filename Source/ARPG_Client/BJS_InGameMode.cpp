@@ -416,6 +416,11 @@ void ABJS_InGameMode::UpdateInventoryEquipUI(int32 EquipUnipeId, int32 State)
 			// add
 			ui->AddEquipSlot(EquipUnipeId);
 		}
+		else if (State == 2)
+		{
+			// update
+			ui->UpdateEquipSlot(EquipUnipeId);
+		}
 		else if (State == 0)
 		{
 			// delete
@@ -440,6 +445,28 @@ void ABJS_InGameMode::UpdateInventoryUI()
 	if (ui)
 	{
 		ui->SetSlot();
+	}
+}
+
+void ABJS_InGameMode::SendEquippedItem(const EquipItem& TargetItem)
+{
+	int32 TargetId = TargetItem.UniqueId;
+	if (GetMyInventory()->GetEquipItems().Contains(TargetId))
+	{
+		auto item = GetMyInventory()->GetEquipItems().Find(TargetId);
+		if (item->IsEquip == TargetItem.IsEquip)
+		{
+			protocol::CUpdateItems pkt;
+			auto sendItem = pkt.add_itemequips();
+			sendItem->set_unipeid(item->UniqueId);
+			sendItem->set_attack(item->Attack);
+			sendItem->set_item_code(item->ItemCode);
+			sendItem->set_speed(item->Speed);
+			sendItem->set_is_equip(item->IsEquip == 0 ? 1 : 0);
+			sendItem->set_item_type(item->EquipType);
+			
+			SocketActor->SendMessage(pkt, protocol::MessageCode::C_UPDATEITEMS);
+		}
 	}
 }
 
