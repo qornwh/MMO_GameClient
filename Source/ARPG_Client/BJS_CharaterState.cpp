@@ -18,8 +18,8 @@ void BJS_BuffState::AddDeffence(int32 Value)
 	Deffence += Value;
 }
 
-BJS_CharaterState::BJS_CharaterState(): Lv(0), Exp(0), WeaponCode(0), Target(nullptr), Gold(0), MaxHp(0), Hp(0), Attack(0), Speed(0), Deffence(0), State(0),
-                                        X(0), Y(0), Z(0), Yaw(0), UUid(0), Code(0)
+BJS_CharaterState::BJS_CharaterState() : Lv(0), Exp(0), Gold(0), MaxHp(0), Hp(0), Attack(0), Speed(0), Deffence(0), State(0),
+										X(0), Y(0), Z(0), Yaw(0), UUid(0), Code(0), WeaponCode(0), Target(nullptr)
 {
 }
 

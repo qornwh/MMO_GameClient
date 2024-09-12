@@ -10,7 +10,7 @@ struct CharaterSkill
 		ASP = 1 << 2,
 	};
 
-	CharaterSkill(int32 SkillCode, float DurationTime, float CoolDownTime) : Code(SkillCode), Duration(DurationTime), CoolDown(CoolDownTime)
+	CharaterSkill(int32 SkillCode, float DurationTime, float CoolDownTime) : Duration(DurationTime), CoolDown(CoolDownTime), Code(SkillCode)
 	{
 	}
 

@@ -4,9 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "BJS_GameModeBase.h"
-#include "BJS_ItemSlotWidget.h"
 #include "InventoryItem.h"
-#include "google/protobuf/stubs/port.h"
 #include "BJS_InGameMode.generated.h"
 
 /**
@@ -75,7 +73,8 @@ private:
 	TArray<TWeakPtr<class BJS_CharaterState>> TakeDemageList;
 
 	bool IsMainUi = true;
-	class UBJS_UserWidgetBase* MainUi;
-	class UBJS_UserWidgetBase* InventoryUi;
-	class UBJS_SubWidget* FriendUi;
+	TObjectPtr<class UBJS_UserWidgetBase> MainUi;
+	TObjectPtr<class UBJS_UserWidgetBase> InventoryUi;
+	TObjectPtr<class UBJS_FriendWidget> FriendUi;
+	TObjectPtr<class UBJS_ItemToopTip_Widget> ItemToolTipUi;
 };

@@ -51,6 +51,7 @@ private:
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UCheckBox* cb_check;
 
+	// 일단 임시로 빈 아이템 슬롯 둔다
 	EquipItem CurEquipItem{-1, -1, -1, 0, 0, 0, -1, 0};
 	EtcItem CurEtcItem{-1, 0, 0,  -1};
 };

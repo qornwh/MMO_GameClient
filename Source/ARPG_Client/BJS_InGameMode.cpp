@@ -10,12 +10,9 @@
 #include "BJS_InventoryWidget.h"
 #include "BJS_Monster.h"
 #include "BJS_SocketActor.h"
-#include "BJS_SubWidget.h"
 #include "BJS_UserWidgetBase.h"
-#include "EngineUtils.h"
 #include "FriendSystem.h"
 #include "GameClient.pb.h"
-#include "NiagaraSystem.h"
 #include "PlayerStruct.h"
 #include "SkillStruct.h"
 #include "GameFramework/PlayerStart.h"
@@ -46,7 +43,7 @@ ABJS_InGameMode::ABJS_InGameMode()
 	static ConstructorHelpers::FClassFinder<UUserWidget> UI_FRIENDSYSTEM_HUD(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/MyGame/UMG/BJS_SWBP_Friend.BJS_SWBP_Friend_C'"));
 	check(UI_FRIENDSYSTEM_HUD.Succeeded());
 	
-	FriendUi = CreateWidget<UBJS_SubWidget>(GetWorld(), UI_FRIENDSYSTEM_HUD.Class);
+	FriendUi = CreateWidget<UBJS_FriendWidget>(GetWorld(), UI_FRIENDSYSTEM_HUD.Class);
 	if (FriendUi)
 	{
 		FriendUi->AddToViewport();	

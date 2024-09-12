@@ -117,6 +117,10 @@ void ABJS_ControlCharacter::Tick(float DeltaTime)
 	}
 }
 
+void ABJS_ControlCharacter::Move(float DeltaTime)
+{
+}
+
 void ABJS_ControlCharacter::Move(const FInputActionValue& Value)
 {
 	if (!IsAttack)
@@ -368,7 +372,7 @@ void ABJS_ControlCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 		//Friend
 		EnhancedInputComponent->BindAction(KeyOAction, ETriggerEvent::Completed, this, &ABJS_ControlCharacter::OpenFriendUI);
 		//OnMouse
-		EnhancedInputComponent->BindAction(KeyCtrlAction, ETriggerEvent::Completed, this, &ABJS_ControlCharacter::Mouse);
+		EnhancedInputComponent->BindAction(KeyCtrlAction, ETriggerEvent::Completed, this, &ABJS_ControlCharacter::ViewMouse);
 	}
 }
 
@@ -408,7 +412,7 @@ void ABJS_ControlCharacter::Skill(const FInputActionValue& Value)
 	}
 }
 
-void ABJS_ControlCharacter::Mouse(const FInputActionValue& Value)
+void ABJS_ControlCharacter::ViewMouse(const FInputActionValue& Value)
 {
 	auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
 	if (mode)
