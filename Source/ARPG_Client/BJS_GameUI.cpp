@@ -31,6 +31,7 @@ void UBJS_GameUI::BJS_InitWidget()
 	{
 		btn_iventory->OnClicked.AddDynamic(mode, &ABJS_InGameMode::ChangeInventoryUI);
 		btn_friends->OnClicked.AddDynamic(mode, &ABJS_InGameMode::OpenFriendUI);
+		btn_logout->OnClicked.AddDynamic(mode, &ABJS_InGameMode::ClaseMyPlayer);
 	}
 }
 

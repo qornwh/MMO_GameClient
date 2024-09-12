@@ -47,21 +47,7 @@ UBJS_GameInstance::UBJS_GameInstance()
 void UBJS_GameInstance::Init()
 {
 	Super::Init();
-
-	if (IsConnection) return;
-
-	const int32 port = 12128;
-	const FString Address = TEXT("127.0.0.1");
-	FIPv4Address::Parse(Address, Ip);
-
-	ServerArr = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->CreateInternetAddr();
-	ServerArr->SetIp(Ip.Value);
-	ServerArr->SetPort(port);
-
-	SocketPtr = FTcpSocketBuilder(TEXT("MYSOCKET")).AsNonBlocking().AsReusable();
-	SocketPtr->Connect(*ServerArr);
-	IsConnection = true;
-
+	SocketConnect();
 	WriteBuffer = MakeShared<BJS_Buffer>(1024 * 4);
 }
 
@@ -85,9 +71,40 @@ void UBJS_GameInstance::FinishDestroy()
 	Super::FinishDestroy();
 }
 
+void UBJS_GameInstance::SocketConnect()
+{
+	if (IsConnection) return;
+
+	const int32 port = 12128;
+	const FString Address = TEXT("127.0.0.1");
+	FIPv4Address::Parse(Address, Ip);
+
+	ServerArr = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->CreateInternetAddr();
+	ServerArr->SetIp(Ip.Value);
+	ServerArr->SetPort(port);
+
+	SocketPtr = FTcpSocketBuilder(TEXT("MYSOCKET")).AsNonBlocking().AsReusable();
+	SocketPtr->Connect(*ServerArr);
+	IsConnection = true;
+}
+
+void UBJS_GameInstance::SocketDisConnect()
+{
+	if (IsConnection)
+	{
+		IsConnection = false;
+		SocketPtr->Close();
+	}
+}
+
 FSocket* UBJS_GameInstance::GetSocket()
 {
 	return SocketPtr;
+}
+
+bool UBJS_GameInstance::GetIsConnect()
+{
+	return IsConnection;
 }
 
 TSharedPtr<FInternetAddr> UBJS_GameInstance::GetServerArr()

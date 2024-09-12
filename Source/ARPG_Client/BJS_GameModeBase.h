@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
-#include "GameFramework/PlayerStart.h"
 #include "BJS_GameModeBase.generated.h"
 
 /**
@@ -20,7 +19,7 @@ protected:
 	virtual void LoadSubClass();
 	TSubclassOf<AActor> SocketClass;
 	class ABJS_SocketActor* SocketActor;
-	APlayerStart* PlayerStart;
+	class APlayerStart* PlayerStart;
 
 	template< class T >
 	T* CustomSpawnActor(UClass* Class, FVector SpawnLocation = FVector::ZeroVector, FRotator SpawnRotation = FRotator::ZeroRotator);

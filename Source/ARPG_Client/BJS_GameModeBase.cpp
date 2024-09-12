@@ -3,9 +3,21 @@
 
 #include "BJS_GameModeBase.h"
 
+#include "GameFramework/PlayerStart.h"
 #include "BJS_SocketActor.h"
 #include "BJS_UserWidgetBase.h"
 #include "EngineUtils.h"
+
+ABJS_GameModeBase::ABJS_GameModeBase()
+{
+	static ConstructorHelpers::FClassFinder<ABJS_SocketActor> ACTOR_SOCKET(TEXT("/Script/CoreUObject.Class'/Script/ARPG_Client.BJS_SocketActor'"));
+
+	if (ACTOR_SOCKET.Succeeded())
+	{
+		SocketClass = ACTOR_SOCKET.Class;
+	}
+	ShowMouseCursor = false;
+}
 
 void ABJS_GameModeBase::BeginPlay()
 {
@@ -75,15 +87,4 @@ void ABJS_GameModeBase::SetShowMouseCousor(bool Flag)
 	{
 		control->SetInputMode(FInputModeGameOnly());
 	}
-}
-
-ABJS_GameModeBase::ABJS_GameModeBase()
-{
-	static ConstructorHelpers::FClassFinder<ABJS_SocketActor> ACTOR_SOCKET(TEXT("/Script/CoreUObject.Class'/Script/ARPG_Client.BJS_SocketActor'"));
-
-	if (ACTOR_SOCKET.Succeeded())
-	{
-		SocketClass = ACTOR_SOCKET.Class;
-	}
-	ShowMouseCursor = false;
 }

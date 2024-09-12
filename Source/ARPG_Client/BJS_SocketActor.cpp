@@ -27,6 +27,9 @@ void ABJS_SocketActor::BeginPlay()
 	auto myInstance = Cast<UBJS_GameInstance>(GetGameInstance());
 	if (myInstance)
 	{
+		if (!myInstance->GetIsConnect())
+			myInstance->SocketConnect();
+		
 		MySocket = myInstance->GetSocket();
 		check(MySocket != nullptr);
 
@@ -34,15 +37,8 @@ void ABJS_SocketActor::BeginPlay()
 		if (ReadBuffer == nullptr)
 			ReadBuffer = MakeShared<BJS_Buffer>();
 	}
-	else
-	{
-		check(MySocket != nullptr);
-	}
+	
 	WriteBuffer = MakeShared<BJS_Buffer>(1024 * 4);
-
-	auto state = MySocket->GetConnectionState();
-	if (state != ESocketConnectionState::SCS_Connected)
-		ReConnectSocket();
 }
 
 void ABJS_SocketActor::HandlePacket(BYTE* Buffer, PacketHeader* Header)
@@ -221,10 +217,13 @@ void ABJS_SocketActor::ReConnectSocket()
 
 		if (myInstance)
 		{
-			MySocket = myInstance->GetSocket();
+			if (myInstance->GetIsConnect())
+			{
+				MySocket = myInstance->GetSocket();
 
-			MySocket->Connect(*myInstance->GetServerArr());
-			check(MySocket != nullptr);
+				MySocket->Connect(*myInstance->GetServerArr());
+				check(MySocket != nullptr);
+			}
 		}
 	}
 }

@@ -37,6 +37,8 @@ public:
 	void ChangeInventoryUI();
 	UFUNCTION()
 	void OpenFriendUI();
+	UFUNCTION()
+	void ClaseMyPlayer();
 
 	void SetTakeDemageList(TSharedPtr<class BJS_CharaterState> State);
 	void TakeDemage(bool IsMonster, int32 SkillCode, TSharedPtr<class BJS_CharaterState> State);

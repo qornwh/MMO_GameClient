@@ -22,7 +22,10 @@ public:
 	virtual void Init() override;
 	virtual void BeginDestroy() override;
 	virtual void FinishDestroy() override;
+	void SocketConnect();
+	void SocketDisConnect();
 	FSocket* GetSocket();
+	bool GetIsConnect();
 	TSharedPtr<FInternetAddr> GetServerArr();
 	BJS_BufferPtr GetReadBuffer();
 	BJS_BufferPtr GetWriteBuffer();

@@ -16,6 +16,7 @@
 #include "PlayerStruct.h"
 #include "SkillStruct.h"
 #include "GameFramework/PlayerStart.h"
+#include "Kismet/GameplayStatics.h"
 
 ABJS_InGameMode::ABJS_InGameMode()
 {
@@ -377,6 +378,21 @@ void ABJS_InGameMode::OpenFriendUI()
 		SetShowMouseCousor(true);
 		FriendUi->SetVisibility(ESlateVisibility::Visible);
 	}
+}
+
+void ABJS_InGameMode::ClaseMyPlayer()
+{
+	protocol::SClosePlayer pkt;
+	pkt.set_uuid(MyState->GetUUid());
+	SocketActor->SendMessage(pkt, protocol::MessageCode::S_CLOSEPLAYER);
+	
+	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
+	if (instance)
+	{
+		instance->SocketDisConnect();
+	}
+
+	UGameplayStatics::OpenLevel(this, TEXT("LoginMap"));
 }
 
 void ABJS_InGameMode::UpdateMyFriendUI(int32 FriendCode, int32 State)
