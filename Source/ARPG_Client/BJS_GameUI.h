@@ -20,6 +20,7 @@ public:
 	UBJS_GameUI();
 
 	virtual void BJS_InitWidget() override;
+	virtual void BJS_UpdateWidget() override;
 	
 	void SetImg();
 	void SetName(FString Name);
@@ -28,15 +29,12 @@ public:
 	void SetHp(float Hp);
 	void ReadChatMessage(const FString& Message, int32 Type, const FString& Name);
 
-	FOnChatMessageSend OnChatMessageSend;
-
-	virtual void BJS_UpdateWidget() override;
-
 	UFUNCTION()
 	void CoolTimeUpdate(int32 KeyBind, float CoolTime);
-
 	UFUNCTION()
 	void SendChatMessage();
+	
+	FOnChatMessageSend OnChatMessageSend;
 
 private:
 	UPROPERTY(EditAnywhere, meta=(BindWidget))

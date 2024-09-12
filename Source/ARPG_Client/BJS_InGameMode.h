@@ -33,13 +33,15 @@ public:
 	void SendChatMessage(FString Message, int32 Type);
 	UFUNCTION()
 	void ReadChatMessage(FString Message, int32 Type, int32 Uuid);
+	UFUNCTION()
+	void ChangeInventoryUI();
+	UFUNCTION()
+	void OpenFriendUI();
 
 	void SetTakeDemageList(TSharedPtr<class BJS_CharaterState> State);
 	void TakeDemage(bool IsMonster, int32 SkillCode, TSharedPtr<class BJS_CharaterState> State);
 	void TakeHeal(int32 SkillCode, TSharedPtr<class BJS_CharaterState> State);
 	void DestroyPlayer(bool IsMonster, int32 UUid);
-	void ChangeInventoryUI();
-	void OpenFriendUI();
 	void UpdateMyFriendUI(int32 FriendCode, int32 State);
 	void UpdateInventoryEquipUI(int32 EquipUnipeId, int32 State);
 	void UpdateInventoryEtcUI(int32 EtcItemCode, int32 State);
