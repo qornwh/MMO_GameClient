@@ -88,7 +88,7 @@ void UBJS_LoginWidget::LoginCheck(int32 result)
 				if (result == 0)
 					str = FString(TEXT("로그인 실패 - 비밀번호가 틀렸습니다 !!!"));
 				else if (result == 2)
-					str = FString(TEXT("로그인 실패 - 계정 생성 성공 !!!"));
+					str = FString(TEXT("계정 생성 성공 !!!"));
 				else if (result == 3)
 					str = FString(TEXT("로그인 실패 - 이미 로그인된 계정 !!!"));
 				else if (result == 4)
