@@ -45,6 +45,8 @@ void UBJS_InventoryWidget::BJS_InitWidget()
 				Brush.ImageSize = FVector2D(Image->GetSizeX(), Image->GetSizeY());
 				img_charater->SetBrush(Brush);
 			}
+			
+			wg_state->SetName(instance->GetMyState()->GetName());
 		}
 	}
 
@@ -80,6 +82,7 @@ void UBJS_InventoryWidget::BJS_UpdateWidget()
 	{
 		wg_state->SetAttack(instance->GetMyState()->GetAttack());
 		wg_state->SetSpeed(instance->GetMyState()->GetSpeed());
+		wg_state->SetLv(instance->GetMyState()->GetLv());
 
 		SetGold(instance->GetMyInventory()->GetGold());
 	}

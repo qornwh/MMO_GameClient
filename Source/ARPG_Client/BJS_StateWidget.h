@@ -17,6 +17,8 @@ class ARPG_CLIENT_API UBJS_StateWidget : public UBJS_SubWidget
 public:
 	virtual void BJS_SubUpdateWidget() override;
 
+	void SetName(FString Name);
+	void SetLv(int32 Lv);
 	void SetAttack(int32 Attack);
 	void SetSpeed(int32 Speed);
 
