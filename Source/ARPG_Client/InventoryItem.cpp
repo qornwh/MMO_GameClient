@@ -3,13 +3,14 @@
 
 #include "InventoryItem.h"
 
-EquipItem::EquipItem(int32 uniqueId, int32 itemCode, int32 equipType, int32 attack, int32 speed, int32 isEquip, int32 use):
+EquipItem::EquipItem(int32 uniqueId, int32 itemCode, int32 equipType, int32 attack, int32 speed, int32 isEquip, int32 position, int32 use):
 	UniqueId(uniqueId),
 	ItemCode(itemCode),
 	EquipType(equipType),
 	Attack(attack),
 	Speed(speed),
 	IsEquip(isEquip),
+	Position(position),
 	Use(use)
 {
 }
@@ -46,7 +47,7 @@ void EquipItem::SetEmptyItem()
 	Use = -1;
 }
 
-EtcItem::EtcItem(int32 itemCode, int32 type, int32 count): ItemCode(itemCode), Count(count), Type(type)
+EtcItem::EtcItem(int32 itemCode, int32 type, int32 count, int32 position): ItemCode(itemCode), Count(count), Type(type), Position(position)
 {
 }
 
@@ -82,14 +83,14 @@ InventoryItem::~InventoryItem()
 {
 }
 
-EquipItem& InventoryItem::AddEquipItem(int32 uniqueId, int32 itemCode, int32 equipType, int32 attack, int32 speed, int32 isEquip, int32 use)
+EquipItem& InventoryItem::AddEquipItem(int32 uniqueId, int32 itemCode, int32 equipType, int32 attack, int32 speed, int32 isEquip, int32 position, int32 use)
 {
-	EquipItem Equip{uniqueId, itemCode, equipType, attack, speed, isEquip, use};
+	EquipItem Equip{uniqueId, itemCode, equipType, attack, speed, isEquip, position, use};
 	EquipItems.Add(Equip.UniqueId, Equip);
 	return EquipItems[Equip.UniqueId];
 }
 
-EtcItem& InventoryItem::AddEtcItem(int32 itemCode, int32 type, int32 count)
+EtcItem& InventoryItem::AddEtcItem(int32 itemCode, int32 type, int32 count, int32 position)
 {
 	auto it = EtcItems.Find(itemCode);
 	if (EtcItems.Contains(itemCode))
@@ -98,7 +99,7 @@ EtcItem& InventoryItem::AddEtcItem(int32 itemCode, int32 type, int32 count)
 	}
 	else
 	{
-		EtcItem etc{itemCode, type, count};
+		EtcItem etc{itemCode, type, count, position};
 		EtcItems.Add(itemCode, etc);
 	}
 	return *EtcItems.Find(itemCode);
@@ -136,13 +137,14 @@ bool InventoryItem::UseEquipItem(int32 UniqueId)
 	return true;
 }
 
-bool InventoryItem::ItemEquipped(int32 UniqueId, int32 Equipped)
+bool InventoryItem::ItemEquipped(int32 UniqueId, int32 Equipped, int32 Position)
 {
 	if (!EquipItems.Contains(UniqueId))
 	{
 		return false;
 	}
 	EquipItems.Find(UniqueId)->IsEquip = Equipped;
+	EquipItems.Find(UniqueId)->Position = Position;
 	return true;
 }
 

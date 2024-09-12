@@ -71,9 +71,7 @@ void UBJS_ItemSlotWidget::SetSlots(bool Flag)
 		img_item->SetVisibility(ESlateVisibility::Visible);
 		tb_cnt->SetVisibility(ESlateVisibility::Visible);
 		cb_check->SetVisibility(ESlateVisibility::Visible);
-	
 		btn_item->OnRightClick.AddDynamic(this, &UBJS_ItemSlotWidget::SendItemEquipped);
-		btn_item->OnDoubleClick.AddDynamic(this, &UBJS_ItemSlotWidget::SendItemEquipped);
 	}
 	else
 	{

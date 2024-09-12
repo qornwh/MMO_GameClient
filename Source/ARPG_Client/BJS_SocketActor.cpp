@@ -690,13 +690,14 @@ void ABJS_SocketActor::DropMessageHandler(BYTE* Buffer, PacketHeader* Header, in
 					item.attack(),
 					item.speed(),
 					item.is_equip(),
+					item.position(),
 					0);
 				mode->UpdateInventoryEquipUI(item.unipeid(), 1);
 			}
 
 			for (auto& item : pkt.itemetcs())
 			{
-				mode->GetMyInventory()->AddEtcItem(item.item_code(), item.item_type(), item.item_count());
+				mode->GetMyInventory()->AddEtcItem(item.item_code(), item.item_type(), item.item_count(), item.position());
 				mode->UpdateInventoryEtcUI(item.item_code(), 1);
 			}
 			mode->GetMyInventory()->AddGold(pkt.gold());
@@ -722,13 +723,14 @@ void ABJS_SocketActor::LoadInventoryHandler(BYTE* Buffer, PacketHeader* Header, 
 					item.attack(),
 					item.speed(),
 					item.is_equip(),
+					item.position(),
 					0);
 				mode->UpdateInventoryEquipUI(item.unipeid(), 1);
 			}
 
 			for (auto& item : pkt.itemetcs())
 			{
-				mode->GetMyInventory()->AddEtcItem(item.item_code(), item.item_type(), item.item_count());
+				mode->GetMyInventory()->AddEtcItem(item.item_code(), item.item_type(), item.item_count(), item.position());
 				mode->UpdateInventoryEtcUI(item.item_code(), 1);
 			}
 			mode->GetMyInventory()->SetGold(pkt.gold());
@@ -827,7 +829,7 @@ void ABJS_SocketActor::UpdateItemsHandler(BYTE* Buffer, PacketHeader* Header, in
 		{
 			for (auto& item : pkt.itemequips())
 			{
-				mode->GetMyInventory()->ItemEquipped(item.unipeid(), item.is_equip());
+				mode->GetMyInventory()->ItemEquipped(item.unipeid(), item.is_equip(), item.position());
 				mode->UpdateInventoryEquipUI(item.unipeid(), 2);
 			}
 

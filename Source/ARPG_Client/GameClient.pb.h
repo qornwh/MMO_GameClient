@@ -5548,6 +5548,7 @@ class ItemEquip final :
     kSpeedFieldNumber = 4,
     kIsEquipFieldNumber = 5,
     kUnipeIdFieldNumber = 6,
+    kPositionFieldNumber = 7,
   };
   // int32 item_code = 1;
   void clear_item_code();
@@ -5603,6 +5604,15 @@ class ItemEquip final :
   void _internal_set_unipeid(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
+  // int32 position = 7;
+  void clear_position();
+  ::PROTOBUF_NAMESPACE_ID::int32 position() const;
+  void set_position(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_position() const;
+  void _internal_set_position(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:protocol.ItemEquip)
  private:
   class _Internal;
@@ -5616,6 +5626,7 @@ class ItemEquip final :
   ::PROTOBUF_NAMESPACE_ID::int32 speed_;
   ::PROTOBUF_NAMESPACE_ID::int32 is_equip_;
   ::PROTOBUF_NAMESPACE_ID::int32 unipeid_;
+  ::PROTOBUF_NAMESPACE_ID::int32 position_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_GameClient_2eproto;
 };
@@ -5743,6 +5754,7 @@ class ItemEtc final :
     kItemCodeFieldNumber = 1,
     kItemCountFieldNumber = 2,
     kItemTypeFieldNumber = 3,
+    kPositionFieldNumber = 4,
   };
   // int32 item_code = 1;
   void clear_item_code();
@@ -5771,6 +5783,15 @@ class ItemEtc final :
   void _internal_set_item_type(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
+  // int32 position = 4;
+  void clear_position();
+  ::PROTOBUF_NAMESPACE_ID::int32 position() const;
+  void set_position(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_position() const;
+  void _internal_set_position(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:protocol.ItemEtc)
  private:
   class _Internal;
@@ -5781,6 +5802,7 @@ class ItemEtc final :
   ::PROTOBUF_NAMESPACE_ID::int32 item_code_;
   ::PROTOBUF_NAMESPACE_ID::int32 item_count_;
   ::PROTOBUF_NAMESPACE_ID::int32 item_type_;
+  ::PROTOBUF_NAMESPACE_ID::int32 position_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_GameClient_2eproto;
 };
@@ -10112,6 +10134,26 @@ inline void ItemEquip::set_unipeid(::PROTOBUF_NAMESPACE_ID::int32 value) {
   // @@protoc_insertion_point(field_set:protocol.ItemEquip.unipeId)
 }
 
+// int32 position = 7;
+inline void ItemEquip::clear_position() {
+  position_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ItemEquip::_internal_position() const {
+  return position_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ItemEquip::position() const {
+  // @@protoc_insertion_point(field_get:protocol.ItemEquip.position)
+  return _internal_position();
+}
+inline void ItemEquip::_internal_set_position(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  position_ = value;
+}
+inline void ItemEquip::set_position(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_position(value);
+  // @@protoc_insertion_point(field_set:protocol.ItemEquip.position)
+}
+
 // -------------------------------------------------------------------
 
 // ItemEtc
@@ -10174,6 +10216,26 @@ inline void ItemEtc::_internal_set_item_type(::PROTOBUF_NAMESPACE_ID::int32 valu
 inline void ItemEtc::set_item_type(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_item_type(value);
   // @@protoc_insertion_point(field_set:protocol.ItemEtc.item_type)
+}
+
+// int32 position = 4;
+inline void ItemEtc::clear_position() {
+  position_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ItemEtc::_internal_position() const {
+  return position_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ItemEtc::position() const {
+  // @@protoc_insertion_point(field_get:protocol.ItemEtc.position)
+  return _internal_position();
+}
+inline void ItemEtc::_internal_set_position(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  position_ = value;
+}
+inline void ItemEtc::set_position(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_position(value);
+  // @@protoc_insertion_point(field_set:protocol.ItemEtc.position)
 }
 
 // -------------------------------------------------------------------

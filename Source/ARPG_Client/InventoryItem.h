@@ -6,12 +6,12 @@
 
 struct EquipItem
 {
-	EquipItem(int32 uniqueId, int32 itemCode, int32 equipType, int32 attack, int32 speed, int32 isEquip, int32 use);
+	EquipItem(int32 uniqueId, int32 itemCode, int32 equipType, int32 attack, int32 speed, int32 isEquip, int32 position, int32 use);
 	~EquipItem();
 
 	EquipItem& operator=(const EquipItem& other);
 
-    void UpdateItem(int32 use = 1);
+	void UpdateItem(int32 use = 1);
 	void SetEmptyItem();
 	int32 UniqueId;
 	int32 ItemCode;
@@ -19,12 +19,13 @@ struct EquipItem
 	int32 Attack;
 	int32 Speed;
 	int32 IsEquip;
-    int32 Use;
+	int32 Position;
+	int32 Use;
 };
 
 struct EtcItem
 {
-	EtcItem(int32 itemCode, int32 type, int32 count);
+	EtcItem(int32 itemCode, int32 type, int32 count, int32 position);
 	~EtcItem();
 
 	EtcItem& operator=(const EtcItem& other);
@@ -34,6 +35,7 @@ struct EtcItem
 	int32 ItemCode;
 	int32 Count;
 	int32 Type;
+	int32 Position;
 };
 
 class ARPG_CLIENT_API InventoryItem : public TSharedFromThis<InventoryItem>
@@ -42,12 +44,12 @@ public:
 	InventoryItem();
 	~InventoryItem();
 
-	EquipItem& AddEquipItem(int32 uniqueId, int32 itemCode, int32 equipType, int32 attack, int32 speed, int32 isEquip, int32 use);
-	EtcItem& AddEtcItem(int32 itemCode, int32 type, int32 count);
+	EquipItem& AddEquipItem(int32 uniqueId, int32 itemCode, int32 equipType, int32 attack, int32 speed, int32 isEquip, int32 position, int32 use);
+	EtcItem& AddEtcItem(int32 itemCode, int32 type, int32 count, int32 position);
 	EquipItem& AddEquipItem(EquipItem& Equip);
 	EtcItem& AddEtcItem(EtcItem& Etc);
 	bool UseEquipItem(int32 UniqueId);
-	bool ItemEquipped(int32 UniqueId, int32 Equipped);
+	bool ItemEquipped(int32 UniqueId, int32 Equipped, int32 Position);
 	bool UseEtcItem(int32 Code, int32 Count);
 
 	void AddGold(int32 gold);

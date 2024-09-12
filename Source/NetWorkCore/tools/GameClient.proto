@@ -237,12 +237,14 @@ message ItemEquip {
     int32 speed = 4;
     int32 is_equip = 5;
     int32 unipeId = 6;
+    int32 position = 7;
 }
 
 message ItemEtc {
     int32 item_code = 1;
     int32 item_count = 2;
     int32 item_type = 3;
+    int32 position = 4;
 }
 
 message DropMessage {

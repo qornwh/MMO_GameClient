@@ -56,8 +56,8 @@ void UBJS_InventoryWidget::BJS_InitWidget()
 			auto etcSlot = CreateWidget<UBJS_ItemSlotWidget>(GetWorld(), ItemSlotClass);
 			equipSlot->SetSlots(false);
 			etcSlot->SetSlots(false);
-			EmptyEquipSlot.Add(equipSlot);
-			EmptyEtcSlot.Add(etcSlot);
+			EquipSlot.Add(equipSlot);
+			EtcSlot.Add(etcSlot);
 		}
 	}
 
@@ -87,47 +87,46 @@ void UBJS_InventoryWidget::BJS_UpdateWidget()
 
 void UBJS_InventoryWidget::AddEquipSlot(int32 EquipUnipeId)
 {
-	if (!EmptyEquipSlot.IsEmpty())
+	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
+	if (instance)
 	{
-		auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
-		if (instance)
+		if (instance->GetMyInventory()->GetEquipItems().Contains(EquipUnipeId))
 		{
-			if (instance->GetMyInventory()->GetEquipItems().Contains(EquipUnipeId))
-			{
-				auto item = instance->GetMyInventory()->GetEquipItems().Find(EquipUnipeId);
-				auto& ImageMap = instance->GetItemEquipIconImgMap();
+			auto item = instance->GetMyInventory()->GetEquipItems().Find(EquipUnipeId);
+			auto& ImageMap = instance->GetItemEquipIconImgMap();
 
-				if (item->IsEquip == 0)
+			if (item->IsEquip == 0)
+			{
+				int32 idx = item->Position;
+				if (InvenSize > idx)
 				{
-					auto slot = EmptyEquipSlot.Last();
-					EmptyEquipSlot.Pop();
+					auto slot = EquipSlot[idx];
 					slot->SetEquip(*item);
 					slot->SetSlots(true);
 					slot->SetImg(ImageMap[item->ItemCode]);
 					EquipItemSlots.Add(EquipUnipeId, slot);
 				}
-				else if (item->IsEquip == 1)
+			}
+			else if (item->IsEquip == 1)
+			{
+				if (item->EquipType == 1)
 				{
-					if (item->EquipType == 1)
-					{
-						slot_attsocket->SetEquip(*item);
-						slot_attsocket->SetSocket(true);
-						slot_attsocket->SetImg(ImageMap[item->ItemCode]);
-					}
-					else if (item->EquipType == 2)
-					{
-						slot_spesocket->SetEquip(*item);
-						slot_spesocket->SetSocket(true);
-						slot_spesocket->SetImg(ImageMap[item->ItemCode]);
-					}
+					slot_attsocket->SetEquip(*item);
+					slot_attsocket->SetSocket(true);
+					slot_attsocket->SetImg(ImageMap[item->ItemCode]);
+				}
+				else if (item->EquipType == 2)
+				{
+					slot_spesocket->SetEquip(*item);
+					slot_spesocket->SetSocket(true);
+					slot_spesocket->SetImg(ImageMap[item->ItemCode]);
+				}
 
-					if (EquipItemSlots.Contains(EquipUnipeId))
-					{
-						auto slot = EquipItemSlots.Find(EquipUnipeId);
-						EquipItemSlots.Remove(EquipUnipeId);
-						(*slot)->SetSlots(false);
-						EmptyEquipSlot.Add(*slot);
-					}
+				if (EquipItemSlots.Contains(EquipUnipeId))
+				{
+					auto slot = EquipItemSlots.Find(EquipUnipeId);
+					EquipItemSlots.Remove(EquipUnipeId);
+					(*slot)->SetSlots(false);
 				}
 			}
 		}
@@ -174,10 +173,10 @@ void UBJS_InventoryWidget::RemoveEquipSlot(int32 EquipUnipeId)
 			auto slot = EquipItemSlots.Find(EquipUnipeId);
 			EquipItemSlots.Remove(EquipUnipeId);
 			(*slot)->SetSlots(false);
-			EmptyEquipSlot.Add(*slot);
 		}
 		else
 		{
+			// 장착 해제
 			auto item = instance->GetMyInventory()->GetEquipItems().Find(EquipUnipeId);
 			if (item->EquipType == 1)
 			{
@@ -216,15 +215,18 @@ void UBJS_InventoryWidget::UpdateEtcSlot(int32 EtcItemCode)
 			}
 			else
 			{
-				auto slot = EmptyEtcSlot.Last();
-				EmptyEtcSlot.Pop();
-				auto& ImageMap = instance->GetItemEtcIconImgMap();
 				auto item = instance->GetMyInventory()->GetEtcItems().Find(EtcItemCode);
-				slot->SetEtc(*item);
-				slot->SetSlots(true);
-				slot->SetImg(ImageMap[EtcItemCode]);
-				slot->SetCnt(item->Count);
-				EtcItemSlots.Add(EtcItemCode, slot);
+				int idx = item->Position;
+				if (InvenSize > idx)
+				{
+					auto slot = EtcSlot[idx];
+					auto& ImageMap = instance->GetItemEtcIconImgMap();
+					slot->SetEtc(*item);
+					slot->SetSlots(true);
+					slot->SetImg(ImageMap[EtcItemCode]);
+					slot->SetCnt(item->Count);
+					EtcItemSlots.Add(EtcItemCode, slot);
+				}
 			}
 		}
 		else
@@ -233,86 +235,49 @@ void UBJS_InventoryWidget::UpdateEtcSlot(int32 EtcItemCode)
 			auto slot = EtcItemSlots.Find(EtcItemCode);
 			EtcItemSlots.Remove(EtcItemCode);
 			(*slot)->SetSlots(false);
-			EmptyEtcSlot.Add(*slot);
 		}
 	}
 }
 
 void UBJS_InventoryWidget::SetSlot()
 {
-	// 인벤토리 업데이트 될때만 처리
-	SlotResetCheck();
-
 	int32 row = 0;
 	int32 col = 0;
-	if ((InventoryModeState & NOTSELL) == InventoryMode::EQUIP)
-	{
-		ugp_EquipItemSlots->ClearChildren();
-		for (auto equipItemEntry : EquipItemSlots)
-		{
-			UUniformGridSlot* GridSlot = ugp_EquipItemSlots->AddChildToUniformGrid(equipItemEntry.Value, row, col);
-			col++;
-			if (col >= ColSize)
-			{
-				col = 0;
-				row++;
-			}
-			if (GridSlot)
-			{
-				GridSlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
-				GridSlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Fill);
-			}
-		}
+	ugp_EquipItemSlots->ClearChildren();
 
-		for (auto empty : EmptyEquipSlot)
+	for (auto empty : EquipSlot)
+	{
+		UUniformGridSlot* GridSlot = ugp_EquipItemSlots->AddChildToUniformGrid(empty, row, col);
+		col++;
+		if (col >= ColSize)
 		{
-			UUniformGridSlot* GridSlot = ugp_EquipItemSlots->AddChildToUniformGrid(empty, row, col);
-			col++;
-			if (col >= ColSize)
-			{
-				col = 0;
-				row++;
-			}
-			if (GridSlot)
-			{
-				GridSlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
-				GridSlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Fill);
-			}
+			col = 0;
+			row++;
+		}
+		if (GridSlot)
+		{
+			GridSlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
+			GridSlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Fill);
 		}
 	}
-	else
-	{
-		ugp_ItemSlots->ClearChildren();
-		for (auto etcItemEntry : EtcItemSlots)
-		{
-			UUniformGridSlot* GridSlot = ugp_ItemSlots->AddChildToUniformGrid(etcItemEntry.Value, row, col);
-			col++;
-			if (col >= ColSize)
-			{
-				col = 0;
-				row++;
-			}
-			if (GridSlot)
-			{
-				GridSlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
-				GridSlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Fill);
-			}
-		}
 
-		for (auto empty : EmptyEtcSlot)
+	ugp_ItemSlots->ClearChildren();
+
+	row = 0;
+	col = 0;
+	for (auto empty : EtcSlot)
+	{
+		UUniformGridSlot* GridSlot = ugp_ItemSlots->AddChildToUniformGrid(empty, row, col);
+		col++;
+		if (col >= ColSize)
 		{
-			UUniformGridSlot* GridSlot = ugp_ItemSlots->AddChildToUniformGrid(empty, row, col);
-			col++;
-			if (col >= ColSize)
-			{
-				col = 0;
-				row++;
-			}
-			if (GridSlot)
-			{
-				GridSlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
-				GridSlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Fill);
-			}
+			col = 0;
+			row++;
+		}
+		if (GridSlot)
+		{
+			GridSlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
+			GridSlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Fill);
 		}
 	}
 }
@@ -346,9 +311,8 @@ void UBJS_InventoryWidget::SetGold(int32 Gold)
 void UBJS_InventoryWidget::ViewInventoryEtc()
 {
 	SlotResetCheck();
-	InventoryModeState = InventoryModeState & InventoryMode::EMPTY;
-	InventoryModeState += InventoryMode::ETC;
-	SetSlot();
+	InventoryModeState = InventoryMode::ETC;
+	// SetSlot();
 	ugp_EquipItemSlots->SetVisibility(ESlateVisibility::Hidden);
 	ugp_ItemSlots->SetVisibility(ESlateVisibility::Visible);
 }
@@ -356,9 +320,8 @@ void UBJS_InventoryWidget::ViewInventoryEtc()
 void UBJS_InventoryWidget::ViewInventoryEquip()
 {
 	SlotResetCheck();
-	InventoryModeState = InventoryModeState & InventoryMode::EMPTY;
-	InventoryModeState += InventoryMode::EQUIP;
-	SetSlot();
+	InventoryModeState = InventoryMode::EQUIP;
+	// SetSlot();
 	ugp_EquipItemSlots->SetVisibility(ESlateVisibility::Visible);
 	ugp_ItemSlots->SetVisibility(ESlateVisibility::Hidden);
 }
@@ -372,10 +335,10 @@ void UBJS_InventoryWidget::SellItem()
 {
 	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
 	if (!instance) return;
-	
+
 	auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
 	if (!mode) return;
-	
+
 	for (UWidget* Child : ugp_EquipItemSlots->GetAllChildren())
 	{
 		if (UBJS_ItemSlotWidget* ItemSlot = Cast<UBJS_ItemSlotWidget>(Child))
@@ -386,12 +349,8 @@ void UBJS_InventoryWidget::SellItem()
 				ItemSlot->ResetCheck();
 			}
 		}
-		else
-		{
-			break;
-		}
 	}
-	
+
 	for (UWidget* Child : ugp_ItemSlots->GetAllChildren())
 	{
 		if (UBJS_ItemSlotWidget* ItemSlot = Cast<UBJS_ItemSlotWidget>(Child))
@@ -402,12 +361,8 @@ void UBJS_InventoryWidget::SellItem()
 				ItemSlot->ResetCheck();
 			}
 		}
-		else
-		{
-			break;
-		}
 	}
-	
+
 	auto widget = CreateWidget<UUserWidget>(GetWorld(), instance->GetPrompt2());
 	if (widget)
 	{

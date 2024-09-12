@@ -72,12 +72,15 @@ private:
 	class UBJS_ItemSlotWidget* slot_spesocket;
 	
 	TSubclassOf<class UBJS_ItemSlotWidget> ItemSlotClass;
-	TArray<class UBJS_ItemSlotWidget*> EmptyEquipSlot;
-	TArray<class UBJS_ItemSlotWidget*> EmptyEtcSlot;
+	TArray<class UBJS_ItemSlotWidget*> EquipSlot;
+	TArray<class UBJS_ItemSlotWidget*> EtcSlot;
 	TMap<int32, class UBJS_ItemSlotWidget*> EquipItemSlots;
 	TMap<int32, class UBJS_ItemSlotWidget*> EtcItemSlots;
 	
 	int32 ColSize = 5;
 	int32 RowSize = 4;
 	int32 InventoryModeState = 0;
+
+	// 인벤토리 사이즈 고정
+	const int32 InvenSize = 20;
 };
