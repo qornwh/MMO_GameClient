@@ -3,19 +3,25 @@
 
 #include "BJS_CharaterState.h"
 
-void BJS_BuffState::AddAttack(int32 Value)
+void BJS_ExState::AddAttack(int32 Value)
 {
 	Attack += Value;
+	if (Attack < 0)
+		Attack = 0;
 }
 
-void BJS_BuffState::AddSpeed(float Value)
+void BJS_ExState::AddSpeed(float Value)
 {
 	Speed += Value;
+	if (Speed < 0)
+		Speed = 0;
 }
 
-void BJS_BuffState::AddDeffence(int32 Value)
+void BJS_ExState::AddDeffence(int32 Value)
 {
 	Deffence += Value;
+	if (Deffence < 0)
+		Deffence = 0;
 }
 
 BJS_CharaterState::BJS_CharaterState() : Lv(0), Exp(0), Gold(0), MaxHp(0), Hp(0), Attack(0), Speed(0), Deffence(0), State(0),
@@ -89,7 +95,7 @@ void BJS_CharaterState::SetHp(int32 hp)
 
 int32 BJS_CharaterState::GetAttack() const
 {
-	return Attack + BuffState.Attack;
+	return Attack + BuffState.Attack + ItemState.Attack;
 }
 
 void BJS_CharaterState::SetAttack(int32 attack)
@@ -99,7 +105,7 @@ void BJS_CharaterState::SetAttack(int32 attack)
 
 float BJS_CharaterState::GetSpeed() const
 {
-	return Speed + BuffState.Speed;
+	return Speed + BuffState.Speed + ItemState.Speed;
 }
 
 void BJS_CharaterState::SetSpeed(float speed)
@@ -109,7 +115,7 @@ void BJS_CharaterState::SetSpeed(float speed)
 
 int32 BJS_CharaterState::GetDeffence() const
 {
-	return Deffence + BuffState.Deffence;
+	return Deffence + BuffState.Deffence + ItemState.Deffence;
 }
 
 void BJS_CharaterState::SetDeffence(int32 deffence)

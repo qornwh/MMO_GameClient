@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 
-struct BJS_BuffState
+struct BJS_ExState
 {
 	void AddAttack(int32 Value);
 	void AddSpeed(float Value);
@@ -80,7 +80,10 @@ public:
 	bool GetIsMonster();
 
 	// 버프의 스텟도 여기에 둔다
-	BJS_BuffState BuffState;
+	BJS_ExState BuffState;
+
+	// 아이템의 스텟도 여기에 둔다
+	BJS_ExState ItemState;
 	
 private:
 	bool IsMonster = false;

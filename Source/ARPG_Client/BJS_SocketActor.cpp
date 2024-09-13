@@ -725,6 +725,16 @@ void ABJS_SocketActor::LoadInventoryHandler(BYTE* Buffer, PacketHeader* Header, 
 					item.position(),
 					0);
 				mode->UpdateInventoryEquipUI(item.unipeid(), 1);
+				
+				// 일단 여기서 아이템 스텟을 상승 시킨다.
+				int32 attack = item.attack();
+				int32 speed = item.speed();
+				if (item.is_equip() == 1)
+				{
+					auto state = mode->GetMyState();
+					state->ItemState.AddAttack(attack);
+					state->ItemState.AddSpeed(speed);
+				}
 			}
 
 			for (auto& item : pkt.itemetcs())
@@ -830,6 +840,18 @@ void ABJS_SocketActor::UpdateItemsHandler(BYTE* Buffer, PacketHeader* Header, in
 			{
 				mode->GetMyInventory()->ItemEquipped(item.unipeid(), item.is_equip(), item.position());
 				mode->UpdateInventoryEquipUI(item.unipeid(), 2);
+
+				// 일단 여기서 아이템 스텟을 상승 시킨다.
+				int32 attack = item.attack();
+				int32 speed = item.speed();
+				if (!item.is_equip())
+				{
+					attack *= -1;
+					speed *= -1;
+				}
+				auto state = mode->GetMyState();
+				state->ItemState.AddAttack(attack);
+				state->ItemState.AddSpeed(speed);
 			}
 
 			mode->UpdateInventoryUI();
