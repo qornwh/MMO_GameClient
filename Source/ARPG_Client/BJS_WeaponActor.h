@@ -53,8 +53,10 @@ public:
 	void SetSkeletalMesh(TObjectPtr<class USkeletalMesh> CurrentMesh) const;
 	void SetMuzzleFX(TObjectPtr<class UParticleSystem> Particle) const;
 	void SetBulletFX(TObjectPtr<class UNiagaraSystem> Particle, int32 Code);
+	void SetState(TSharedPtr<class BJS_CharaterState> State);
 
 private:
+	TWeakPtr<class BJS_CharaterState> CharaterState;
 	bool Fire = false;
 
 	float AttackCheckTime = 0.25f;

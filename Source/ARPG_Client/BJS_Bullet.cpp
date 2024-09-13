@@ -101,9 +101,8 @@ void ABJS_Bullet::OnHitEvent(UPrimitiveComponent* HitComp, AActor* OtherActor, U
 {
 	if (OtherActor)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Hit Bullet with actor: %s %s!!!"), *OtherActor->GetName(), *CollisionComponent->GetCollisionProfileName().ToString());
-		UE_LOG(LogTemp, Warning, TEXT("Hit Bullet with actor: %s %s!!!"), *OtherActor->GetName(), *OtherComp->GetCollisionProfileName().ToString());
-		
+		// UE_LOG(LogTemp, Warning, TEXT("Hit Bullet with actor: %s %s!!!"), *OtherActor->GetName(), *CollisionComponent->GetCollisionProfileName().ToString());
+		// UE_LOG(LogTemp, Warning, TEXT("Hit Bullet with actor: %s %s!!!"), *OtherActor->GetName(), *OtherComp->GetCollisionProfileName().ToString());
 		auto BJSCharater = Cast<ABJS_Character>(OtherActor);
 		if (BJSCharater)
 		{
@@ -112,15 +111,19 @@ void ABJS_Bullet::OnHitEvent(UPrimitiveComponent* HitComp, AActor* OtherActor, U
 			{
 				if (Cast<ABJS_Monster>(BJSCharater))
 				{
-					mode->SetTakeDemageList(BJSCharater->GetState());
-					FVector loc = BJSCharater->GetActorLocation();
-					FRotator rot = BJSCharater->GetActorRotation();
-					
-					BJSCharater->GetState()->SetX(loc.X);
-					BJSCharater->GetState()->SetY(loc.Y);
-					BJSCharater->GetState()->SetZ(loc.Z);
-					BJSCharater->GetState()->SetYaw(rot.Yaw);
-					mode->TakeDemage(true, SkillCode, mode->GetMyState());
+					// 나일때만 데미지 전달
+					if(CharaterState.IsValid() && CharaterState.Pin()->GetUUid() == mode->GetMyState()->GetUUid())
+					{
+						mode->SetTakeDemageList(BJSCharater->GetState());
+						FVector loc = BJSCharater->GetActorLocation();
+						FRotator rot = BJSCharater->GetActorRotation();
+						
+						BJSCharater->GetState()->SetX(loc.X);
+						BJSCharater->GetState()->SetY(loc.Y);
+						BJSCharater->GetState()->SetZ(loc.Z);
+						BJSCharater->GetState()->SetYaw(rot.Yaw);
+						mode->TakeDemage(true, SkillCode, mode->GetMyState());
+					}
 				}
 				else if (Cast<ABJS_ControlCharacter>(BJSCharater))
 				{
@@ -182,4 +185,9 @@ void ABJS_Bullet::SetTarget(ABJS_Character* Target, ABJS_Character* Parent)
 void ABJS_Bullet::SetSkillCode(int32 Code)
 {
 	SkillCode = Code;
+}
+
+void ABJS_Bullet::SetState(TSharedPtr<BJS_CharaterState> State)
+{
+	CharaterState = State;
 }

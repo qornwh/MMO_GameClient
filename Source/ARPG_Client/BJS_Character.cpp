@@ -185,6 +185,7 @@ void ABJS_Character::CreateWeaponActor(USkeletalMesh* WeaponMesh)
 		Weapon->SetSkeletalMesh(WeaponMesh);
 		ChangeWeaponSocket();
 		Weapon->OnAttackEnd.BindUObject(this, &ABJS_Character::AttackEnd);
+		Weapon->SetState(State);
 	}
 }
 

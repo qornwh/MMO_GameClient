@@ -44,14 +44,15 @@ public:
 	void HitCheck();
 	void SetTarget(class ABJS_Character* Target, class ABJS_Character* Parent);
 	void SetSkillCode(int32 Code);
+	void SetState(TSharedPtr<class BJS_CharaterState> State);
 
 private:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Input, meta = (AllowPrivateAccess = "true"))
-	float Speed = 3000.f;
-
+	TWeakPtr<class BJS_CharaterState> CharaterState;
 	int32 SkillCode = 0;
 	FVector StartPos = FVector::Zero();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Input, meta = (AllowPrivateAccess = "true"))
+	float Speed = 3000.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Attack, meta = (AllowPrivateAccess = "true"))
 	bool isMultipleAttack = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Attack, meta = (AllowPrivateAccess = "true"))

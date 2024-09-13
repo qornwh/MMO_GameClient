@@ -77,6 +77,8 @@ void ABJS_WeaponActor::FireStart(FVector Direction, int32 Code)
 		{
 			auto Bullet = GetWorld()->SpawnActor<ABJS_Bullet>(BulletClass, SpawnLocation, FRotator::ZeroRotator);
 			Bullet->InitStartDirection(Direction, SpawnLocation);
+			if (CharaterState.IsValid())
+				Bullet->SetState(CharaterState.Pin());
 			AttackTimer = 0;
 			AttackCheckTime = 0.25f;
 		}
@@ -89,6 +91,8 @@ void ABJS_WeaponActor::FireStart(FVector Direction, int32 Code)
 			Bullet->SetActorRelativeLocation(FVector(Bullet->GetHightSize(), 0, 0));
 			Bullet->SetSkillCode(Code);
 			SkillComponent->Activate(true);
+			if (CharaterState.IsValid())
+				Bullet->SetState(CharaterState.Pin());
 		}
 
 		// 파티클 스타트
@@ -156,4 +160,9 @@ void ABJS_WeaponActor::SetBulletFX(TObjectPtr<class UNiagaraSystem> Particle, in
 	}
 
 	check(SkillClass);
+}
+
+void ABJS_WeaponActor::SetState(TSharedPtr<BJS_CharaterState> State)
+{
+	CharaterState = State;
 }

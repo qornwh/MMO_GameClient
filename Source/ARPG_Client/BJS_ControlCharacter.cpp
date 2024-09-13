@@ -9,7 +9,6 @@
 #include "BJS_GameUI.h"
 #include "BJS_InGameMode.h"
 #include "BJS_SocketActor.h"
-#include "BJS_WeaponActor.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
