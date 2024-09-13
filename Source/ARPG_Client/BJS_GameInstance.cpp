@@ -415,32 +415,32 @@ TMap<int32, FItemEtcStruct*>& UBJS_GameInstance::GetItemEtcStructMap()
 	return ItemEtcStructMap;
 }
 
-TMap<int32, UTexture2D*>& UBJS_GameInstance::GetSkillIconImgMap()
+TMap<int32, TObjectPtr<UTexture2D>>& UBJS_GameInstance::GetSkillIconImgMap()
 {
 	return SkillIconImgMap;
 }
 
-TMap<int32, UTexture2D*>& UBJS_GameInstance::GetItemEquipIconImgMap()
+TMap<int32, TObjectPtr<UTexture2D>>& UBJS_GameInstance::GetItemEquipIconImgMap()
 {
 	return ItemEquipIconImgMap;
 }
 
-TMap<int32, UTexture2D*>& UBJS_GameInstance::GetItemEtcIconImgMap()
+TMap<int32, TObjectPtr<UTexture2D>>& UBJS_GameInstance::GetItemEtcIconImgMap()
 {
 	return ItemEtcIconImgMap;
 }
 
-TMap<int32, UTexture2D*>& UBJS_GameInstance::GetCharaterImgMap()
+TMap<int32, TObjectPtr<UTexture2D>>& UBJS_GameInstance::GetCharaterImgMap()
 {
 	return CharaterHeadImageMap;
 }
 
-TMap<int32, UParticleSystem*>& UBJS_GameInstance::GetParticleSkillMap()
+TMap<int32, TObjectPtr<UParticleSystem>>& UBJS_GameInstance::GetParticleSkillMap()
 {
 	return ParticleSkillMap;
 }
 
-UParticleSystem* UBJS_GameInstance::GetFireStartFX()
+TObjectPtr<UParticleSystem> UBJS_GameInstance::GetFireStartFX()
 {
 	return ParticleMuzzleFX;
 }
@@ -460,17 +460,17 @@ TSubclassOf<AActor>& UBJS_GameInstance::GetBuffSkillClass()
 	return BuffSkill;
 }
 
-TMap<int32, UNiagaraSystem*>& UBJS_GameInstance::GetNiagaraSkillMap()
+TMap<int32, TObjectPtr<UNiagaraSystem>>& UBJS_GameInstance::GetNiagaraSkillMap()
 {
 	return NiagaraSkillMap;
 }
 
-TMap<int32, class USkeletalMesh*>& UBJS_GameInstance::GetCharaterMeshList()
+TMap<int32, TObjectPtr<USkeletalMesh>>& UBJS_GameInstance::GetCharaterMeshList()
 {
 	return CharacterMeshList;
 }
 
-TMap<int32, class USkeletalMesh*>& UBJS_GameInstance::GetWeaponMeshList()
+TMap<int32, TObjectPtr<USkeletalMesh>>& UBJS_GameInstance::GetWeaponMeshList()
 {
 	return WeaponMeshList;
 }

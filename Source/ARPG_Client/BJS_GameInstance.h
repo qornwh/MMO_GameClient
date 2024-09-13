@@ -60,16 +60,16 @@ public:
 	TMap<int32, struct FItemEquipStruct*>& GetItemEquipStructMap();
 	TMap<int32, struct FItemEtcStruct*>& GetItemEtcStructMap();
 
-	TMap<int32, class UTexture2D*>& GetSkillIconImgMap();
-	TMap<int32, class UTexture2D*>& GetItemEquipIconImgMap();
-	TMap<int32, class UTexture2D*>& GetItemEtcIconImgMap();
-	TMap<int32, class UTexture2D*>& GetCharaterImgMap();
+	TMap<int32, TObjectPtr<class UTexture2D>>& GetSkillIconImgMap();
+	TMap<int32, TObjectPtr<class UTexture2D>>& GetItemEquipIconImgMap();
+	TMap<int32, TObjectPtr<class UTexture2D>>& GetItemEtcIconImgMap();
+	TMap<int32, TObjectPtr<class UTexture2D>>& GetCharaterImgMap();
 
-	TMap<int32, class USkeletalMesh*>& GetCharaterMeshList();
-	TMap<int32, class USkeletalMesh*>& GetWeaponMeshList();
-	TMap<int32, class UParticleSystem*>& GetParticleSkillMap();
-	TMap<int32, class UNiagaraSystem*>& GetNiagaraSkillMap();
-	class UParticleSystem* GetFireStartFX();
+	TMap<int32, TObjectPtr<class USkeletalMesh>>& GetCharaterMeshList();
+	TMap<int32, TObjectPtr<class USkeletalMesh>>& GetWeaponMeshList();
+	TMap<int32, TObjectPtr<class UParticleSystem>>& GetParticleSkillMap();
+	TMap<int32, TObjectPtr<class UNiagaraSystem>>& GetNiagaraSkillMap();
+	TObjectPtr<class UParticleSystem> GetFireStartFX();
 
 	TMap<int32, TSubclassOf<class AActor>>& GetSkillBulletMap();
 	TSubclassOf<class AActor>& GetMonsterSkillClass();
@@ -114,30 +114,29 @@ private:
 	TMap<int32, struct FItemEtcStruct*> ItemEtcStructMap;
 
 	// ImageIcon
-	TMap<int32, class UTexture2D*> SkillIconImgMap;
-	TMap<int32, class UTexture2D*> ItemEquipIconImgMap;
-	TMap<int32, class UTexture2D*> ItemEtcIconImgMap;
+	TMap<int32, TObjectPtr<class UTexture2D>> SkillIconImgMap;
+	TMap<int32, TObjectPtr<class UTexture2D>> ItemEquipIconImgMap;
+	TMap<int32, TObjectPtr<class UTexture2D>> ItemEtcIconImgMap;
+	TMap<int32, TObjectPtr<class UTexture2D>> CharaterHeadImageMap;
 
-	TMap<int32, UTexture2D*> CharaterHeadImageMap;
+	// Mesh
+	TMap<int32, TObjectPtr<class USkeletalMesh>> CharacterMeshList;
+	TMap<int32, TObjectPtr<class USkeletalMesh>> WeaponMeshList;
+	TMap<int32, TObjectPtr<class USkeletalMesh>> MonsterMeshList;
 
+	// Skill
+	TMap<int32, TObjectPtr<class UParticleSystem>> ParticleSkillMap;
+	TMap<int32, TObjectPtr<class UNiagaraSystem>> NiagaraSkillMap;
+	
 	// BP_C
 	TSubclassOf<class AActor> PlayerClass;
 	TSubclassOf<class AActor> MonsterClass;
-
-	// Mesh
-	TMap<int32, class USkeletalMesh*> CharacterMeshList;
-	TMap<int32, class USkeletalMesh*> WeaponMeshList;
-	TMap<int32, class USkeletalMesh*> MonsterMeshList;
-
-	// Skill
-	TMap<int32, class UParticleSystem*> ParticleSkillMap;
-	TMap<int32, class UNiagaraSystem*> NiagaraSkillMap;
-
+	
 	// Bullet_BP
 	TMap<int32, TSubclassOf<class AActor>> SkillBulletMap;
 	TSubclassOf<class AActor> MonsterBullet;
 	TSubclassOf<class AActor> BuffSkill;
-	UParticleSystem* ParticleMuzzleFX;
+	TObjectPtr<UParticleSystem> ParticleMuzzleFX;
 
 	// Prompt_BP
 	TSubclassOf<class UUserWidget> PromptClass; // ok type 1

@@ -114,7 +114,7 @@ void ABJS_WeaponActor::FireEnd(UNiagaraComponent* FinishedComponent)
 	OnAttackEnd.Execute();
 }
 
-void ABJS_WeaponActor::SetSkeletalMesh(USkeletalMesh* CurrentMesh)
+void ABJS_WeaponActor::SetSkeletalMesh(TObjectPtr<class USkeletalMesh> CurrentMesh) const
 {
 	if (SkeletalMeshComponent && CurrentMesh)
 	{
@@ -122,7 +122,7 @@ void ABJS_WeaponActor::SetSkeletalMesh(USkeletalMesh* CurrentMesh)
 	}
 }
 
-void ABJS_WeaponActor::SetMuzzleFX(UParticleSystem* Particle)
+void ABJS_WeaponActor::SetMuzzleFX(TObjectPtr<class UParticleSystem> Particle) const
 {
 	if (SkeletalMeshComponent && Particle)
 	{
@@ -135,7 +135,7 @@ void ABJS_WeaponActor::SetMuzzleFX(UParticleSystem* Particle)
 	}
 }
 
-void ABJS_WeaponActor::SetBulletFX(UNiagaraSystem* Particle, int32 Code)
+void ABJS_WeaponActor::SetBulletFX(TObjectPtr<class UNiagaraSystem> Particle, int32 Code)
 {
 	if (SkillComponent && Particle)
 	{

@@ -21,6 +21,11 @@ void ABJS_LoginPawn::BeginPlay()
 	SetActorRotation(rot);
 }
 
+void ABJS_LoginPawn::Destroyed()
+{
+	Super::Destroyed();
+}
+
 void ABJS_LoginPawn::CreateWeaponActor(USkeletalMesh* WeaponMesh)
 {
 	FName WeaponSocket(TEXT("Weapon_R"));

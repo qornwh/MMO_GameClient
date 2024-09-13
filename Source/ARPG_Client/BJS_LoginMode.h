@@ -42,9 +42,8 @@ protected:
 
 private:
 	TMap<EWidgetEnum, TSubclassOf<UUserWidget>> widgetMap;
-
-	TArray<USkeletalMesh*> CharaterMeshList;
-	TArray<USkeletalMesh*> WeaponMeshList;
-	TArray<UTexture2D*> CharaterImageList;
-	TArray<UTexture2D*> WeaponImageList;
+	TArray<TObjectPtr<class USkeletalMesh>> CharaterMeshList;
+	TArray<TObjectPtr<class USkeletalMesh>> WeaponMeshList;
+	TArray<TObjectPtr<class UTexture2D>> CharaterImageList;
+	TArray<TObjectPtr<class UTexture2D>> WeaponImageList;
 };

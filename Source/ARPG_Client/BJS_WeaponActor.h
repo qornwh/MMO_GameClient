@@ -13,8 +13,8 @@ UCLASS()
 class ARPG_CLIENT_API ABJS_WeaponActor : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ABJS_WeaponActor();
 
@@ -26,10 +26,10 @@ public:
 
 	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly)
 	class UNiagaraComponent* SkillComponent;
-	
+
 	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly)
 	TSubclassOf<class AActor> BulletClass;
-	
+
 	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly)
 	TSubclassOf<class AActor> SkillClass;
 
@@ -40,7 +40,7 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void Destroyed() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -50,9 +50,9 @@ public:
 	UFUNCTION()
 	void FireEnd(UNiagaraComponent* FinishedComponent);
 
-	void SetSkeletalMesh(class USkeletalMesh* CurrentMesh);
-	void SetMuzzleFX(class UParticleSystem* Particle);
-	void SetBulletFX(class UNiagaraSystem* Particle, int32 Code);
+	void SetSkeletalMesh(TObjectPtr<class USkeletalMesh> CurrentMesh) const;
+	void SetMuzzleFX(TObjectPtr<class UParticleSystem> Particle) const;
+	void SetBulletFX(TObjectPtr<class UNiagaraSystem> Particle, int32 Code);
 
 private:
 	bool Fire = false;

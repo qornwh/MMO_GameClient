@@ -64,16 +64,15 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UBJS_AnimInstance_Base> AnimInstanceClass;
 
-	class ABJS_WeaponActor* Weapon;
-	class UBJS_AnimInstance_Base* AnimInstance;
+	TObjectPtr<class ABJS_WeaponActor> Weapon;
+	TObjectPtr<class UBJS_AnimInstance_Base> AnimInstance;
 
-	// 일단 임시 !!!
-	TMap<int32 , class USkeletalMesh*> CharaterMeshList;
-	TMap<int32 , class USkeletalMesh*> WeaponMeshList;
-	TMap<int32, class UNiagaraSystem*> BulletFXList;
+	TMap<int32, TObjectPtr<class USkeletalMesh>> CharaterMeshList;
+	TMap<int32, TObjectPtr<class USkeletalMesh>> WeaponMeshList;
+	TMap<int32, TObjectPtr<class UNiagaraSystem>> BulletFXList;
 	TMap<int32, int32> SkillList;
 	TSharedPtr<class BJS_CharaterState> State;
-	class UParticleSystem* FireStartFXList;
+	TObjectPtr<class UParticleSystem> FireStartFXList;
 
 	bool IsAim = false;
 	bool IsAttack = true;
