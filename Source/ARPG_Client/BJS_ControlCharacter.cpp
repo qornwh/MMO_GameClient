@@ -393,6 +393,8 @@ void ABJS_ControlCharacter::Skill(const FInputActionValue& Value)
 	// 일단 인풋액션 설정으로 둠
 	auto result = Value.Get<FVector>();
 	int32 InputCode = result.X;
+	if (!SkillList.Contains(InputCode))
+		return;
 	int32 SkillCode = SkillList[InputCode];
 	SendAttackMessage(SkillCode);
 
@@ -403,9 +405,13 @@ void ABJS_ControlCharacter::Skill(const FInputActionValue& Value)
 		{
 			auto skill = instance->GetSkillStructs()[SkillCode];
 			auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
-			if (skill->Type == CharaterSkill::BUFFTYPES::HP && mode)
+			if (skill->Type == CharaterSkill::SKILLTYPES::HP && mode)
 			{
 				mode->TakeHeal(SkillCode, State);
+			}
+			else if (skill->Type == CharaterSkill::SKILLTYPES::ATT && !IsAim)
+			{
+				return;
 			}
 		}
 		PlaySkill(SkillCode);

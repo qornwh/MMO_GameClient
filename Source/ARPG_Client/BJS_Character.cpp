@@ -122,7 +122,7 @@ void ABJS_Character::UpdateBuff(float DeltaTime)
 				int32 Type = skill->Type;
 				float Value = skill->Value;
 				
-				if (Type == CharaterSkill::BUFFTYPES::MSP)
+				if (Type == CharaterSkill::SKILLTYPES::MSP)
 				{
 					State->BuffState.AddSpeed(-Value);
 				}
@@ -271,7 +271,7 @@ void ABJS_Character::PlaySkill(int32 Code, bool ignore)
 		int32 Type = skill->Type;
 		float Value = skill->Value;
 
-		if (Type == CharaterSkill::BUFFTYPES::MSP)
+		if (Type == CharaterSkill::SKILLTYPES::MSP)
 		{
 			State->BuffState.AddSpeed(Value);
 		}

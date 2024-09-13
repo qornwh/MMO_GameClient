@@ -3,8 +3,9 @@
 struct CharaterSkill
 {
 	// 비트 마스크 이용
-	enum BUFFTYPES
+	enum SKILLTYPES
 	{
+		ATT = 0,
 		HP = 1,
 		MSP = 1 << 1,
 		ASP = 1 << 2,
