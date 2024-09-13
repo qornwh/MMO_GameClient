@@ -108,6 +108,16 @@ void ABJS_Character::Move(float DeltaTime)
 	}
 }
 
+void ABJS_Character::Destroyed()
+{
+	Super::Destroyed();
+
+	if (Weapon.Get() != nullptr)
+	{
+		Weapon->Destroy();
+	}
+}
+
 void ABJS_Character::UpdateBuff(float DeltaTime)
 {
 	auto instance = Cast<UBJS_GameInstance>(GetWorld()->GetGameInstance());

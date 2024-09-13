@@ -20,6 +20,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	virtual void Move(float DeltaTime);
+	virtual void Destroyed() override;
 	void UpdateBuff(float DeltaTime);
 public:
 	// Called every frame
