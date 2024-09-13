@@ -72,10 +72,10 @@ private:
 	class UBJS_ItemSlotWidget* slot_spesocket;
 	
 	TSubclassOf<class UBJS_ItemSlotWidget> ItemSlotClass;
-	TArray<class UBJS_ItemSlotWidget*> EquipSlot;
-	TArray<class UBJS_ItemSlotWidget*> EtcSlot;
-	TMap<int32, class UBJS_ItemSlotWidget*> EquipItemSlots;
-	TMap<int32, class UBJS_ItemSlotWidget*> EtcItemSlots;
+	TArray<TObjectPtr<class UBJS_ItemSlotWidget>> EquipSlot;
+	TArray<TObjectPtr<class UBJS_ItemSlotWidget>> EtcSlot;
+	TMap<int32, TObjectPtr<class UBJS_ItemSlotWidget>> EquipItemSlots;
+	TMap<int32, TObjectPtr<class UBJS_ItemSlotWidget>> EtcItemSlots;
 	
 	int32 ColSize = 5;
 	int32 RowSize = 4;

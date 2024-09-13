@@ -28,8 +28,8 @@ public:
 private:
 	TSubclassOf<class UBJS_FriendSlotWidget> FriendSlotClass;
 
-	TMap<int32, class UBJS_FriendSlotWidget*> FriendSlot;
-	TArray<class UBJS_FriendSlotWidget*> EmptyFriendSlot;
+	TMap<int32, TObjectPtr<UBJS_FriendSlotWidget>> FriendSlot;
+	TArray<TObjectPtr<UBJS_FriendSlotWidget>> EmptyFriendSlot;
 
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UScrollBox* sb_friendList;
