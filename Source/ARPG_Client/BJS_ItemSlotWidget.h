@@ -33,10 +33,12 @@ public:
 	bool GetCheck() const { return cb_check->GetCheckedState() == ECheckBoxState::Checked; }
 	void SetEmptyEquip();
 	void SetEtcEquip();
-
 	void SetSocket(bool Flag);
+	
 	UFUNCTION()
 	void SendItemEquipped();
+	UFUNCTION()
+	void SendToolTipItemInfo();
 
 private:
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
@@ -54,4 +56,5 @@ private:
 	// 일단 임시로 빈 아이템 슬롯 둔다
 	EquipItem CurEquipItem{-1, -1, -1, 0, 0, 0, -1, 0};
 	EtcItem CurEtcItem{-1, 0, 0,  -1};
+	ToolTipType Type = ToolTipType::NOT_DATA;
 };

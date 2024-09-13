@@ -38,6 +38,8 @@ public:
 	UFUNCTION()
 	void OpenFriendUI();
 	UFUNCTION()
+	void OpenToolTipUI();
+	UFUNCTION()
 	void ClaseMyPlayer();
 
 	void SetTakeDemageList(TSharedPtr<class BJS_CharaterState> State);
@@ -49,6 +51,8 @@ public:
 	void UpdateInventoryEtcUI(int32 EtcItemCode, int32 State);
 	void UpdateInventoryUI();
 	void SendEquippedItem(const EquipItem& TargetItem);
+	void UpdateToolTipEquipItem(EquipItem& TargetItem);
+	void UpdateToolTipEtcItem(EtcItem& TargetItem);
 	
 	TMap<int32, TSharedPtr<class BJS_CharaterState>>& GetCharaterStateList();
 	TMap<int32, TSharedPtr<class BJS_CharaterState>>& GetMonsterStateList();

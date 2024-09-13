@@ -315,7 +315,6 @@ void UBJS_InventoryWidget::ViewInventoryEtc()
 {
 	SlotResetCheck();
 	InventoryModeState = InventoryMode::ETC;
-	// SetSlot();
 	ugp_EquipItemSlots->SetVisibility(ESlateVisibility::Hidden);
 	ugp_ItemSlots->SetVisibility(ESlateVisibility::Visible);
 }
@@ -324,7 +323,6 @@ void UBJS_InventoryWidget::ViewInventoryEquip()
 {
 	SlotResetCheck();
 	InventoryModeState = InventoryMode::EQUIP;
-	// SetSlot();
 	ugp_EquipItemSlots->SetVisibility(ESlateVisibility::Visible);
 	ugp_ItemSlots->SetVisibility(ESlateVisibility::Hidden);
 }

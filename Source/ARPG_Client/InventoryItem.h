@@ -4,6 +4,13 @@
 
 #include "CoreMinimal.h"
 
+enum ToolTipType
+{
+	NOT_DATA = 0,
+	EQUIP_ITEM_TYPE = 1,
+	ETC_ITEM_TYPE = 2
+};
+
 struct EquipItem
 {
 	EquipItem(int32 uniqueId, int32 itemCode, int32 equipType, int32 attack, int32 speed, int32 isEquip, int32 position, int32 use);

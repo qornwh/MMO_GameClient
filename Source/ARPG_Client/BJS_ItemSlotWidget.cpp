@@ -16,16 +16,22 @@ UBJS_ItemSlotWidget::UBJS_ItemSlotWidget()
 void UBJS_ItemSlotWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
+	
+	btn_item->OnDoubleClick.AddDynamic(this, &UBJS_ItemSlotWidget::SendToolTipItemInfo);
 }
 
 void UBJS_ItemSlotWidget::SetEquip(EquipItem& Item)
 {
 	CurEquipItem = Item;
+	CurEtcItem.SetEmptyItem();
+	Type = ToolTipType::EQUIP_ITEM_TYPE;
 }
 
 void UBJS_ItemSlotWidget::SetEtc(EtcItem& Item)
 {
 	CurEtcItem = Item;
+	CurEquipItem.SetEmptyItem();
+	Type = ToolTipType::ETC_ITEM_TYPE;
 }
 
 EquipItem& UBJS_ItemSlotWidget::GetEquip()
@@ -122,5 +128,18 @@ void UBJS_ItemSlotWidget::SendItemEquipped()
 		{
 			mode->SendEquippedItem(CurEquipItem);
 		}
+	}
+}
+
+void UBJS_ItemSlotWidget::SendToolTipItemInfo()
+{
+	auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
+	if (mode)
+	{
+		if (Type == ToolTipType::EQUIP_ITEM_TYPE)
+			mode->UpdateToolTipEquipItem(CurEquipItem);
+		else if (Type == ToolTipType::ETC_ITEM_TYPE)
+			mode->UpdateToolTipEtcItem(CurEtcItem);
+		mode->OpenToolTipUI();
 	}
 }

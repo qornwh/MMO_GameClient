@@ -8,6 +8,7 @@
 #include "BJS_GameInstance.h"
 #include "BJS_GameUI.h"
 #include "BJS_InventoryWidget.h"
+#include "BJS_ItemToopTip_Widget.h"
 #include "BJS_Monster.h"
 #include "BJS_SocketActor.h"
 #include "BJS_UserWidgetBase.h"
@@ -49,6 +50,16 @@ ABJS_InGameMode::ABJS_InGameMode()
 	{
 		FriendUi->AddToViewport();	
 		FriendUi->SetVisibility(ESlateVisibility::Hidden);
+	}
+	
+	static ConstructorHelpers::FClassFinder<UUserWidget> UI_TOOLTIP_HUD(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/MyGame/UMG/BJS_SWBP_ItemToolTip.BJS_SWBP_ItemToolTip_C'"));
+	check(UI_TOOLTIP_HUD.Succeeded());
+	
+	ItemToolTipUi = CreateWidget<UBJS_ItemToopTip_Widget>(GetWorld(), UI_TOOLTIP_HUD.Class);
+	if (ItemToolTipUi)
+	{
+		ItemToolTipUi->AddToViewport();	
+		ItemToolTipUi->SetVisibility(ESlateVisibility::Hidden);
 	}
 	
 	PrimaryActorTick.bCanEverTick = true;
@@ -380,6 +391,15 @@ void ABJS_InGameMode::OpenFriendUI()
 	}
 }
 
+void ABJS_InGameMode::OpenToolTipUI()
+{
+	if (ItemToolTipUi)
+	{
+		SetShowMouseCousor(true);
+		ItemToolTipUi->SetVisibility(ESlateVisibility::Visible);
+	}
+}
+
 void ABJS_InGameMode::ClaseMyPlayer()
 {
 	protocol::SClosePlayer pkt;
@@ -480,6 +500,22 @@ void ABJS_InGameMode::SendEquippedItem(const EquipItem& TargetItem)
 			
 			SocketActor->SendMessage(pkt, protocol::MessageCode::C_UPDATEITEMS);
 		}
+	}
+}
+
+void ABJS_InGameMode::UpdateToolTipEquipItem(EquipItem& TargetItem)
+{
+	if (ItemToolTipUi)
+	{
+		ItemToolTipUi->SetEquipItem(TargetItem);
+	}
+}
+
+void ABJS_InGameMode::UpdateToolTipEtcItem(EtcItem& TargetItem)
+{
+	if (ItemToolTipUi)
+	{
+		ItemToolTipUi->SetEtcItem(TargetItem);
 	}
 }
 
