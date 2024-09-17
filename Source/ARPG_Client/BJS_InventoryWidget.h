@@ -36,6 +36,9 @@ public:
 	void SetSlot();
 	void SlotResetCheck();
 
+	void SetBtnEquipImage(TObjectPtr<class UTexture2D> Image);
+	void SetBtnEtcImage(TObjectPtr<class UTexture2D> Image);
+
 	UFUNCTION()
 	void ViewInventoryEtc();
 	UFUNCTION()
@@ -81,6 +84,8 @@ private:
 	TArray<TObjectPtr<class UBJS_ItemSlotWidget>> EtcSlot;
 	TMap<int32, TObjectPtr<class UBJS_ItemSlotWidget>> EquipItemSlots;
 	TMap<int32, TObjectPtr<class UBJS_ItemSlotWidget>> EtcItemSlots;
+
+	TArray<TObjectPtr<class UTexture2D>> EnableInventoryButtonImageList;
 	
 	int32 ColSize = 5;
 	int32 RowSize = 4;

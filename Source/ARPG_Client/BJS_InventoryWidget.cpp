@@ -24,8 +24,18 @@ UBJS_InventoryWidget::UBJS_InventoryWidget()
 		TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/MyGame/UMG/BJS_SWBP_ItemSlot.BJS_SWBP_ItemSlot_C'"));
 	check(ITEM_SLOT_HUD.Class);
 
+	static ConstructorHelpers::FObjectFinder<UTexture2D> BTN_INVENTORY_OFF_IMAGE(
+		TEXT("/Script/Engine.Texture2D'/Game/Cyberpunk_RPG_GUI_Resources/SlicedElements/05Hero_Equipment/Btn_SubMenu_n.Btn_SubMenu_n'"));
+	check(BTN_INVENTORY_OFF_IMAGE.Object);
+
+	static ConstructorHelpers::FObjectFinder<UTexture2D> BTN_INVENTORY_ON_IMAGE(
+		TEXT("/Script/Engine.Texture2D'/Game/Cyberpunk_RPG_GUI_Resources/SlicedElements/05Hero_Equipment/Btn_SubMenu_s.Btn_SubMenu_s'"));
+	check(BTN_INVENTORY_ON_IMAGE.Object);
+
 	ItemSlotClass = ITEM_SLOT_HUD.Class;
 	InventoryModeState = InventoryMode::EQUIP;
+	EnableInventoryButtonImageList.Add(BTN_INVENTORY_OFF_IMAGE.Object);
+	EnableInventoryButtonImageList.Add(BTN_INVENTORY_ON_IMAGE.Object);
 }
 
 void UBJS_InventoryWidget::BJS_InitWidget()
@@ -46,7 +56,7 @@ void UBJS_InventoryWidget::BJS_InitWidget()
 				Brush.ImageSize = FVector2D(Image->GetSizeX(), Image->GetSizeY());
 				img_charater->SetBrush(Brush);
 			}
-			
+
 			wg_state->SetName(instance->GetMyState()->GetName());
 		}
 	}
@@ -307,12 +317,49 @@ void UBJS_InventoryWidget::SlotResetCheck()
 	}
 }
 
+void UBJS_InventoryWidget::SetBtnEquipImage(TObjectPtr<UTexture2D> Image)
+{
+	if (Image)
+	{
+		FSlateBrush Brush;
+		Brush.SetResourceObject(Image);
+		Brush.ImageSize = FVector2D(Image->GetSizeX(), Image->GetSizeY());
+
+		FButtonStyle Style = btn_equip->GetStyle();
+
+		Style.Normal.SetResourceObject(Image);
+		// Style.Normal = Brush;
+
+		btn_equip->SetStyle(Style);
+	}
+}
+
+void UBJS_InventoryWidget::SetBtnEtcImage(TObjectPtr<UTexture2D> Image)
+{
+	if (Image)
+	{
+		FSlateBrush Brush;
+		Brush.SetResourceObject(Image);
+		Brush.ImageSize = FVector2D(Image->GetSizeX(), Image->GetSizeY());
+
+		FButtonStyle Style = btn_etc->GetStyle();
+
+		Style.Normal.SetResourceObject(Image);
+		// Style.Normal = Brush;
+
+		btn_etc->SetStyle(Style);
+	}
+}
+
 void UBJS_InventoryWidget::ViewInventoryEtc()
 {
 	SlotResetCheck();
 	InventoryModeState = InventoryMode::ETC;
 	ugp_EquipItemSlots->SetVisibility(ESlateVisibility::Hidden);
 	ugp_ItemSlots->SetVisibility(ESlateVisibility::Visible);
+
+	SetBtnEtcImage(EnableInventoryButtonImageList[1]);
+	SetBtnEquipImage(EnableInventoryButtonImageList[0]);
 }
 
 void UBJS_InventoryWidget::ViewInventoryEquip()
@@ -321,6 +368,9 @@ void UBJS_InventoryWidget::ViewInventoryEquip()
 	InventoryModeState = InventoryMode::EQUIP;
 	ugp_EquipItemSlots->SetVisibility(ESlateVisibility::Visible);
 	ugp_ItemSlots->SetVisibility(ESlateVisibility::Hidden);
+
+	SetBtnEquipImage(EnableInventoryButtonImageList[1]);
+	SetBtnEtcImage(EnableInventoryButtonImageList[0]);
 }
 
 void UBJS_InventoryWidget::InvetoryReset()
