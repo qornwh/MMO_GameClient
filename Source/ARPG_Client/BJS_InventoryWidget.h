@@ -35,7 +35,6 @@ public:
 	void UpdateEtcSlot(int32 EtcItemCode);
 	void SetSlot();
 	void SlotResetCheck();
-	void SetGold(int32 Gold);
 
 	UFUNCTION()
 	void ViewInventoryEtc();
@@ -45,8 +44,16 @@ public:
 	void InvetoryReset();
 	UFUNCTION()
 	void SellItem();
+	UFUNCTION()
+	void OnHiddenInventory();
+
+protected:
+	virtual void NativeConstruct() override;
 
 private:
+	UPROPERTY(EditAnywhere, meta=(BindWidget))
+	class UBJS_HeaderWidget* header;
+	
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UImage* img_charater;
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
@@ -61,8 +68,6 @@ private:
 	class UButton* btn_check;
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UButton* btn_sell;
-	UPROPERTY(EditAnywhere, meta=(BindWidget))
-	class UTextBlock* tb_gold;
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UBJS_StateWidget* wg_state;
 	

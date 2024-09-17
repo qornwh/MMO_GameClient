@@ -5,6 +5,7 @@
 
 #include "BJS_CharaterState.h"
 #include "BJS_GameInstance.h"
+#include "BJS_HeaderWidget.h"
 #include "BJS_InGameMode.h"
 #include "BJS_ItemSlotWidget.h"
 #include "BJS_PromptWidget2.h"
@@ -84,7 +85,8 @@ void UBJS_InventoryWidget::BJS_UpdateWidget()
 		wg_state->SetSpeed(instance->GetMyState()->GetSpeed());
 		wg_state->SetLv(instance->GetMyState()->GetLv());
 
-		SetGold(instance->GetMyInventory()->GetGold());
+		header->SetTextCash(instance->GetCash());
+		header->SetTextGold(instance->GetMyInventory()->GetGold());
 	}
 }
 
@@ -305,12 +307,6 @@ void UBJS_InventoryWidget::SlotResetCheck()
 	}
 }
 
-void UBJS_InventoryWidget::SetGold(int32 Gold)
-{
-	FString str = FString::FromInt(Gold);
-	tb_gold->SetText(FText::FromString(str));
-}
-
 void UBJS_InventoryWidget::ViewInventoryEtc()
 {
 	SlotResetCheck();
@@ -374,4 +370,21 @@ void UBJS_InventoryWidget::SellItem()
 		promptWidget->OnPromptOk.BindUObject(mode, &ABJS_InGameMode::SellItems);
 		promptWidget->OnPromptCancle.BindUObject(mode, &ABJS_InGameMode::ResetSellItems);
 	}
+}
+
+void UBJS_InventoryWidget::OnHiddenInventory()
+{
+	auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
+	if (mode)
+	{
+		mode->ChangeInventoryUI();
+	}
+}
+
+void UBJS_InventoryWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+
+	header->OnBack.BindUObject(this, &UBJS_InventoryWidget::OnHiddenInventory);
+	header->SetTextTitle("Inventory");
 }

@@ -6,12 +6,10 @@
 #include "BJS_UserWidgetBase.h"
 #include "BJS_SelectWidget.generated.h"
 
+class UBJS_SelectButton_Widget;
 DECLARE_DELEGATE(FOnSelect)
 DECLARE_DELEGATE(FOnBack)
 
-/**
- * 
- */
 UCLASS()
 class ARPG_CLIENT_API UBJS_SelectWidget : public UBJS_UserWidgetBase
 {
@@ -40,7 +38,7 @@ private:
 
 private:
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
-	class UButton* btn_back;
+	class UBJS_HeaderWidget* header;
 	
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UBJS_SelectButton_Widget* sbtn_c1;

@@ -4,7 +4,7 @@
 #include "BJS_StoreWidget.h"
 
 #include "BJS_GameInstance.h"
-#include "BJS_LoginMode.h"
+#include "BJS_HeaderWidget.h"
 #include "BJS_PromptWidget.h"
 #include "BJS_SelectButton_Widget.h"
 #include "Components/Button.h"
@@ -14,7 +14,8 @@ void UBJS_StoreWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	btn_back->OnClicked.AddDynamic(this, &UBJS_StoreWidget::OnBackEvent);
+	header->OnBack.BindUObject(this, &UBJS_StoreWidget::OnBackEvent);
+	header->SetTextTitle("Store");
 
 	sbtn_1->GetBtn()->OnClicked.AddDynamic(sbtn_1, &UBJS_SelectButton_Widget::OnBuyBtn);
 	sbtn_2->GetBtn()->OnClicked.AddDynamic(sbtn_2, &UBJS_SelectButton_Widget::OnBuyBtn);
@@ -36,8 +37,7 @@ void UBJS_StoreWidget::BJS_UpdateWidget()
 
 	if (auto myInstance = Cast<UBJS_GameInstance>(GetGameInstance()))
 	{
-		FString fstr = FString::FromInt(myInstance->GetCash());
-		tb_cash->SetText(FText::FromString(fstr));
+		header->SetTextCash(myInstance->GetCash());
 
 		if (Mode == 0)
 		{

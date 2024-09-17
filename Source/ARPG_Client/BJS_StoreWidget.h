@@ -9,9 +9,6 @@
 class UBJS_SelectButton_Widget;
 DECLARE_DELEGATE(FOnBack)
 
-/**
- * 
- */
 UCLASS()
 class ARPG_CLIENT_API UBJS_StoreWidget : public UBJS_UserWidgetBase
 {
@@ -37,7 +34,7 @@ private:
 
 private:
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
-	class UButton* btn_back;
+	class UBJS_HeaderWidget* header;
 	
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UBJS_SelectButton_Widget* sbtn_1;
@@ -45,9 +42,6 @@ private:
 	class UBJS_SelectButton_Widget* sbtn_2;
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UBJS_SelectButton_Widget* sbtn_3;
-	
-	UPROPERTY(EditAnywhere, meta=(BindWidget))
-	class UTextBlock* tb_cash;
 
 	int32 Mode = 0; // 0 : 캐릭터, 1 : 무기
 };

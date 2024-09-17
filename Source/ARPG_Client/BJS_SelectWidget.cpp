@@ -4,6 +4,7 @@
 #include "BJS_SelectWidget.h"
 
 #include "BJS_GameInstance.h"
+#include "BJS_HeaderWidget.h"
 #include "BJS_SelectButton_Widget.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
@@ -12,7 +13,8 @@ void UBJS_SelectWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	btn_back->OnClicked.AddDynamic(this, &UBJS_SelectWidget::OnBackEvent);
+	header->OnBack.BindUObject(this, &UBJS_SelectWidget::OnBackEvent);
+	header->SetTextTitle("Select");
 	
 	sbtn_c1->GetBtn()->OnClicked.AddDynamic(sbtn_c1, &UBJS_SelectButton_Widget::OnSelectBtn);
 	sbtn_c1->SetType(1);
@@ -50,6 +52,8 @@ void UBJS_SelectWidget::BJS_UpdateWidget()
 
 	if (auto myInstance = Cast<UBJS_GameInstance>(GetGameInstance()))
 	{
+		header->SetTextCash(myInstance->GetCash());
+		
 		for (int i = 1; i < myInstance->GetMyCharaterList().Num(); i++)
 		{
 			int curIdx = myInstance->GetCurCharaterType();
