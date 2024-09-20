@@ -11,6 +11,7 @@
 #include "FriendSystem.h"
 #include "GameClient.pb.h"
 #include "InventoryItem.h"
+#include "MailBox.h"
 #include "PacketHandlerUtils.h"
 #include "PlayerStruct.h"
 #include "Sockets.h"
@@ -112,9 +113,9 @@ void ABJS_SocketActor::HandlePacket(BYTE* Buffer, PacketHeader* Header)
 			ExpLvHandler(Buffer, Header, static_cast<int32>(sizeof(PacketHeader)));
 		}
 		break;
-	case protocol::MessageCode::DROPMESSAGE:
+	case protocol::MessageCode::UPDATEINVENTROY:
 		{
-			DropMessageHandler(Buffer, Header, static_cast<int32>(sizeof(PacketHeader)));
+			UpdateInventoryHandler(Buffer, Header, static_cast<int32>(sizeof(PacketHeader)));
 		}
 		break;
 	case protocol::MessageCode::S_LOADINVENTORY:
@@ -145,6 +146,16 @@ void ABJS_SocketActor::HandlePacket(BYTE* Buffer, PacketHeader* Header)
 	case protocol::MessageCode::C_UPDATEITEMS:
 		{
 			UpdateItemsHandler(Buffer, Header, static_cast<int32>(sizeof(PacketHeader)));
+		}
+		break;
+	case protocol::MessageCode::C_LOADMAIL:
+		{
+			LoadMailHandler(Buffer, Header, static_cast<int32>(sizeof(PacketHeader)));
+		}
+		break;
+	case protocol::MessageCode::C_UPDATEMAIL:
+		{
+			UpdateMailHandler(Buffer, Header, static_cast<int32>(sizeof(PacketHeader)));
 		}
 		break;
 	}
@@ -672,9 +683,9 @@ void ABJS_SocketActor::ExpLvHandler(BYTE* Buffer, PacketHeader* Header, int32 Of
 	}
 }
 
-void ABJS_SocketActor::DropMessageHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset)
+void ABJS_SocketActor::UpdateInventoryHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset)
 {
-	protocol::DropMessage pkt;
+	protocol::UpdateInventory pkt;
 	if (PacketHandlerUtils::ParsePacketHandler(pkt, Buffer, Header->GetSize() - Offset, Offset))
 	{
 		auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
@@ -699,7 +710,7 @@ void ABJS_SocketActor::DropMessageHandler(BYTE* Buffer, PacketHeader* Header, in
 				mode->GetMyInventory()->AddEtcItem(item.item_code(), item.item_type(), item.item_count(), item.position());
 				mode->UpdateInventoryEtcUI(item.item_code(), 1);
 			}
-			mode->GetMyInventory()->AddGold(pkt.gold());
+			mode->GetMyInventory()->SetGold(pkt.gold());
 			mode->UpdateInventoryUI();
 		}
 	}
@@ -855,6 +866,79 @@ void ABJS_SocketActor::UpdateItemsHandler(BYTE* Buffer, PacketHeader* Header, in
 			}
 
 			mode->UpdateInventoryUI();
+		}
+	}
+}
+
+void ABJS_SocketActor::LoadMailHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset)
+{
+	protocol::CLoadMail pkt;
+	if (PacketHandlerUtils::ParsePacketHandler(pkt, Buffer, Header->GetSize() - Offset, Offset))
+	{
+		auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
+		if (mode)
+		{
+			auto MailBox = mode->GetMyMail();
+			MailBox->AllRemoveMail();
+
+			for (auto& mail : pkt.mails())
+			{
+				int32 code = mail.code();
+				FString title = UTF8_TO_TCHAR(mail.title().c_str());
+				FString message = UTF8_TO_TCHAR(mail.message().c_str());
+				Mail NewMail{mail.code(),  mail.read(), mail.gold(), mail.socket1(), mail.socket1type(), mail.socket2(), mail.socket2type(), title, message};
+				MailBox->AddMail(code, NewMail);
+			}
+
+			for (auto& mailItem : pkt.equipitems())
+			{
+				int32 mailCode = mailItem.mailcode();
+				int32 socketPos = mailItem.socket();
+				auto& item = mailItem.item();
+
+				EquipItem newItem{item.unipeid(), item.item_code(), item.item_type(), item.attack(), item.speed(), item.is_equip(), item.position(), 0};
+				MailBox->AddMailEquipItem(mailCode, socketPos, newItem);
+			}
+
+			for (auto& mailItem : pkt.etcitems())
+			{
+				int32 mailCode = mailItem.mailcode();
+				int32 socketPos = mailItem.socket();
+				auto& item = mailItem.item();
+
+				EtcItem newItem{item.item_code(), item.item_type(), item.item_count(), item.position()};
+				MailBox->AddMailEtcItem(mailCode, socketPos, newItem);
+			}
+
+			mode->UpdateMailUi();
+		}
+	}
+}
+
+void ABJS_SocketActor::UpdateMailHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset)
+{
+	protocol::CUpdateMail pkt;
+	if (PacketHandlerUtils::ParsePacketHandler(pkt, Buffer, Header->GetSize() - Offset, Offset))
+	{
+		auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
+		if (mode)
+		{
+			auto MailBox = mode->GetMyMail();
+			auto UpdateMail = pkt.mail();
+			if (pkt.type() == 2)
+			{
+				auto mail = MailBox->GetMailList().Find(UpdateMail.code());
+				if (mail)
+				{
+					mail->Socket1 = UpdateMail.socket1();
+					mail->Socket2 = UpdateMail.socket2();
+				}
+			}
+			else if (pkt.type() == 3)
+			{
+				MailBox->RemoveMail(UpdateMail.code());
+			}
+			mode->UpdateMailUi();
 		}
 	}
 }

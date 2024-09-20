@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "BJS_GameModeBase.h"
 #include "InventoryItem.h"
+#include "MailBox.h"
 #include "BJS_InGameMode.generated.h"
 
 /**
@@ -22,7 +23,7 @@ public:
 	virtual void StartPlay() override;
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
-	
+
 	UFUNCTION()
 	void LoadGame();
 	UFUNCTION()
@@ -40,6 +41,8 @@ public:
 	UFUNCTION()
 	void OpenToolTipUI();
 	UFUNCTION()
+	void ChangeMailBoxUI();
+	UFUNCTION()
 	void ClaseMyPlayer();
 
 	void SetTakeDemageList(TSharedPtr<class BJS_CharaterState> State);
@@ -53,13 +56,17 @@ public:
 	void SendEquippedItem(const EquipItem& TargetItem);
 	void UpdateToolTipEquipItem(EquipItem& TargetItem);
 	void UpdateToolTipEtcItem(EtcItem& TargetItem);
-	
+	void UpdateMailUi();
+	void UpdateMail(int32 MailCode, int32 State);
+	void AllUpdateMail(int32 State);
+
 	TMap<int32, TSharedPtr<class BJS_CharaterState>>& GetCharaterStateList();
 	TMap<int32, TSharedPtr<class BJS_CharaterState>>& GetMonsterStateList();
 	TSharedPtr<class BJS_CharaterState> GetMyState();
 	TSharedPtr<class InventoryItem> GetMyInventory();
 	TSharedPtr<class FriendSystem> GetMyFriend();
-	
+	TSharedPtr<class MailBox> GetMyMail();
+
 	UFUNCTION()
 	void SellItems();
 	UFUNCTION()
@@ -76,6 +83,7 @@ private:
 	TSharedPtr<class BJS_CharaterState> MyState;
 	TWeakPtr<class InventoryItem> MyInventory;
 	TWeakPtr<class FriendSystem> MyFriend;
+	TWeakPtr<class MailBox> MyMail;
 
 	int32 TakeDemageCnt = 0;
 	TArray<TWeakPtr<class BJS_CharaterState>> TakeDemageList;
@@ -85,4 +93,5 @@ private:
 	TObjectPtr<class UBJS_UserWidgetBase> InventoryUi;
 	TObjectPtr<class UBJS_FriendWidget> FriendUi;
 	TObjectPtr<class UBJS_ItemToopTip_Widget> ItemToolTipUi;
+	TObjectPtr<class UBJS_MailWidget> MailBoxUi;
 };

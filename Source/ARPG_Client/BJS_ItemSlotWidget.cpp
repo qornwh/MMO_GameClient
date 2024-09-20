@@ -48,7 +48,7 @@ void UBJS_ItemSlotWidget::SetImg(UTexture2D* Image)
 {
 	if (!Image)
 	{
-		SetSlots(false);
+		img_item->SetVisibility(ESlateVisibility::Hidden);
 		return;
 	}
 	FSlateBrush Brush;
@@ -88,21 +88,6 @@ void UBJS_ItemSlotWidget::SetSlots(bool Flag)
 	}
 }
 
-void UBJS_ItemSlotWidget::ResetCheck()
-{
-	cb_check->SetCheckedState(ECheckBoxState::Unchecked);
-}
-
-void UBJS_ItemSlotWidget::SetEmptyEquip()
-{
-	CurEquipItem.SetEmptyItem();
-}
-
-void UBJS_ItemSlotWidget::SetEtcEquip()
-{
-	CurEtcItem.SetEmptyItem();
-}
-
 void UBJS_ItemSlotWidget::SetSocket(bool Flag)
 {
 	if (Flag)
@@ -117,6 +102,45 @@ void UBJS_ItemSlotWidget::SetSocket(bool Flag)
 	}
 	cb_check->SetVisibility(ESlateVisibility::Hidden);
 	tb_cnt->SetVisibility(ESlateVisibility::Hidden);
+}
+
+void UBJS_ItemSlotWidget::SetRecive(bool Flag)
+{
+	if (Flag)
+	{
+		img_item->SetOpacity(1);
+	}
+	else
+	{
+		img_item->SetOpacity(0.5);
+	}
+	
+	cb_check->SetVisibility(ESlateVisibility::Hidden);
+	if (Type == ToolTipType::EQUIP_ITEM_TYPE)
+	{
+		tb_cnt->SetVisibility(ESlateVisibility::Hidden);
+	}
+	else if (Type == ToolTipType::ETC_ITEM_TYPE)
+	{
+		tb_cnt->SetVisibility(ESlateVisibility::Visible);
+		SetCnt(CurEtcItem.Count);
+	}
+		
+}
+
+void UBJS_ItemSlotWidget::ResetCheck()
+{
+	cb_check->SetCheckedState(ECheckBoxState::Unchecked);
+}
+
+void UBJS_ItemSlotWidget::SetEmptyEquip()
+{
+	CurEquipItem.SetEmptyItem();
+}
+
+void UBJS_ItemSlotWidget::SetEtcEquip()
+{
+	CurEtcItem.SetEmptyItem();
 }
 
 void UBJS_ItemSlotWidget::SendItemEquipped()

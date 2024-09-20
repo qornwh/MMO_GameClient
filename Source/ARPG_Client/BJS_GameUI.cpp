@@ -29,6 +29,7 @@ void UBJS_GameUI::BJS_InitWidget()
 	auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
 	if (mode)
 	{
+		btn_mail->OnClicked.AddDynamic(mode, &ABJS_InGameMode::ChangeMailBoxUI);
 		btn_iventory->OnClicked.AddDynamic(mode, &ABJS_InGameMode::ChangeInventoryUI);
 		btn_friends->OnClicked.AddDynamic(mode, &ABJS_InGameMode::OpenFriendUI);
 		btn_logout->OnClicked.AddDynamic(mode, &ABJS_InGameMode::ClaseMyPlayer);

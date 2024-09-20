@@ -43,7 +43,7 @@ void EquipItem::SetEmptyItem()
 	EquipType = -1;
 	Attack = -1;
 	Speed = -1;
-	IsEquip = -1;
+	IsEquip = 0;
 	Use = -1;
 }
 

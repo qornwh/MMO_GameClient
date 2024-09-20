@@ -92,6 +92,7 @@ protected:
 
 public:
 	void ShowInventoryUI();
+	void ShowMailBoxUI();
 	void OpenFriendUI();
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 

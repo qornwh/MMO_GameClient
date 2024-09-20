@@ -19,7 +19,7 @@ enum MessageCode {
     LOGINACCESS = 15; // 로그인 성공 여부
     C_LOAD = 17; // 클라이언트 인게임 요청
     CREATECHARACTER = 18; // 캐릭터 생성 요청
-    DROPMESSAGE = 19; // 드롭 흭득 메시지
+    UPDATEINVENTROY = 19; // 드롭 흭득 메시지, 메일아이템 수신 메시지
 
     C_BUYCHARATER = 20; // 캐릭터 구매
     C_BUYWEAPON = 21; // 무기 구매
@@ -34,10 +34,14 @@ enum MessageCode {
 
     S_LOADINVENTORY = 30; // 인벤토리 로드 메시지
     C_SELLITEMS = 31; // 인벤토리 아이템 다중 판매
+    C_UPDATEITEMS = 33; // 인벤토리 아이템 장착, 장착해제등
     
     S_FRIENDSYSTEM = 32; // 친구 시스템 
     
-    C_UPDATEITEMS = 33; // 인벤토리 아이템 장착, 장착해제등
+    // 메일관련
+    C_LOADMAIL = 40;
+    C_UPDATEMAIL = 41; // 메일 삭제, 메일 추가, 아이템 수령, 메일 읽음 
+    C_ALLUPDATEMAIL = 42; // 전체 아이템 수령, 전체 메일 삭제
     
     // 더미용
     D_LOAD = 101;
@@ -247,7 +251,7 @@ message ItemEtc {
     int32 position = 4;
 }
 
-message DropMessage {
+message UpdateInventory {
     repeated ItemEquip itemEquips = 1;
     repeated ItemEtc itemEtcs = 2;
     int32 gold = 3;
@@ -284,4 +288,49 @@ message SFriendSystem {
 
 message CUpdateItems {
     repeated ItemEquip itemEquips = 1; // 업데이트(장착, 장착해제) 내용
+}
+
+message Mail {
+    int32 code = 1;
+    int32 read = 2;
+    int32 gold = 3;
+    int32 socket1 = 4;
+    int32 socket1Type = 5;
+    int32 socket2 = 6;
+    int32 socket2Type = 7;
+    string title = 9;
+    string message = 10;
+}
+
+message MailEquipItem {
+    int32 mailCode = 1;
+    int32 socket = 2;
+    ItemEquip item = 3;
+}
+
+message MailEtcItem {
+    int32 mailCode = 1;
+    int32 socket = 2;
+    ItemEtc item = 3;
+}
+
+message CLoadMail {
+    int32 type = 1; // 0: load, 1 : refresh
+    repeated Mail mails = 2;
+    repeated MailEquipItem equipItems = 3;
+    repeated MailEtcItem etcItems = 4;
+}
+
+message CUpdateMail {
+    int32 type = 1; // 0 : add, 1 : read, 2 : reciveItem, 3 : remove
+    Mail mail = 2;
+    repeated MailEquipItem equipItems = 3;
+    repeated MailEtcItem etcItems = 4;
+}
+
+message CAllUpdateMail {
+    int32 type = 1; // 2 : reciveItem, 3 : remove
+    repeated Mail mails = 2;
+    repeated MailEquipItem equipItems = 3;
+    repeated MailEtcItem etcItems = 4;
 }

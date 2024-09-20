@@ -337,6 +337,15 @@ void ABJS_ControlCharacter::ShowInventoryUI()
 	}
 }
 
+void ABJS_ControlCharacter::ShowMailBoxUI()
+{
+	auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
+	if (mode)
+	{
+		mode->ChangeMailBoxUI();
+	}
+}
+
 void ABJS_ControlCharacter::OpenFriendUI()
 {
 	auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());

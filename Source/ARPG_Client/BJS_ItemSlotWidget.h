@@ -29,11 +29,12 @@ public:
 	void SetImg(UTexture2D* Image);
 	void SetCnt(int32 Cnt);
 	void SetSlots(bool Flag);
+	void SetSocket(bool Flag);
+	void SetRecive(bool Flag);
 	void ResetCheck();
 	bool GetCheck() const { return cb_check->GetCheckedState() == ECheckBoxState::Checked; }
 	void SetEmptyEquip();
 	void SetEtcEquip();
-	void SetSocket(bool Flag);
 	
 	UFUNCTION()
 	void SendItemEquipped();

@@ -10,6 +10,7 @@
 #include "InventoryItem.h"
 #include "ItemEquipStruct.h"
 #include "ItemEtcStruct.h"
+#include "MailBox.h"
 #include "PacketHandlerUtils.h"
 #include "PlayerStruct.h"
 #include "SkillBindStruct.h"
@@ -36,6 +37,7 @@ UBJS_GameInstance::UBJS_GameInstance()
 	MyWeaponList.Init(false, 4);
 	MyInventory = MakeShared<InventoryItem>();
 	MyFriend = MakeShared<FriendSystem>();
+	MyMail = MakeShared<MailBox>();
 
 	LoadBP();
 	LoadDataTable();
@@ -145,6 +147,11 @@ TSharedPtr<InventoryItem> UBJS_GameInstance::GetMyInventory()
 TSharedPtr<FriendSystem> UBJS_GameInstance::GetMyFriend()
 {
 	return MyFriend;
+}
+
+TSharedPtr<MailBox> UBJS_GameInstance::GetMyMail()
+{
+	return MyMail;
 }
 
 int32 UBJS_GameInstance::GetCurCharaterType() const

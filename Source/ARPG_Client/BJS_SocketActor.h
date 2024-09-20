@@ -65,13 +65,15 @@ private:
 	void PlayerAimHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
 	void PlayerJumpHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
 	void ExpLvHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
-	void DropMessageHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
+	void UpdateInventoryHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
 	void LoadInventoryHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
 	void SellItemsHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
 	void ChatHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
 	void ClosePlayerHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
 	void FriendSystemHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
 	void UpdateItemsHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
+	void LoadMailHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
+	void UpdateMailHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
 
 private:
 	FSocket* MySocket = nullptr;

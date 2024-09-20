@@ -9,6 +9,7 @@
 #include "BJS_GameUI.h"
 #include "BJS_InventoryWidget.h"
 #include "BJS_ItemToopTip_Widget.h"
+#include "BJS_MailWidget.h"
 #include "BJS_Monster.h"
 #include "BJS_SocketActor.h"
 #include "BJS_UserWidgetBase.h"
@@ -50,6 +51,16 @@ ABJS_InGameMode::ABJS_InGameMode()
 	{
 		FriendUi->AddToViewport();	
 		FriendUi->SetVisibility(ESlateVisibility::Hidden);
+	}
+
+	static ConstructorHelpers::FClassFinder<UUserWidget> UI_MAILBOX_HUD(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/MyGame/UMG/BJS_WBP_Mail.BJS_WBP_Mail_C'"));
+	check(UI_MAILBOX_HUD.Succeeded());
+	
+	MailBoxUi = CreateWidget<UBJS_MailWidget>(GetWorld(), UI_MAILBOX_HUD.Class);
+	if (MailBoxUi)
+	{
+		MailBoxUi->AddToViewport();	
+		MailBoxUi->SetVisibility(ESlateVisibility::Hidden);
 	}
 	
 	static ConstructorHelpers::FClassFinder<UUserWidget> UI_TOOLTIP_HUD(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/MyGame/UMG/BJS_SWBP_ItemToolTip.BJS_SWBP_ItemToolTip_C'"));
@@ -105,6 +116,7 @@ void ABJS_InGameMode::BeginPlay()
 	MyState = instance->GetMyState();
 	MyInventory = instance->GetMyInventory();
 	MyFriend = instance->GetMyFriend();
+	MyMail = instance->GetMyMail();
 	SetShowMouseCousor(false);
 }
 
@@ -225,6 +237,7 @@ void ABJS_InGameMode::LoadGame()
 	BJSCharaterStateList.Add(instance->GetMyState()->GetUUid(), instance->GetMyState());
 	InventoryUi->BJS_InitWidget();
 	FriendUi->BJS_InitWidget();
+	MailBoxUi->BJS_InitWidget();
 	for (auto& entry : BJSMonsterStateList)
 	{
 		auto State = entry.Value;
@@ -400,6 +413,24 @@ void ABJS_InGameMode::OpenToolTipUI()
 	}
 }
 
+void ABJS_InGameMode::ChangeMailBoxUI()
+{
+	CurrentWidget->SetVisibility(ESlateVisibility::Hidden);
+	if (IsMainUi)
+	{
+		CurrentWidget = MailBoxUi;
+		SetShowMouseCousor(true);
+		IsMainUi = false;
+	}
+	else
+	{
+		CurrentWidget = MainUi;
+		SetShowMouseCousor(false);
+		IsMainUi = true;
+	}
+	CurrentWidget->SetVisibility(ESlateVisibility::Visible);
+}
+
 void ABJS_InGameMode::ClaseMyPlayer()
 {
 	protocol::SClosePlayer pkt;
@@ -519,6 +550,36 @@ void ABJS_InGameMode::UpdateToolTipEtcItem(EtcItem& TargetItem)
 	}
 }
 
+void ABJS_InGameMode::UpdateMailUi()
+{
+	if (MailBoxUi)
+	{
+		MailBoxUi->SetSlot();
+	}
+}
+
+void ABJS_InGameMode::UpdateMail(int32 MailCode, int32 State)
+{
+	if (GetMyMail()->GetMailList().Contains(MailCode))
+	{
+		protocol::CUpdateMail pkt;
+		protocol::Mail* mail = new protocol::Mail();
+		mail->set_code(MailCode);
+		pkt.set_allocated_mail(mail);
+		pkt.set_type(State);
+		
+		SocketActor->SendMessage(pkt, protocol::MessageCode::C_UPDATEMAIL);
+	}
+}
+
+void ABJS_InGameMode::AllUpdateMail(int32 State)
+{
+	protocol::CUpdateMail pkt;
+	pkt.set_type(State);
+		
+	SocketActor->SendMessage(pkt, protocol::MessageCode::C_UPDATEMAIL);
+}
+
 void ABJS_InGameMode::DestroyPlayer(bool IsMonster, int32 UUid)
 {
 	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
@@ -555,6 +616,11 @@ TSharedPtr<InventoryItem> ABJS_InGameMode::GetMyInventory()
 TSharedPtr<FriendSystem> ABJS_InGameMode::GetMyFriend()
 {
 	return MyFriend.Pin();
+}
+
+TSharedPtr<MailBox> ABJS_InGameMode::GetMyMail()
+{
+	return MyMail.Pin();
 }
 
 void ABJS_InGameMode::SellItems()
