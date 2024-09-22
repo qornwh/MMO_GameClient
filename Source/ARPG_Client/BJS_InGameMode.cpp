@@ -577,7 +577,7 @@ void ABJS_InGameMode::AllUpdateMail(int32 State)
 	protocol::CUpdateMail pkt;
 	pkt.set_type(State);
 		
-	SocketActor->SendMessage(pkt, protocol::MessageCode::C_UPDATEMAIL);
+	SocketActor->SendMessage(pkt, protocol::MessageCode::C_ALLUPDATEMAIL);
 }
 
 void ABJS_InGameMode::DestroyPlayer(bool IsMonster, int32 UUid)

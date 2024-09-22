@@ -95,7 +95,6 @@ void UBJS_MailWidget::SetSlot()
 
 void UBJS_MailWidget::ResetMails()
 {
-	// sb_mail->ClearChildren();
 	for (auto slot : MailSlotList)
 	{
 		slot->SetSlot(false);
