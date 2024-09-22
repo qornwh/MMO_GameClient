@@ -433,7 +433,7 @@ void ABJS_SocketActor::InsertPlayerHandler(BYTE* Buffer, PacketHeader* Header, i
 			StatePtr->SetUUid(unit.uuid());
 			StatePtr->SetName(UTF8_TO_TCHAR(unit.name().c_str()));
 			StatePtr->SetCode(unit.code());
-			StatePtr->SetWeaponCode(unit.code());
+			StatePtr->SetWeaponCode(unit.weaponcode());
 			StatePtr->SetState(unit.state());
 			StatePtr->SetX(unit.position().x());
 			StatePtr->SetY(unit.position().y());
