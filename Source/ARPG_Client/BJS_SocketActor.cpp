@@ -932,6 +932,7 @@ void ABJS_SocketActor::UpdateMailHandler(BYTE* Buffer, PacketHeader* Header, int
 				{
 					mail->Socket1 = UpdateMail.socket1();
 					mail->Socket2 = UpdateMail.socket2();
+					mail->Gold = UpdateMail.gold();
 				}
 			}
 			else if (pkt.type() == 3)
