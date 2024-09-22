@@ -659,8 +659,23 @@ struct CAllUpdateMailDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT CAllUpdateMailDefaultTypeInternal _CAllUpdateMail_default_instance_;
+constexpr CSendMail::CSendMail(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : equipitems_()
+  , etcitems_()
+  , mails_(nullptr)
+  , type_(0){}
+struct CSendMailDefaultTypeInternal {
+  constexpr CSendMailDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~CSendMailDefaultTypeInternal() {}
+  union {
+    CSendMail _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT CSendMailDefaultTypeInternal _CSendMail_default_instance_;
 }  // namespace protocol
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_GameClient_2eproto[45];
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_GameClient_2eproto[46];
 static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_GameClient_2eproto[1];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_GameClient_2eproto = nullptr;
 
@@ -1080,6 +1095,16 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_GameClient_2eproto::offsets[] 
   PROTOBUF_FIELD_OFFSET(::protocol::CAllUpdateMail, mails_),
   PROTOBUF_FIELD_OFFSET(::protocol::CAllUpdateMail, equipitems_),
   PROTOBUF_FIELD_OFFSET(::protocol::CAllUpdateMail, etcitems_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::protocol::CSendMail, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::protocol::CSendMail, type_),
+  PROTOBUF_FIELD_OFFSET(::protocol::CSendMail, mails_),
+  PROTOBUF_FIELD_OFFSET(::protocol::CSendMail, equipitems_),
+  PROTOBUF_FIELD_OFFSET(::protocol::CSendMail, etcitems_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::protocol::Login)},
@@ -1127,6 +1152,7 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 385, -1, -1, sizeof(::protocol::CLoadMail)},
   { 395, -1, -1, sizeof(::protocol::CUpdateMail)},
   { 405, -1, -1, sizeof(::protocol::CAllUpdateMail)},
+  { 415, -1, -1, sizeof(::protocol::CSendMail)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -1175,6 +1201,7 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::protocol::_CLoadMail_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::protocol::_CUpdateMail_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::protocol::_CAllUpdateMail_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::protocol::_CSendMail_default_instance_),
 };
 
 const char descriptor_table_protodef_GameClient_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
@@ -1272,27 +1299,31 @@ const char descriptor_table_protodef_GameClient_2eproto[] PROTOBUF_SECTION_VARIA
   "UpdateMail\022\014\n\004type\030\001 \001(\005\022\035\n\005mails\030\002 \003(\0132"
   "\016.protocol.Mail\022+\n\nequipItems\030\003 \003(\0132\027.pr"
   "otocol.MailEquipItem\022\'\n\010etcItems\030\004 \003(\0132\025"
-  ".protocol.MailEtcItem*\274\004\n\013MessageCode\022\t\n"
-  "\005LOGIN\020\000\022\n\n\006S_LOAD\020\001\022\022\n\016S_INSERTPLAYER\020\002"
-  "\022\n\n\006S_MOVE\020\003\022\n\n\006S_CHAT\020\004\022\020\n\014S_PLAYERDATA"
-  "\020\005\022\021\n\rS_CLOSEPLAYER\020\006\022\020\n\014S_UNITSTATES\020\007\022"
-  "\014\n\010C_ATTACK\020\010\022\020\n\014S_UNITDEMAGE\020\n\022\017\n\013S_ROO"
-  "MQUEST\020\014\022\017\n\013C_MOVEPOTAL\020\r\022\r\n\tS_ENDGAME\020\016"
-  "\022\017\n\013LOGINACCESS\020\017\022\n\n\006C_LOAD\020\021\022\023\n\017CREATEC"
-  "HARACTER\020\022\022\023\n\017UPDATEINVENTROY\020\023\022\021\n\rC_BUY"
-  "CHARATER\020\024\022\017\n\013C_BUYWEAPON\020\025\022\023\n\017C_UPDATEA"
-  "CCOUNT\020\026\022\021\n\rS_CURRENTINFO\020\027\022\017\n\013S_BUYRESU"
-  "LT\020\030\022\020\n\014C_PLAYERJUMP\020\031\022\017\n\013C_PLAYERAIM\020\032\022"
-  "\013\n\007S_EXPLV\020\033\022\023\n\017S_LOADINVENTORY\020\036\022\017\n\013C_S"
-  "ELLITEMS\020\037\022\021\n\rC_UPDATEITEMS\020!\022\022\n\016S_FRIEN"
-  "DSYSTEM\020 \022\016\n\nC_LOADMAIL\020(\022\020\n\014C_UPDATEMAI"
-  "L\020)\022\023\n\017C_ALLUPDATEMAIL\020*\022\n\n\006D_LOAD\020eb\006pr"
-  "oto3"
+  ".protocol.MailEtcItem\"\216\001\n\tCSendMail\022\014\n\004t"
+  "ype\030\001 \001(\005\022\035\n\005mails\030\002 \001(\0132\016.protocol.Mail"
+  "\022+\n\nequipItems\030\003 \003(\0132\027.protocol.MailEqui"
+  "pItem\022\'\n\010etcItems\030\004 \003(\0132\025.protocol.MailE"
+  "tcItem*\314\004\n\013MessageCode\022\t\n\005LOGIN\020\000\022\n\n\006S_L"
+  "OAD\020\001\022\022\n\016S_INSERTPLAYER\020\002\022\n\n\006S_MOVE\020\003\022\n\n"
+  "\006S_CHAT\020\004\022\020\n\014S_PLAYERDATA\020\005\022\021\n\rS_CLOSEPL"
+  "AYER\020\006\022\020\n\014S_UNITSTATES\020\007\022\014\n\010C_ATTACK\020\010\022\020"
+  "\n\014S_UNITDEMAGE\020\n\022\017\n\013S_ROOMQUEST\020\014\022\017\n\013C_M"
+  "OVEPOTAL\020\r\022\r\n\tS_ENDGAME\020\016\022\017\n\013LOGINACCESS"
+  "\020\017\022\n\n\006C_LOAD\020\021\022\023\n\017CREATECHARACTER\020\022\022\023\n\017U"
+  "PDATEINVENTROY\020\023\022\021\n\rC_BUYCHARATER\020\024\022\017\n\013C"
+  "_BUYWEAPON\020\025\022\023\n\017C_UPDATEACCOUNT\020\026\022\021\n\rS_C"
+  "URRENTINFO\020\027\022\017\n\013S_BUYRESULT\020\030\022\020\n\014C_PLAYE"
+  "RJUMP\020\031\022\017\n\013C_PLAYERAIM\020\032\022\013\n\007S_EXPLV\020\033\022\023\n"
+  "\017S_LOADINVENTORY\020\036\022\017\n\013C_SELLITEMS\020\037\022\021\n\rC"
+  "_UPDATEITEMS\020!\022\022\n\016S_FRIENDSYSTEM\020 \022\016\n\nC_"
+  "LOADMAIL\020(\022\020\n\014C_UPDATEMAIL\020)\022\023\n\017C_ALLUPD"
+  "ATEMAIL\020*\022\016\n\nC_SENDMAIL\020+\022\n\n\006D_LOAD\020eb\006p"
+  "roto3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_GameClient_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_GameClient_2eproto = {
-  false, false, 4364, descriptor_table_protodef_GameClient_2eproto, "GameClient.proto", 
-  &descriptor_table_GameClient_2eproto_once, nullptr, 0, 45,
+  false, false, 4525, descriptor_table_protodef_GameClient_2eproto, "GameClient.proto", 
+  &descriptor_table_GameClient_2eproto_once, nullptr, 0, 46,
   schemas, file_default_instances, TableStruct_GameClient_2eproto::offsets,
   file_level_metadata_GameClient_2eproto, file_level_enum_descriptors_GameClient_2eproto, file_level_service_descriptors_GameClient_2eproto,
 };
@@ -1341,6 +1372,7 @@ bool MessageCode_IsValid(int value) {
     case 40:
     case 41:
     case 42:
+    case 43:
     case 101:
       return true;
     default:
@@ -12648,6 +12680,299 @@ void CAllUpdateMail::InternalSwap(CAllUpdateMail* other) {
       file_level_metadata_GameClient_2eproto[44]);
 }
 
+// ===================================================================
+
+class CSendMail::_Internal {
+ public:
+  static const ::protocol::Mail& mails(const CSendMail* msg);
+};
+
+const ::protocol::Mail&
+CSendMail::_Internal::mails(const CSendMail* msg) {
+  return *msg->mails_;
+}
+CSendMail::CSendMail(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
+  equipitems_(arena),
+  etcitems_(arena) {
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:protocol.CSendMail)
+}
+CSendMail::CSendMail(const CSendMail& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      equipitems_(from.equipitems_),
+      etcitems_(from.etcitems_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if (from._internal_has_mails()) {
+    mails_ = new ::protocol::Mail(*from.mails_);
+  } else {
+    mails_ = nullptr;
+  }
+  type_ = from.type_;
+  // @@protoc_insertion_point(copy_constructor:protocol.CSendMail)
+}
+
+void CSendMail::SharedCtor() {
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&mails_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&type_) -
+    reinterpret_cast<char*>(&mails_)) + sizeof(type_));
+}
+
+CSendMail::~CSendMail() {
+  // @@protoc_insertion_point(destructor:protocol.CSendMail)
+  if (GetArenaForAllocation() != nullptr) return;
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+inline void CSendMail::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete mails_;
+}
+
+void CSendMail::ArenaDtor(void* object) {
+  CSendMail* _this = reinterpret_cast< CSendMail* >(object);
+  (void)_this;
+}
+void CSendMail::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void CSendMail::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void CSendMail::Clear() {
+// @@protoc_insertion_point(message_clear_start:protocol.CSendMail)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  equipitems_.Clear();
+  etcitems_.Clear();
+  if (GetArenaForAllocation() == nullptr && mails_ != nullptr) {
+    delete mails_;
+  }
+  mails_ = nullptr;
+  type_ = 0;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* CSendMail::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // int32 type = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          type_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .protocol.Mail mails = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          ptr = ctx->ParseMessage(_internal_mutable_mails(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated .protocol.MailEquipItem equipItems = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_equipitems(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<26>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated .protocol.MailEtcItem etcItems = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_etcitems(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<34>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* CSendMail::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:protocol.CSendMail)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int32 type = 1;
+  if (this->_internal_type() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_type(), target);
+  }
+
+  // .protocol.Mail mails = 2;
+  if (this->_internal_has_mails()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        2, _Internal::mails(this), target, stream);
+  }
+
+  // repeated .protocol.MailEquipItem equipItems = 3;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->_internal_equipitems_size()); i < n; i++) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(3, this->_internal_equipitems(i), target, stream);
+  }
+
+  // repeated .protocol.MailEtcItem etcItems = 4;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->_internal_etcitems_size()); i < n; i++) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(4, this->_internal_etcitems(i), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:protocol.CSendMail)
+  return target;
+}
+
+size_t CSendMail::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:protocol.CSendMail)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated .protocol.MailEquipItem equipItems = 3;
+  total_size += 1UL * this->_internal_equipitems_size();
+  for (const auto& msg : this->equipitems_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  // repeated .protocol.MailEtcItem etcItems = 4;
+  total_size += 1UL * this->_internal_etcitems_size();
+  for (const auto& msg : this->etcitems_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  // .protocol.Mail mails = 2;
+  if (this->_internal_has_mails()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *mails_);
+  }
+
+  // int32 type = 1;
+  if (this->_internal_type() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32SizePlusOne(this->_internal_type());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData CSendMail::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    CSendMail::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*CSendMail::GetClassData() const { return &_class_data_; }
+
+void CSendMail::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<CSendMail *>(to)->MergeFrom(
+      static_cast<const CSendMail &>(from));
+}
+
+
+void CSendMail::MergeFrom(const CSendMail& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:protocol.CSendMail)
+  GOOGLE_DCHECK_NE(&from, this);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  equipitems_.MergeFrom(from.equipitems_);
+  etcitems_.MergeFrom(from.etcitems_);
+  if (from._internal_has_mails()) {
+    _internal_mutable_mails()->::protocol::Mail::MergeFrom(from._internal_mails());
+  }
+  if (from._internal_type() != 0) {
+    _internal_set_type(from._internal_type());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void CSendMail::CopyFrom(const CSendMail& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:protocol.CSendMail)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool CSendMail::IsInitialized() const {
+  return true;
+}
+
+void CSendMail::InternalSwap(CSendMail* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  equipitems_.InternalSwap(&other->equipitems_);
+  etcitems_.InternalSwap(&other->etcitems_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(CSendMail, type_)
+      + sizeof(CSendMail::type_)
+      - PROTOBUF_FIELD_OFFSET(CSendMail, mails_)>(
+          reinterpret_cast<char*>(&mails_),
+          reinterpret_cast<char*>(&other->mails_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata CSendMail::GetMetadata() const {
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_GameClient_2eproto_getter, &descriptor_table_GameClient_2eproto_once,
+      file_level_metadata_GameClient_2eproto[45]);
+}
+
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace protocol
 PROTOBUF_NAMESPACE_OPEN
@@ -12785,6 +13110,9 @@ template<> PROTOBUF_NOINLINE ::protocol::CUpdateMail* Arena::CreateMaybeMessage<
 }
 template<> PROTOBUF_NOINLINE ::protocol::CAllUpdateMail* Arena::CreateMaybeMessage< ::protocol::CAllUpdateMail >(Arena* arena) {
   return Arena::CreateMessageInternal< ::protocol::CAllUpdateMail >(arena);
+}
+template<> PROTOBUF_NOINLINE ::protocol::CSendMail* Arena::CreateMaybeMessage< ::protocol::CSendMail >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::protocol::CSendMail >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

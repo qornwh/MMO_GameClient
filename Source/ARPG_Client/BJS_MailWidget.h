@@ -41,11 +41,14 @@ public:
 	void RemoveMailAll();
 	UFUNCTION()
 	void RefreshMail();
+	UFUNCTION()
+	void SendMail();
 
 	void SetSlot();
 	void ResetMails();
 	void SetMailInfo(int32 MailCode);
 	void SetMailSocketInfo(int32 SocketNum, int32 SocketState, int32 SocketType);
+	void SetGold(int32 Gold);
 
 protected:
 	virtual void NativeConstruct() override;
@@ -58,11 +61,11 @@ private:
 	class UBJS_HeaderWidget* header;
 
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
-	class UButton* btn_recive;
+	class UButton* btn_recive_tab;
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UHorizontalBox* hb_recive;
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
-	class UButton* btn_send;
+	class UButton* btn_send_tab;
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UHorizontalBox* hb_send;
 
@@ -86,9 +89,17 @@ private:
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UBJS_ItemSlotWidget* socket2;
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
+	class UTextBlock* tb_recive_gold;
+	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UButton* btn_mail_recive;
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UButton* btn_mail_remove;
+
+	// send
+	UPROPERTY(EditAnywhere, meta=(BindWidget))
+	class UEditableText* etb_send_gold;
+	UPROPERTY(EditAnywhere, meta=(BindWidget))
+	class UButton* btn_send_mail;
 
 	TSubclassOf<class UBJS_MailSlot> MailSlotClass;
 	TArray<TObjectPtr<class UBJS_MailSlot>> MailSlotList;

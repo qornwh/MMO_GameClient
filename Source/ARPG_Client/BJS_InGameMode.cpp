@@ -574,7 +574,7 @@ void ABJS_InGameMode::UpdateMail(int32 MailCode, int32 State)
 
 void ABJS_InGameMode::AllUpdateMail(int32 State)
 {
-	protocol::CUpdateMail pkt;
+	protocol::CAllUpdateMail pkt;
 	pkt.set_type(State);
 		
 	SocketActor->SendMessage(pkt, protocol::MessageCode::C_ALLUPDATEMAIL);

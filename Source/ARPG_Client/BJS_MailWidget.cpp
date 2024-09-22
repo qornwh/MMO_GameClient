@@ -116,9 +116,9 @@ void UBJS_MailWidget::SetBtnReciveImage(TObjectPtr<UTexture2D> Image)
 		FSlateBrush Brush;
 		Brush.SetResourceObject(Image);
 		Brush.ImageSize = FVector2D(Image->GetSizeX(), Image->GetSizeY());
-		FButtonStyle Style = btn_recive->GetStyle();
+		FButtonStyle Style = btn_recive_tab->GetStyle();
 		Style.Normal.SetResourceObject(Image);
-		btn_recive->SetStyle(Style);
+		btn_recive_tab->SetStyle(Style);
 	}
 }
 
@@ -130,11 +130,11 @@ void UBJS_MailWidget::SetBtnSendImage(TObjectPtr<UTexture2D> Image)
 		Brush.SetResourceObject(Image);
 		Brush.ImageSize = FVector2D(Image->GetSizeX(), Image->GetSizeY());
 
-		FButtonStyle Style = btn_send->GetStyle();
+		FButtonStyle Style = btn_send_tab->GetStyle();
 
 		Style.Normal.SetResourceObject(Image);
 
-		btn_send->SetStyle(Style);
+		btn_send_tab->SetStyle(Style);
 	}
 }
 
@@ -216,6 +216,19 @@ void UBJS_MailWidget::RefreshMail()
 	}
 }
 
+void UBJS_MailWidget::SendMail()
+{
+	auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
+	if (mode)
+	{
+		auto socket = mode->GetSocketActor();
+		if (socket)
+		{
+			
+		}
+	}
+}
+
 void UBJS_MailWidget::SetMailInfo(int32 MailCode)
 {
 	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
@@ -228,7 +241,7 @@ void UBJS_MailWidget::SetMailInfo(int32 MailCode)
 			CurrentMailCode = mail->Code;
 			tb_mail_title->SetText(FText::FromString(mail->Title));
 			mtb_mail_message->SetText(FText::FromString(mail->Message));
-
+			SetGold(mail->Gold);
 			SetMailSocketInfo(1, mail->Socket1, mail->Socket1Type);
 			SetMailSocketInfo(2, mail->Socket2, mail->Socket2Type);
 			SetViewMailInfo(true);
@@ -280,6 +293,12 @@ void UBJS_MailWidget::SetMailSocketInfo(int32 SocketNum, int32 SocketState, int3
 	}
 }
 
+void UBJS_MailWidget::SetGold(int32 Gold)
+{
+	FString goldStr = FString::FromInt(Gold);
+	tb_recive_gold->SetText(FText::FromString(goldStr));
+}
+
 void UBJS_MailWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
@@ -291,6 +310,7 @@ void UBJS_MailWidget::NativeConstruct()
 	btn_all_recive->OnClicked.AddDynamic(this, &UBJS_MailWidget::ReceiveItemAll);
 	btn_mail_remove->OnClicked.AddDynamic(this, &UBJS_MailWidget::RemoveMail);
 	btn_all_remove->OnClicked.AddDynamic(this, &UBJS_MailWidget::RemoveMailAll);
-	btn_recive->OnClicked.AddDynamic(this, &UBJS_MailWidget::ViewMailRecive);
-	btn_send->OnClicked.AddDynamic(this, &UBJS_MailWidget::ViewMailSend);
+	btn_recive_tab->OnClicked.AddDynamic(this, &UBJS_MailWidget::ViewMailRecive);
+	btn_send_tab->OnClicked.AddDynamic(this, &UBJS_MailWidget::ViewMailSend);
+	btn_send_mail->OnClicked.AddDynamic(this, &UBJS_MailWidget::SendMail);
 }
