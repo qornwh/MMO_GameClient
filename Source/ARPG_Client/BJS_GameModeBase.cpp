@@ -14,11 +14,8 @@
 ABJS_GameModeBase::ABJS_GameModeBase()
 {
 	static ConstructorHelpers::FClassFinder<ABJS_SocketActor> ACTOR_SOCKET(TEXT("/Script/CoreUObject.Class'/Script/ARPG_Client.BJS_SocketActor'"));
-
-	if (ACTOR_SOCKET.Succeeded())
-	{
-		SocketClass = ACTOR_SOCKET.Class;
-	}
+	check(ACTOR_SOCKET.Succeeded())
+	SocketClass = ACTOR_SOCKET.Class;
 	ShowMouseCursor = false;
 }
 
@@ -33,6 +30,11 @@ void ABJS_GameModeBase::BeginPlay()
 			break;
 	}
 	check(PlayerStart);
+}
+
+void ABJS_GameModeBase::Destroyed()
+{
+	Super::Destroyed();
 }
 
 void ABJS_GameModeBase::LoadSubClass()

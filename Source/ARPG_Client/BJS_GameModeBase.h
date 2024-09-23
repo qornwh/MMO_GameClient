@@ -16,6 +16,7 @@ class ARPG_CLIENT_API ABJS_GameModeBase : public AGameModeBase
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void Destroyed() override;
 	virtual void LoadSubClass();
 	TSubclassOf<AActor> SocketClass;
 	class ABJS_SocketActor* SocketActor;
