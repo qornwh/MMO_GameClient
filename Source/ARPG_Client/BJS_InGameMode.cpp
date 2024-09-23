@@ -25,18 +25,18 @@ ABJS_InGameMode::ABJS_InGameMode()
 	static ConstructorHelpers::FClassFinder<UUserWidget> UI_MAIN_HUD(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/MyGame/UMG/BJS_WBP_GameUI.BJS_WBP_GameUI_C'"));
 	check(UI_MAIN_HUD.Succeeded());
 
-	CurrentWidget = CreateWidget<UBJS_UserWidgetBase>(GetWorld(), UI_MAIN_HUD.Class);
-	if (CurrentWidget)
+	MainUi = CreateWidget<UBJS_GameUI>(GetWorld(), UI_MAIN_HUD.Class);
+	if (MainUi)
 	{
-		CurrentWidget->AddToViewport();
-		MainUi = CurrentWidget;
+		MainUi->AddToViewport();
+		CurrentWidget = MainUi;
 		IsMainUi = true;
 	}
 	
 	static ConstructorHelpers::FClassFinder<UUserWidget> UI_INVENTORY_HUD(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/MyGame/UMG/BJS_WBP_Inventory.BJS_WBP_Inventory_C'"));
 	check(UI_INVENTORY_HUD.Succeeded());
 	
-	InventoryUi = CreateWidget<UBJS_UserWidgetBase>(GetWorld(), UI_INVENTORY_HUD.Class);
+	InventoryUi = CreateWidget<UBJS_InventoryWidget>(GetWorld(), UI_INVENTORY_HUD.Class);
 	if (InventoryUi)
 	{
 		InventoryUi->AddToViewport();	

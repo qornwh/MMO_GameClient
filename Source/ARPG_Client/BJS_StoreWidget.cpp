@@ -4,6 +4,7 @@
 #include "BJS_StoreWidget.h"
 
 #include "BJS_GameInstance.h"
+#include "BJS_GameModeBase.h"
 #include "BJS_HeaderWidget.h"
 #include "BJS_PromptWidget.h"
 #include "BJS_SelectButton_Widget.h"
@@ -96,24 +97,16 @@ void UBJS_StoreWidget::BJS_PromptWidget(int32 code)
 {
 	Super::BJS_PromptWidget(code);
 
-	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
-	if (!instance) return;
+	auto mode = Cast<ABJS_GameModeBase>(GetWorld()->GetAuthGameMode());
+	if (!mode) return;
 
-	auto CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), instance->GetPrompt());
-	if (CurrentWidget)
-	{
-		CurrentWidget->AddToViewport();
-		auto widget = Cast<UBJS_PromptWidget>(CurrentWidget);
-		if (widget)
-		{
-			FString str = FString(TEXT("구매 성공"));
-			if (code == 0)
-				str = FString(TEXT("구매 금액이 부족합니다."));
-			else if (code == -1)
-				str = FString(TEXT("이미 존재하는 타입의 캐릭터입니다."));
-			widget->SetText(str);
-		}
-	}
+	auto Widget = mode->OpenPromptWidget();
+	FString str = FString(TEXT("구매 성공"));
+	if (code == 0)
+		str = FString(TEXT("구매 금액이 부족합니다."));
+	else if (code == -1)
+		str = FString(TEXT("이미 존재하는 타입의 캐릭터입니다."));
+	Widget->SetText(str);
 }
 
 void UBJS_StoreWidget::SetMode(int mode)

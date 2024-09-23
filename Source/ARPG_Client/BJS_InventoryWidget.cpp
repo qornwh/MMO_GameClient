@@ -410,16 +410,11 @@ void UBJS_InventoryWidget::SellItem()
 		}
 	}
 
-	auto widget = CreateWidget<UUserWidget>(GetWorld(), instance->GetPrompt2());
-	if (widget)
-	{
-		FString str = FString(TEXT("판매하시겠습니까?"));
-		auto promptWidget = Cast<UBJS_PromptWidget2>(widget);
-		promptWidget->AddToViewport();
-		promptWidget->SetText(str);
-		promptWidget->OnPromptOk.BindUObject(mode, &ABJS_InGameMode::SellItems);
-		promptWidget->OnPromptCancle.BindUObject(mode, &ABJS_InGameMode::ResetSellItems);
-	}
+	auto widget = mode->OpenPromptWidget2();
+	FString str = FString(TEXT("판매하시겠습니까?"));
+	widget->SetText(str);
+	widget->OnPromptOk.BindUObject(mode, &ABJS_InGameMode::SellItems);
+	widget->OnPromptCancle.BindUObject(mode, &ABJS_InGameMode::ResetSellItems);
 }
 
 void UBJS_InventoryWidget::OnHiddenInventory()

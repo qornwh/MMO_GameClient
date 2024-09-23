@@ -13,8 +13,10 @@ UBJS_PromptWidget::UBJS_PromptWidget()
 void UBJS_PromptWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-	btn_close->OnClicked.AddDynamic(this, &UBJS_PromptWidget::OnClick);
-	btn_ok->OnClicked.AddDynamic(this, &UBJS_PromptWidget::OnClick);
+	if (!btn_close->OnClicked.IsBound())
+		btn_close->OnClicked.AddDynamic(this, &UBJS_PromptWidget::OnClick);
+	if (!btn_ok->OnClicked.IsBound())
+		btn_ok->OnClicked.AddDynamic(this, &UBJS_PromptWidget::OnClick);
 }
 
 void UBJS_PromptWidget::SetText(FString& text)
@@ -22,14 +24,23 @@ void UBJS_PromptWidget::SetText(FString& text)
 	mtb_text->SetText(FText::FromString(text));
 }
 
-void UBJS_PromptWidget::OnClick()
+void UBJS_PromptWidget::Reset()
 {
-	RemoveFromParent();
+	if (mtb_text)
+		mtb_text->SetText(FText{});
 	if (OnPromptEnd.IsBound())
-		OnPromptEnd.Execute();
+		OnPromptEnd.Unbind();
 }
 
-void UBJS_PromptWidget::BJS_UpdateWidget()
+void UBJS_PromptWidget::RemoveFromParent()
 {
-	Super::BJS_UpdateWidget();
+	Super::RemoveFromParent();
+	Reset();
+}
+
+void UBJS_PromptWidget::OnClick()
+{
+	if (OnPromptEnd.IsBound())
+		OnPromptEnd.Execute();
+	RemoveFromParent();
 }

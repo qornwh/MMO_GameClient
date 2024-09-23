@@ -6,6 +6,9 @@
 #include "GameFramework/PlayerStart.h"
 #include "BJS_SocketActor.h"
 #include "BJS_UserWidgetBase.h"
+#include "BJS_GameInstance.h"
+#include "BJS_PromptWidget.h"
+#include "BJS_PromptWidget2.h"
 #include "EngineUtils.h"
 
 ABJS_GameModeBase::ABJS_GameModeBase()
@@ -49,6 +52,36 @@ UBJS_UserWidgetBase* ABJS_GameModeBase::GetCurrentWidget()
 void ABJS_GameModeBase::SetCurrentWidget(UBJS_UserWidgetBase* currentWidget)
 {
 	CurrentWidget = currentWidget;
+}
+
+UBJS_PromptWidget* ABJS_GameModeBase::OpenPromptWidget()
+{
+	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
+	if (!instance)
+		return nullptr;
+	
+	if (PromptWidget == nullptr)
+	{
+		PromptWidget = CreateWidget<UBJS_PromptWidget>(GetWorld(), instance->GetPrompt());
+		check(PromptWidget);
+	}
+	PromptWidget->AddToViewport();
+	return PromptWidget;
+}
+
+UBJS_PromptWidget2* ABJS_GameModeBase::OpenPromptWidget2()
+{
+	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
+	if (!instance)
+		return nullptr;
+	
+	if (PromptWidget2 == nullptr)
+	{
+		PromptWidget2 = CreateWidget<UBJS_PromptWidget2>(GetWorld(), instance->GetPrompt2());
+		check(PromptWidget2);
+	}
+	PromptWidget2->AddToViewport();
+	return PromptWidget2;
 }
 
 void ABJS_GameModeBase::MoveStartPoint(AActor* Actor)

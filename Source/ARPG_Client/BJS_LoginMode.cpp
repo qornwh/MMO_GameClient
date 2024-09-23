@@ -233,17 +233,9 @@ void ABJS_LoginMode::StartGame()
 		}
 		else
 		{
-			auto PromptWidget = CreateWidget<UUserWidget>(GetWorld(), instance->GetPrompt());
-			if (PromptWidget)
-			{
-				PromptWidget->AddToViewport();
-				auto widget = Cast<UBJS_PromptWidget>(PromptWidget);
-				if (widget)
-				{
-					FString str = FString(TEXT("현재 캐릭터와 무기가 설정되지 않았습니다."));
-					widget->SetText(str);
-				}
-			}
+			auto Widget = OpenPromptWidget();
+			FString str = FString(TEXT("현재 캐릭터와 무기가 설정되지 않았습니다."));
+			Widget->SetText(str);
 		}
 	}
 }

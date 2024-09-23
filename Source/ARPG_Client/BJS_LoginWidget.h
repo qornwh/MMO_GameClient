@@ -43,9 +43,6 @@ private:
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UButton* btn_login;
 	
-	UPROPERTY(VisibleAnywhere)
-	UUserWidget* CurrentWidget;
-	
 	FString ID;
 	FString PW;
 };

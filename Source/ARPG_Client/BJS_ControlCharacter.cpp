@@ -88,7 +88,7 @@ void ABJS_ControlCharacter::BeginPlay()
 
 	// 현재 GameUi들고온다
 	auto mode = Cast<ABJS_GameModeBase>(GetWorld()->GetAuthGameMode());
-	auto mainUi = Cast<UBJS_GameUI>(mode->CurrentWidget);
+	auto mainUi = Cast<UBJS_GameUI>(mode->GetCurrentWidget());
 
 	// 쿨타임ui 업데이트
 	OnSkillIconUI.BindUObject(mainUi, &UBJS_GameUI::CoolTimeUpdate);

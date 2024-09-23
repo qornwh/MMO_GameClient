@@ -89,8 +89,8 @@ private:
 	TArray<TWeakPtr<class BJS_CharaterState>> TakeDemageList;
 
 	bool IsMainUi = true;
-	TObjectPtr<class UBJS_UserWidgetBase> MainUi;
-	TObjectPtr<class UBJS_UserWidgetBase> InventoryUi;
+	TObjectPtr<class UBJS_GameUI> MainUi;
+	TObjectPtr<class UBJS_InventoryWidget> InventoryUi;
 	TObjectPtr<class UBJS_FriendWidget> FriendUi;
 	TObjectPtr<class UBJS_ItemToopTip_Widget> ItemToolTipUi;
 	TObjectPtr<class UBJS_MailWidget> MailBoxUi;

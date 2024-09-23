@@ -19,14 +19,14 @@ class ARPG_CLIENT_API UBJS_PromptWidget : public UBJS_UserWidgetBase
 public:
 	UBJS_PromptWidget();
 	virtual void NativeConstruct() override;
+	virtual void RemoveFromParent() override;
 	void SetText(FString& text);
+	void Reset();
 
 	UFUNCTION()
 	void OnClick();
 
 	FOnPromptEnd OnPromptEnd;
-
-	virtual void BJS_UpdateWidget() override;
 
 private:
 	UPROPERTY(EditAnywhere, meta=(BindWidget))

@@ -1,11 +1,6 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "BJS_LoginWidget.h"
 
-#include "BJS_GameInstance.h"
 #include "BJS_GameModeBase.h"
-#include "BJS_LoginMode.h"
 #include "BJS_PromptWidget.h"
 #include "BJS_SocketActor.h"
 #include "GameClient.pb.h"
@@ -26,7 +21,7 @@ void UBJS_LoginWidget::NativeConstruct()
 	}
 }
 
-UBJS_LoginWidget::UBJS_LoginWidget(): tb_id(nullptr), tb_pw(nullptr), btn_login(nullptr), CurrentWidget(nullptr)
+UBJS_LoginWidget::UBJS_LoginWidget()
 {
 }
 
@@ -63,13 +58,7 @@ void UBJS_LoginWidget::OnLoginEvent()
 
 void UBJS_LoginWidget::LoginCheck(int32 result)
 {
-	if (CurrentWidget)
-	{
-		CurrentWidget->RemoveFromParent();
-		CurrentWidget = nullptr;
-	}
-
-	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
+	auto mode = Cast<ABJS_GameModeBase>(GetWorld()->GetAuthGameMode());
 	if (result == 1)
 	{
 		// 로그인 성공
@@ -77,24 +66,16 @@ void UBJS_LoginWidget::LoginCheck(int32 result)
 	}
 	else
 	{
-		CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), instance->GetPrompt());
-		if (CurrentWidget)
-		{
-			CurrentWidget->AddToViewport();
-			auto widget = Cast<UBJS_PromptWidget>(CurrentWidget);
-			if (widget)
-			{
-				FString str;
-				if (result == 0)
-					str = FString(TEXT("로그인 실패 - 비밀번호가 틀렸습니다 !!!"));
-				else if (result == 2)
-					str = FString(TEXT("계정 생성 성공 !!!"));
-				else if (result == 3)
-					str = FString(TEXT("로그인 실패 - 이미 로그인된 계정 !!!"));
-				else if (result == 4)
-					str = FString(TEXT("로그인 실패 - 계정 생성에 실패 !!!"));
-				widget->SetText(str);
-			}
-		}
+		auto Widget = mode->OpenPromptWidget();
+		FString str;
+		if (result == 0)
+			str = FString(TEXT("로그인 실패 - 비밀번호가 틀렸습니다 !!!"));
+		else if (result == 2)
+			str = FString(TEXT("계정 생성 성공 !!!"));
+		else if (result == 3)
+			str = FString(TEXT("로그인 실패 - 이미 로그인된 계정 !!!"));
+		else if (result == 4)
+			str = FString(TEXT("로그인 실패 - 계정 생성에 실패 !!!"));
+		Widget->SetText(str);
 	}
 }

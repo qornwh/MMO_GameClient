@@ -30,9 +30,8 @@ public:
 
 	class UBJS_UserWidgetBase* GetCurrentWidget();
 	void SetCurrentWidget(UBJS_UserWidgetBase* currentWidget);
-
-	UPROPERTY(VisibleAnywhere)
-	class UBJS_UserWidgetBase* CurrentWidget;
+	class UBJS_PromptWidget* OpenPromptWidget();
+	class UBJS_PromptWidget2* OpenPromptWidget2();
 
 	UFUNCTION()
 	void MoveStartPoint(AActor* Actor);
@@ -40,7 +39,14 @@ public:
 	APlayerController* GetPlayerController();
 	void SetShowMouseCousor(bool Flag);
 
-private:
+protected:
+	UPROPERTY(VisibleAnywhere)
+	class UBJS_UserWidgetBase* CurrentWidget;
+	UPROPERTY(VisibleAnywhere)
+	class UBJS_PromptWidget* PromptWidget;
+	UPROPERTY(VisibleAnywhere)
+	class UBJS_PromptWidget2* PromptWidget2;
+	
 	bool ShowMouseCursor;
 };
 
