@@ -141,6 +141,7 @@ void UBJS_InventoryWidget::AddEquipSlot(int32 EquipUnipeId)
 				{
 					auto slot = EquipItemSlots.Find(EquipUnipeId);
 					EquipItemSlots.Remove(EquipUnipeId);
+					(*slot)->ResetCheck();
 					(*slot)->SetSlots(false);
 				}
 			}
