@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BJS_Character.h"
 #include "GameFramework/GameModeBase.h"
 #include "BJS_GameModeBase.generated.h"
 
@@ -22,8 +23,14 @@ protected:
 	class ABJS_SocketActor* SocketActor;
 	class APlayerStart* PlayerStart;
 
-	template< class T >
+	template<class T>
 	T* CustomSpawnActor(UClass* Class, FVector SpawnLocation = FVector::ZeroVector, FRotator SpawnRotation = FRotator::ZeroRotator);
+	template<class T>
+	void CustomDespawnActor(UClass* Class, AActor* Actor);
+
+// private:
+	// 일단 오브젝트 풀링을 사용한다.
+	TMap<UClass*, TArray<TObjectPtr<AActor>>> CharaterPool;
 
 public:
 	ABJS_GameModeBase();
@@ -56,5 +63,38 @@ T* ABJS_GameModeBase::CustomSpawnActor(UClass* Class, FVector SpawnLocation, FRo
 {
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-	return GetWorld()->SpawnActor<T>(Class, SpawnLocation, SpawnRotation, SpawnParams);
+	AActor* Actor = nullptr;
+
+	if (TIsDerivedFrom<T, ABJS_Character>::IsDerived)
+	{
+		if (CharaterPool.Contains(Class) && CharaterPool.Find(Class)->Num() > 0)
+		{
+			Actor = CharaterPool.Find(Class)->Pop();
+			Cast<ABJS_Character>(Actor)->SetActivate(true);
+			Actor->SetActorLocationAndRotation(SpawnLocation, SpawnRotation);
+		}
+	}
+
+	if (Actor == nullptr)
+	{
+		Actor = GetWorld()->SpawnActor<T>(Class, SpawnLocation, SpawnRotation, SpawnParams);
+	}
+	return Cast<T>(Actor);
 }
+
+template <class T>
+void ABJS_GameModeBase::CustomDespawnActor(UClass* Class, AActor* Actor)
+{
+	if (Actor)
+	{
+		if (TIsDerivedFrom<T, ABJS_Character>::IsDerived)
+		{
+			if (!CharaterPool.Contains(Class))
+			{
+				CharaterPool.Add(Class);
+			}
+			CharaterPool.Find(Class)->Add(Actor);
+			Cast<ABJS_Character>(Actor)->SetActivate(false);
+		}
+	}
+} 

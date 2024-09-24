@@ -23,8 +23,15 @@ void UBJS_FriendWidget::BJS_InitWidget()
 		btn_close->OnClicked.AddDynamic(this, &UBJS_FriendWidget::OnClose);
 	for (int32 i = 0; i < MaxFriendSize; i++)
 	{
-		EmptyFriendSlot.Add(CreateWidget<UBJS_FriendSlotWidget>(GetWorld(), FriendSlotClass));
+		auto slot = CreateWidget<UBJS_FriendSlotWidget>(GetWorld(), FriendSlotClass);
+		FriendSlotList.Add(slot);
+		sb_friendList->AddChild(slot);
 	}
+}
+
+void UBJS_FriendWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
 	LoadFriendList();
 }
 
@@ -33,46 +40,20 @@ void UBJS_FriendWidget::LoadFriendList()
 	auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
 	if (mode)
 	{
-		for (auto& person : mode->GetMyFriend()->GetFriendList())
+		int32 i = 0;
+		for (auto& entry : mode->GetMyFriend()->GetFriendList())
 		{
-			AddFriend(person.Value);
+			auto& Friend = entry.Value;
+			auto slot = Cast<UBJS_FriendSlotWidget>(sb_friendList->GetChildAt(i));
+			slot->SetText(Friend.Name);
+			slot->SetState(Friend.Access);
+			i++;
 		}
-	}
-}
-
-void UBJS_FriendWidget::RemoveFriend(Person& person)
-{
-	int32 friendCode = person.PlayerCode;
-	if (FriendSlot.Contains(friendCode))
-	{
-		auto slot = FriendSlot[friendCode];
-		EmptyFriendSlot.Add(slot);
-		FriendSlot.Remove(friendCode);
-		sb_friendList->RemoveChild(Cast<UWidget>(slot));
-		slot->Reset();
-	}
-}
-
-void UBJS_FriendWidget::AddFriend(Person& person)
-{
-	if (!EmptyFriendSlot.IsEmpty())
-	{
-		auto slot = EmptyFriendSlot.Last();
-		slot->SetText(person.Name);
-		slot->SetState(person.Access);
-		FriendSlot.Add(person.PlayerCode, slot);
-		EmptyFriendSlot.Pop();
-		sb_friendList->AddChild(slot);
-	}
-}
-
-void UBJS_FriendWidget::UpdateFriend(Person& person)
-{
-	int32 friendCode = person.PlayerCode;
-	if (FriendSlot.Contains(friendCode))
-	{
-		auto slot = FriendSlot[friendCode];
-		slot->SetState(person.Access);
+		for (; i < 10; i++)
+		{
+			auto slot = Cast<UBJS_FriendSlotWidget>(sb_friendList->GetChildAt(i));
+			slot->SetText(FString{});
+		}
 	}
 }
 

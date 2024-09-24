@@ -49,7 +49,6 @@ public:
 	void TakeDemage(bool IsMonster, int32 SkillCode, TSharedPtr<class BJS_CharaterState> State);
 	void TakeHeal(int32 SkillCode, TSharedPtr<class BJS_CharaterState> State);
 	void DestroyPlayer(bool IsMonster, int32 UUid);
-	void UpdateMyFriendUI(int32 FriendCode, int32 State);
 	void UpdateInventoryEquipUI(int32 EquipUnipeId, int32 State);
 	void UpdateInventoryEtcUI(int32 EtcItemCode, int32 State);
 	void UpdateInventoryUI();

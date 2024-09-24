@@ -31,7 +31,7 @@ void FriendSystem::UpdateFriend(int32 friendCode, bool access)
 {
 	if (FriendList.Contains(friendCode))
 	{
-		auto myFriend = FriendList[friendCode];
+		auto& myFriend = FriendList[friendCode];
 		myFriend.Access = access;
 	}
 }

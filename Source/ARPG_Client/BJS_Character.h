@@ -13,20 +13,16 @@ class ARPG_CLIENT_API ABJS_Character : public ACharacter
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	ABJS_Character();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	virtual void Move(float DeltaTime);
+	virtual void Tick(float DeltaTime) override;
 	virtual void Destroyed() override;
 	void UpdateBuff(float DeltaTime);
+	
 public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
 	void SetSkeletalMesh(class USkeletalMesh* CurrentMesh);
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	bool GetAim();
@@ -51,6 +47,8 @@ public:
 	int32 GetTarget();
 	bool GetHitted();
 	void LoadInfo(int32 MeshCode, int32 WeaponCode);
+
+	void SetActivate(bool Flag);
 
 private:
 	UPROPERTY(EditAnywhere)
@@ -77,9 +75,7 @@ protected:
 
 	bool IsAim = false;
 	bool IsAttack = true;
-
 	int32 TargetUUid = -1;
 	bool IsHitted = false;
-
 	TMap<int32, CharaterSkill> BuffList;
 };

@@ -89,6 +89,12 @@ void ABJS_InGameMode::BeginPlay()
 	SocketActor = CustomSpawnActor<ABJS_SocketActor>(SocketClass);
 	if (PlayerStart)
 	{
+		SocketActor->OnLoadDelegate.BindUObject(this, &ABJS_InGameMode::LoadGame);
+		SocketActor->OnSpawnDelegate.BindUObject(this, &ABJS_InGameMode::InsertPlayer);
+		SocketActor->OnDeSpawnDelegate.BindUObject(this, &ABJS_InGameMode::RemovePlayer);
+		SocketActor->OnMoveStartPoint.BindUObject(this, &ABJS_InGameMode::MoveStartPoint);
+		SocketActor->OnChatMessage.BindUObject(this, &ABJS_InGameMode::ReadChatMessage);
+		
 		protocol::CLoad pkt;
 		protocol::Position* position = new protocol::Position;
 		position->set_x(PlayerStart->GetActorLocation().X);
@@ -98,11 +104,6 @@ void ABJS_InGameMode::BeginPlay()
 		pkt.set_allocated_position(position);
 
 		SocketActor->SendMessage(pkt, protocol::MessageCode::C_LOAD);
-		SocketActor->OnLoadDelegate.BindUObject(this, &ABJS_InGameMode::LoadGame);
-		SocketActor->OnSpawnDelegate.BindUObject(this, &ABJS_InGameMode::InsertPlayer);
-		SocketActor->OnDeSpawnDelegate.BindUObject(this, &ABJS_InGameMode::RemovePlayer);
-		SocketActor->OnMoveStartPoint.BindUObject(this, &ABJS_InGameMode::MoveStartPoint);
-		SocketActor->OnChatMessage.BindUObject(this, &ABJS_InGameMode::ReadChatMessage);
 	}
 	TakeDemageList.Init(nullptr, 10);
 
@@ -118,6 +119,26 @@ void ABJS_InGameMode::BeginPlay()
 	MyFriend = instance->GetMyFriend();
 	MyMail = instance->GetMyMail();
 	SetShowMouseCousor(false);
+
+	/// TEST
+
+	for (int32 i = 0; i < 200; i++)
+	{
+		FVector SpawnLocation = FVector::ZeroVector;
+		FRotator SpawnRotation = FRotator::ZeroRotator;
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+		ABJS_Character* player = GetWorld()->SpawnActor<ABJS_Character>(instance->GetPlayerClass(), SpawnLocation, SpawnRotation, SpawnParams);;
+		CustomDespawnActor<ABJS_Character>(instance->GetPlayerClass(), player);
+		// if (!CharaterPool.Contains(instance->GetPlayerClass()))
+		// {
+		// 	CharaterPool.Add(instance->GetPlayerClass());
+		// }
+		// CharaterPool.Find(instance->GetPlayerClass())->Add(player);
+		// Cast<ABJS_Character>(player)->SetActivate(false);
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("Create Player Num : %d"), CharaterPool.Find(instance->GetPlayerClass())->Num());
 }
 
 void ABJS_InGameMode::Tick(float DeltaSeconds)
@@ -253,8 +274,6 @@ void ABJS_InGameMode::LoadGame()
 
 		FVector SpawnLocation = FVector(State->GetX(), State->GetY(), 100.f);
 		FRotator SpawnRotation = FRotator(0.f, State->GetYaw(), 0.f);
-		FActorSpawnParameters SpawnParams;
-		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 		ABJS_Monster* monster = CustomSpawnActor<ABJS_Monster>(instance->GetMonsterClass(), SpawnLocation, SpawnRotation);
 		monster->SetState(State);
 	}
@@ -401,6 +420,7 @@ void ABJS_InGameMode::OpenFriendUI()
 	{
 		SetShowMouseCousor(true);
 		FriendUi->SetVisibility(ESlateVisibility::Visible);
+		FriendUi->LoadFriendList();
 	}
 }
 
@@ -444,30 +464,6 @@ void ABJS_InGameMode::ClaseMyPlayer()
 	}
 
 	UGameplayStatics::OpenLevel(this, TEXT("LoginMap"));
-}
-
-void ABJS_InGameMode::UpdateMyFriendUI(int32 FriendCode, int32 State)
-{
-	auto ui = Cast<UBJS_FriendWidget>(FriendUi);
-	if (ui)
-	{
-		if (State == 1)
-		{
-			// add
-			if (MyFriend.Pin()->GetFriendList().Contains(FriendCode))
-			{
-				ui->AddFriend(MyFriend.Pin()->GetFriendList()[FriendCode]);
-			}
-		}
-		else if (State == 2)
-		{
-			// update
-			if (MyFriend.Pin()->GetFriendList().Contains(FriendCode))
-			{
-				ui->UpdateFriend(MyFriend.Pin()->GetFriendList()[FriendCode]);
-			}
-		}
-	}
 }
 
 void ABJS_InGameMode::UpdateInventoryEquipUI(int32 EquipUnipeId, int32 State)

@@ -18,6 +18,13 @@ struct Person
 	{
 	}
 
+	bool operator==(const Person& other) const
+	{
+		if (PlayerCode == other.PlayerCode)
+			return true;
+		return false;
+	}
+
 	int32 PlayerCode = 0;
 	bool Access = false;
 	FString Name;

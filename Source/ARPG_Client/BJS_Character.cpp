@@ -322,9 +322,13 @@ TSharedPtr<BJS_CharaterState> ABJS_Character::GetState()
 
 void ABJS_Character::SetState(TSharedPtr<BJS_CharaterState> state)
 {
-	check(state.IsValid());
+	if (state == nullptr)
+	{
+		State.Reset();
+		return;
+	}
+	
 	State = state;
-
 	const auto HpWidget = Cast<UBJS_CharaterUIWidget>(HpBar->GetUserWidgetObject());
 	if (HpWidget != nullptr)
 	{
@@ -455,5 +459,22 @@ void ABJS_Character::LoadInfo(int32 MeshCode, int32 WeaponCode)
 		
 		GetMesh()->SetAnimInstanceClass(AnimInstanceClass);
 		AnimInstance = Cast<UBJS_AnimInstance_Base>(GetMesh()->GetAnimInstance());
+	}
+}
+
+void ABJS_Character::SetActivate(bool Flag)
+{
+	if (Flag)
+	{
+		SetActorEnableCollision(true);
+		SetActorTickEnabled(true);
+		SetActorHiddenInGame(false);
+	}
+	else
+	{
+		SetActorEnableCollision(false);
+		SetActorTickEnabled(false);
+		SetActorHiddenInGame(true);
+		SetState(nullptr);
 	}
 }

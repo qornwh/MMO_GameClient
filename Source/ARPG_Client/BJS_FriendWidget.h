@@ -17,19 +17,16 @@ class ARPG_CLIENT_API UBJS_FriendWidget : public UBJS_SubWidget
 public:
 	UBJS_FriendWidget();
 	virtual void BJS_InitWidget() override;
+	virtual void NativeConstruct() override;
 	void LoadFriendList();
-	void RemoveFriend(struct Person& person);
-	void AddFriend(struct Person& person);
-	void UpdateFriend(struct Person& person);
 	
 	UFUNCTION()
 	void OnClose();
 
 private:
 	TSubclassOf<class UBJS_FriendSlotWidget> FriendSlotClass;
-
 	TMap<int32, TObjectPtr<UBJS_FriendSlotWidget>> FriendSlot;
-	TArray<TObjectPtr<UBJS_FriendSlotWidget>> EmptyFriendSlot;
+	TArray<TObjectPtr<UBJS_FriendSlotWidget>> FriendSlotList;
 
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UScrollBox* sb_friendList;
