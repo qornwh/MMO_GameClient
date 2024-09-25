@@ -39,6 +39,7 @@ public:
 	void AddFriend(int32 friendCode, bool access, const FString& Name);
 	void RemoveFriend(int32 friendCode);
 	void UpdateFriend(int32 friendCode, bool access); // 접속여부
+	int32 CheckFriend(const FString& Name); // 친구체크
 
 	TMap<int32, Person>& GetFriendList() { return FriendList; }
 

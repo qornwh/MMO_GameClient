@@ -35,3 +35,17 @@ void FriendSystem::UpdateFriend(int32 friendCode, bool access)
 		myFriend.Access = access;
 	}
 }
+
+int32 FriendSystem::CheckFriend(const FString& Name)
+{
+	for (const auto& entry : FriendList)
+	{
+		const auto& myFriend = entry.Value;
+
+		if (myFriend.Name.Equals(Name))
+		{
+			return entry.Key;
+		}
+	}
+	return -1;
+}

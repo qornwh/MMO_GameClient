@@ -827,8 +827,13 @@ void ABJS_SocketActor::FriendSystemHandler(BYTE* Buffer, PacketHeader* Header, i
 				{
 					if (add)
 					{
-						TCHAR* nameArr = UTF8_TO_TCHAR(myFriend.playername().c_str());
-						mode->GetMyFriend()->AddFriend(friendCode, access, nameArr);
+						auto MyFriendRef = mode->GetMyFriend();
+						if (MyFriendRef)
+						{
+							TCHAR* nameArr = UTF8_TO_TCHAR(myFriend.playername().c_str());
+							MyFriendRef->AddFriend(friendCode, access, nameArr);
+							MyFriendRef->UpdateFriend(friendCode, access);
+						}
 					}
 					else
 					{

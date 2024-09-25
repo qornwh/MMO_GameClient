@@ -299,7 +299,15 @@ void ABJS_InGameMode::LoadGame()
 		check(player);
 		player->SetState(State);
 		player->LoadInfo(Code, State->GetWeaponCode());
+		
+		auto MyFriendRef = MyFriend.Pin();
+		if (MyFriendRef)
+		{
+			int32 friendCode = MyFriendRef->CheckFriend(State->GetName());
+			MyFriendRef->UpdateFriend(friendCode, true);
+		}
 	}
+	FriendUi->LoadFriendList();
 }
 
 void ABJS_InGameMode::InsertPlayer(bool IsMonster, int32 UUid)
@@ -324,6 +332,14 @@ void ABJS_InGameMode::InsertPlayer(bool IsMonster, int32 UUid)
 		ABJS_Character* Player = CustomSpawnActor<ABJS_Character>(instance->GetPlayerClass(), SpawnLocation, SpawnRotation);
 		Player->SetState(State);
 		Player->LoadInfo(Code, State->GetWeaponCode());
+		
+		auto MyFriendRef = MyFriend.Pin();
+		if (MyFriendRef)
+		{
+			int32 friendCode = MyFriendRef->CheckFriend(State->GetName());
+			MyFriendRef->UpdateFriend(friendCode, true);
+			FriendUi->LoadFriendList();
+		}
 	}
 	else
 	{
@@ -356,6 +372,14 @@ void ABJS_InGameMode::RemovePlayer(bool IsMonster, int32 UUid)
 			if (State->GetTarget())
 			{
 				GetWorld()->DestroyActor(Target);
+		
+				auto MyFriendRef = MyFriend.Pin();
+				if (MyFriendRef)
+				{
+					int32 friendCode = MyFriendRef->CheckFriend(State->GetName());
+					MyFriendRef->UpdateFriend(friendCode, false);
+					FriendUi->LoadFriendList();
+				}
 			}
 		}
 	}
