@@ -58,6 +58,7 @@ public:
 	void UpdateMailUi();
 	void UpdateMail(int32 MailCode, int32 State);
 	void AllUpdateMail(int32 State);
+	void UpdateFriendUi();
 
 	TMap<int32, TSharedPtr<class BJS_CharaterState>>& GetCharaterStateList();
 	TMap<int32, TSharedPtr<class BJS_CharaterState>>& GetMonsterStateList();

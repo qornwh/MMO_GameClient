@@ -813,25 +813,38 @@ void ABJS_SocketActor::FriendSystemHandler(BYTE* Buffer, PacketHeader* Header, i
 
 	if (PacketHandlerUtils::ParsePacketHandler(pkt, Buffer, Header->GetSize() - Offset, Offset))
 	{
-		for (auto& myFriend : pkt.friend_())
+		int32 result = pkt.result();
+		if (result >= 0)
 		{
-			int32 friendCode = myFriend.playercode();
-			bool access = myFriend.access();
-			int32 add = myFriend.add();
-
 			auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
-			if (mode)
+			for (auto& myFriend : pkt.friend_())
 			{
-				if (add)
+				int32 friendCode = myFriend.playercode();
+				bool access = myFriend.access();
+				int32 add = myFriend.add();
+
+				if (mode)
 				{
-					TCHAR* nameArr = UTF8_TO_TCHAR(myFriend.playername().c_str());
-					mode->GetMyFriend()->AddFriend(friendCode, access, nameArr);
-				}
-				else
-				{
-					mode->GetMyFriend()->UpdateFriend(friendCode, access);
+					if (add)
+					{
+						TCHAR* nameArr = UTF8_TO_TCHAR(myFriend.playername().c_str());
+						mode->GetMyFriend()->AddFriend(friendCode, access, nameArr);
+					}
+					else
+					{
+						mode->GetMyFriend()->UpdateFriend(friendCode, access);
+					}
 				}
 			}
+			if (mode)
+			{
+				mode->UpdateFriendUi();
+			}
+		}
+		else if (result < 0)
+		{
+			FString msg{TEXT("친구추가에 실패했습니다.")};
+			OnChatMessage.Execute(msg, 2, -1);
 		}
 	}
 }

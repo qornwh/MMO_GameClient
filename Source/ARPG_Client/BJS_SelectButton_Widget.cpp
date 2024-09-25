@@ -4,7 +4,9 @@
 #include "BJS_SelectButton_Widget.h"
 
 #include "BJS_CreateChareter_Prompt_Widget.h"
+#include "BJS_GameInstance.h"
 #include "BJS_LoginMode.h"
+#include "BJS_PromptWidget3.h"
 #include "BJS_SocketActor.h"
 #include "GameClient.pb.h"
 #include "Components/Button.h"
@@ -12,10 +14,6 @@
 
 UBJS_SelectButton_Widget::UBJS_SelectButton_Widget()
 {
-	static ConstructorHelpers::FClassFinder<UBJS_CreateChareter_Prompt_Widget> UI_PROMPT_HUD(
-		TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/MyGame/UMG/BJS_WBP_Create.BJS_WBP_Create_C'"));
-	check(UI_PROMPT_HUD.Succeeded());
-	CreateCharecterPromptClass = UI_PROMPT_HUD.Class;
 }
 
 void UBJS_SelectButton_Widget::BJS_UpdateWidget()
@@ -134,10 +132,14 @@ void UBJS_SelectButton_Widget::OnBuyBtn()
 	{
 		if (Type <= 3)
 		{
-			auto Widget = CreateWidget<UBJS_CreateChareter_Prompt_Widget>(GetWorld(), CreateCharecterPromptClass);
-			Widget->AddToViewport();
-			Widget->SetText(Create_Name_Str);
-			Widget->OnSelectPromptEnd.BindUObject(this, &UBJS_SelectButton_Widget::CreateCharater);
+			auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
+			if (instance)
+			{
+				auto Widget = CreateWidget<UBJS_PromptWidget3>(GetWorld(), instance->GetPrompt3());
+				Widget->AddToViewport();
+				Widget->SetText(Create_Name_Str);
+				Widget->OnSelectPromptEnd.BindUObject(this, &UBJS_SelectButton_Widget::CreateCharater);
+			}
 		}
 		else
 		{

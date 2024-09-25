@@ -80,6 +80,7 @@ public:
 
 	TSubclassOf<class UUserWidget>& GetPrompt();
 	TSubclassOf<class UUserWidget>& GetPrompt2();
+	TSubclassOf<class UUserWidget>& GetPrompt3();
 
 private:
 	TSharedPtr<FInternetAddr> ServerArr;
@@ -143,4 +144,5 @@ private:
 	// Prompt_BP
 	TSubclassOf<class UUserWidget> PromptClass; // ok type 1
 	TSubclassOf<class UUserWidget> PromptClass2; // ok, cancle type2
+	TSubclassOf<class UUserWidget> PromptClass3; // text type2
 };

@@ -388,10 +388,20 @@ void ABJS_InGameMode::ReadChatMessage(FString Message, int32 Type, int32 Uuid)
 	auto ui = Cast<UBJS_GameUI>(MainUi);
 	if (ui)
 	{
-		auto player = BJSCharaterStateList[Uuid];
-		if (player.IsValid())
+		if (BJSMonsterStateList.Contains(Uuid))
 		{
-			ui->ReadChatMessage(Message, Type, player->GetName());
+			auto player = BJSCharaterStateList[Uuid];
+			if (player.IsValid())
+			{
+				ui->ReadChatMessage(Message, Type, player->GetName());
+			}
+		}
+		else
+		{
+			if (Type == 2)
+			{
+				ui->ReadChatMessage(Message, Type, FString{"System"});
+			}
 		}
 	}
 }
@@ -574,6 +584,14 @@ void ABJS_InGameMode::AllUpdateMail(int32 State)
 	pkt.set_type(State);
 		
 	SocketActor->SendMessage(pkt, protocol::MessageCode::C_ALLUPDATEMAIL);
+}
+
+void ABJS_InGameMode::UpdateFriendUi()
+{
+	if (FriendUi)
+	{
+		FriendUi->LoadFriendList();
+	}
 }
 
 void ABJS_InGameMode::DestroyPlayer(bool IsMonster, int32 UUid)

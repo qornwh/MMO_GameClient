@@ -85,7 +85,15 @@ void UBJS_GameUI::ReadChatMessage(const FString& Message, int32 Type, const FStr
 		mtb_chatlog->AddChild(TextBox);
 		FString Msg = FString::Printf(TEXT("%s : %s"), *Name, *Message);
 		TextBox->SetText(FText::FromString(Msg));
-		TextBox->SetColorAndOpacity(FLinearColor::White);
+
+		if (Type == 1)
+		{
+			TextBox->SetColorAndOpacity(FLinearColor::White);
+		}
+		else if (Type == 2)
+		{
+			TextBox->SetColorAndOpacity(FLinearColor::Yellow);
+		}
 
 		FSlateFontInfo font = TextBox->GetFont();
 		FFontOutlineSettings OutlineSettings;
@@ -93,7 +101,7 @@ void UBJS_GameUI::ReadChatMessage(const FString& Message, int32 Type, const FStr
 		OutlineSettings.OutlineColor = FLinearColor::Black;
 		font.OutlineSettings = OutlineSettings;
 		
-		font.Size = 30; 
+		font.Size = 30;
 		TextBox->SetFont(font);
 	}
 }

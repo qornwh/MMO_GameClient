@@ -385,6 +385,10 @@ void UBJS_GameInstance::LoadPromptBP()
 	static ConstructorHelpers::FClassFinder<UUserWidget> UI_PROMPT2_HUD(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/MyGame/UMG/BJS_WBP_Message2.BJS_WBP_Message2_C'"));
 	check(UI_PROMPT2_HUD.Succeeded());
 	PromptClass2 = UI_PROMPT2_HUD.Class;
+	
+	static ConstructorHelpers::FClassFinder<UUserWidget> UI_PROMPT3_HUD(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/MyGame/UMG/BJS_WBP_Message3.BJS_WBP_Message3_C'"));
+	check(UI_PROMPT3_HUD.Succeeded());
+	PromptClass3 = UI_PROMPT3_HUD.Class;
 }
 
 TArray<FPlayerStruct*>& UBJS_GameInstance::GetPlayerStructs()
@@ -505,4 +509,9 @@ TSubclassOf<UUserWidget>& UBJS_GameInstance::GetPrompt()
 TSubclassOf<UUserWidget>& UBJS_GameInstance::GetPrompt2()
 {
 	return PromptClass2;
+}
+
+TSubclassOf<UUserWidget>& UBJS_GameInstance::GetPrompt3()
+{
+	return PromptClass3;
 }

@@ -49,7 +49,4 @@ private:
 	FString Select_No_Str = TEXT("보유중이지 않음");
 	FString Create_Name_Str = TEXT("캐릭터 이름 생성");
 	int32 pay = 2500; // 일단 고정
-
-	UPROPERTY(EditAnywhere, Category = "Menus")
-	TSubclassOf<class UBJS_CreateChareter_Prompt_Widget> CreateCharecterPromptClass;
 };

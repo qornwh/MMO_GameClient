@@ -22,16 +22,22 @@ public:
 	
 	UFUNCTION()
 	void OnClose();
+	UFUNCTION()
+	void OnAddFriend();
+	UFUNCTION()
+	void AddFriend(FString Name);
 
 private:
 	TSubclassOf<class UBJS_FriendSlotWidget> FriendSlotClass;
 	TMap<int32, TObjectPtr<UBJS_FriendSlotWidget>> FriendSlot;
-	TArray<TObjectPtr<UBJS_FriendSlotWidget>> FriendSlotList;
 
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UScrollBox* sb_friendList;
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UButton* btn_close;
+	UPROPERTY(EditAnywhere, meta=(BindWidget))
+	class UButton* btn_friend;
 
+	FString Friend_Name_Str = TEXT("추가할 친구의 이름을 입력해주세요.");
 	const int32 MaxFriendSize = 10;
 };

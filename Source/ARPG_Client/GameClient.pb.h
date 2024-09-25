@@ -47,7 +47,7 @@ struct TableStruct_GameClient_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[46]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[47]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -70,6 +70,9 @@ extern CBuyCharaterDefaultTypeInternal _CBuyCharater_default_instance_;
 class CBuyWeapon;
 struct CBuyWeaponDefaultTypeInternal;
 extern CBuyWeaponDefaultTypeInternal _CBuyWeapon_default_instance_;
+class CFriend;
+struct CFriendDefaultTypeInternal;
+extern CFriendDefaultTypeInternal _CFriend_default_instance_;
 class CLoad;
 struct CLoadDefaultTypeInternal;
 extern CLoadDefaultTypeInternal _CLoad_default_instance_;
@@ -200,6 +203,7 @@ template<> ::protocol::CAllUpdateMail* Arena::CreateMaybeMessage<::protocol::CAl
 template<> ::protocol::CAttack* Arena::CreateMaybeMessage<::protocol::CAttack>(Arena*);
 template<> ::protocol::CBuyCharater* Arena::CreateMaybeMessage<::protocol::CBuyCharater>(Arena*);
 template<> ::protocol::CBuyWeapon* Arena::CreateMaybeMessage<::protocol::CBuyWeapon>(Arena*);
+template<> ::protocol::CFriend* Arena::CreateMaybeMessage<::protocol::CFriend>(Arena*);
 template<> ::protocol::CLoad* Arena::CreateMaybeMessage<::protocol::CLoad>(Arena*);
 template<> ::protocol::CLoadMail* Arena::CreateMaybeMessage<::protocol::CLoadMail>(Arena*);
 template<> ::protocol::CMovePotal* Arena::CreateMaybeMessage<::protocol::CMovePotal>(Arena*);
@@ -274,6 +278,7 @@ enum MessageCode : int {
   C_SELLITEMS = 31,
   C_UPDATEITEMS = 33,
   S_FRIENDSYSTEM = 32,
+  C_FRIEND = 34,
   C_LOADMAIL = 40,
   C_UPDATEMAIL = 41,
   C_ALLUPDATEMAIL = 42,
@@ -6853,6 +6858,7 @@ class SFriendSystem final :
 
   enum : int {
     kFriendFieldNumber = 1,
+    kResultFieldNumber = 3,
   };
   // repeated .protocol.Friend friend = 1;
   int friend__size() const;
@@ -6872,6 +6878,15 @@ class SFriendSystem final :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protocol::Friend >&
       friend_() const;
 
+  // int32 result = 3;
+  void clear_result();
+  ::PROTOBUF_NAMESPACE_ID::int32 result() const;
+  void set_result(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_result() const;
+  void _internal_set_result(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:protocol.SFriendSystem)
  private:
   class _Internal;
@@ -6880,6 +6895,170 @@ class SFriendSystem final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protocol::Friend > friend__;
+  ::PROTOBUF_NAMESPACE_ID::int32 result_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_GameClient_2eproto;
+};
+// -------------------------------------------------------------------
+
+class CFriend final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:protocol.CFriend) */ {
+ public:
+  inline CFriend() : CFriend(nullptr) {}
+  ~CFriend() override;
+  explicit constexpr CFriend(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  CFriend(const CFriend& from);
+  CFriend(CFriend&& from) noexcept
+    : CFriend() {
+    *this = ::std::move(from);
+  }
+
+  inline CFriend& operator=(const CFriend& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CFriend& operator=(CFriend&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CFriend& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const CFriend* internal_default_instance() {
+    return reinterpret_cast<const CFriend*>(
+               &_CFriend_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    38;
+
+  friend void swap(CFriend& a, CFriend& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(CFriend* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(CFriend* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline CFriend* New() const final {
+    return new CFriend();
+  }
+
+  CFriend* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<CFriend>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const CFriend& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const CFriend& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(CFriend* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "protocol.CFriend";
+  }
+  protected:
+  explicit CFriend(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kFriendFieldNumber = 2,
+    kTypeFieldNumber = 1,
+  };
+  // .protocol.Friend friend = 2;
+  bool has_friend_() const;
+  private:
+  bool _internal_has_friend_() const;
+  public:
+  void clear_friend_();
+  const ::protocol::Friend& friend_() const;
+  PROTOBUF_MUST_USE_RESULT ::protocol::Friend* release_friend_();
+  ::protocol::Friend* mutable_friend_();
+  void set_allocated_friend_(::protocol::Friend* friend_);
+  private:
+  const ::protocol::Friend& _internal_friend_() const;
+  ::protocol::Friend* _internal_mutable_friend_();
+  public:
+  void unsafe_arena_set_allocated_friend_(
+      ::protocol::Friend* friend_);
+  ::protocol::Friend* unsafe_arena_release_friend_();
+
+  // int32 type = 1;
+  void clear_type();
+  ::PROTOBUF_NAMESPACE_ID::int32 type() const;
+  void set_type(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_type() const;
+  void _internal_set_type(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:protocol.CFriend)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::protocol::Friend* friend__;
+  ::PROTOBUF_NAMESPACE_ID::int32 type_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_GameClient_2eproto;
 };
@@ -6933,7 +7112,7 @@ class CUpdateItems final :
                &_CUpdateItems_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    38;
+    39;
 
   friend void swap(CUpdateItems& a, CUpdateItems& b) {
     a.Swap(&b);
@@ -7085,7 +7264,7 @@ class Mail final :
                &_Mail_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    39;
+    40;
 
   friend void swap(Mail& a, Mail& b) {
     a.Swap(&b);
@@ -7326,7 +7505,7 @@ class MailEquipItem final :
                &_MailEquipItem_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    40;
+    41;
 
   friend void swap(MailEquipItem& a, MailEquipItem& b) {
     a.Swap(&b);
@@ -7500,7 +7679,7 @@ class MailEtcItem final :
                &_MailEtcItem_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    41;
+    42;
 
   friend void swap(MailEtcItem& a, MailEtcItem& b) {
     a.Swap(&b);
@@ -7674,7 +7853,7 @@ class CLoadMail final :
                &_CLoadMail_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    42;
+    43;
 
   friend void swap(CLoadMail& a, CLoadMail& b) {
     a.Swap(&b);
@@ -7877,7 +8056,7 @@ class CUpdateMail final :
                &_CUpdateMail_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    43;
+    44;
 
   friend void swap(CUpdateMail& a, CUpdateMail& b) {
     a.Swap(&b);
@@ -7948,47 +8127,9 @@ class CUpdateMail final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kEquipItemsFieldNumber = 3,
-    kEtcItemsFieldNumber = 4,
     kMailFieldNumber = 2,
     kTypeFieldNumber = 1,
   };
-  // repeated .protocol.MailEquipItem equipItems = 3;
-  int equipitems_size() const;
-  private:
-  int _internal_equipitems_size() const;
-  public:
-  void clear_equipitems();
-  ::protocol::MailEquipItem* mutable_equipitems(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protocol::MailEquipItem >*
-      mutable_equipitems();
-  private:
-  const ::protocol::MailEquipItem& _internal_equipitems(int index) const;
-  ::protocol::MailEquipItem* _internal_add_equipitems();
-  public:
-  const ::protocol::MailEquipItem& equipitems(int index) const;
-  ::protocol::MailEquipItem* add_equipitems();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protocol::MailEquipItem >&
-      equipitems() const;
-
-  // repeated .protocol.MailEtcItem etcItems = 4;
-  int etcitems_size() const;
-  private:
-  int _internal_etcitems_size() const;
-  public:
-  void clear_etcitems();
-  ::protocol::MailEtcItem* mutable_etcitems(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protocol::MailEtcItem >*
-      mutable_etcitems();
-  private:
-  const ::protocol::MailEtcItem& _internal_etcitems(int index) const;
-  ::protocol::MailEtcItem* _internal_add_etcitems();
-  public:
-  const ::protocol::MailEtcItem& etcitems(int index) const;
-  ::protocol::MailEtcItem* add_etcitems();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protocol::MailEtcItem >&
-      etcitems() const;
-
   // .protocol.Mail mail = 2;
   bool has_mail() const;
   private:
@@ -8023,8 +8164,6 @@ class CUpdateMail final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protocol::MailEquipItem > equipitems_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protocol::MailEtcItem > etcitems_;
   ::protocol::Mail* mail_;
   ::PROTOBUF_NAMESPACE_ID::int32 type_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
@@ -8080,7 +8219,7 @@ class CAllUpdateMail final :
                &_CAllUpdateMail_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    44;
+    45;
 
   friend void swap(CAllUpdateMail& a, CAllUpdateMail& b) {
     a.Swap(&b);
@@ -8283,7 +8422,7 @@ class CSendMail final :
                &_CSendMail_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    45;
+    46;
 
   friend void swap(CSendMail& a, CSendMail& b) {
     a.Swap(&b);
@@ -12251,6 +12390,140 @@ SFriendSystem::friend_() const {
   return friend__;
 }
 
+// int32 result = 3;
+inline void SFriendSystem::clear_result() {
+  result_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 SFriendSystem::_internal_result() const {
+  return result_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 SFriendSystem::result() const {
+  // @@protoc_insertion_point(field_get:protocol.SFriendSystem.result)
+  return _internal_result();
+}
+inline void SFriendSystem::_internal_set_result(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  result_ = value;
+}
+inline void SFriendSystem::set_result(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_result(value);
+  // @@protoc_insertion_point(field_set:protocol.SFriendSystem.result)
+}
+
+// -------------------------------------------------------------------
+
+// CFriend
+
+// int32 type = 1;
+inline void CFriend::clear_type() {
+  type_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 CFriend::_internal_type() const {
+  return type_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 CFriend::type() const {
+  // @@protoc_insertion_point(field_get:protocol.CFriend.type)
+  return _internal_type();
+}
+inline void CFriend::_internal_set_type(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  type_ = value;
+}
+inline void CFriend::set_type(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_type(value);
+  // @@protoc_insertion_point(field_set:protocol.CFriend.type)
+}
+
+// .protocol.Friend friend = 2;
+inline bool CFriend::_internal_has_friend_() const {
+  return this != internal_default_instance() && friend__ != nullptr;
+}
+inline bool CFriend::has_friend_() const {
+  return _internal_has_friend_();
+}
+inline void CFriend::clear_friend_() {
+  if (GetArenaForAllocation() == nullptr && friend__ != nullptr) {
+    delete friend__;
+  }
+  friend__ = nullptr;
+}
+inline const ::protocol::Friend& CFriend::_internal_friend_() const {
+  const ::protocol::Friend* p = friend__;
+  return p != nullptr ? *p : reinterpret_cast<const ::protocol::Friend&>(
+      ::protocol::_Friend_default_instance_);
+}
+inline const ::protocol::Friend& CFriend::friend_() const {
+  // @@protoc_insertion_point(field_get:protocol.CFriend.friend)
+  return _internal_friend_();
+}
+inline void CFriend::unsafe_arena_set_allocated_friend_(
+    ::protocol::Friend* friend_) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(friend__);
+  }
+  friend__ = friend_;
+  if (friend_) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:protocol.CFriend.friend)
+}
+inline ::protocol::Friend* CFriend::release_friend_() {
+  
+  ::protocol::Friend* temp = friend__;
+  friend__ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::protocol::Friend* CFriend::unsafe_arena_release_friend_() {
+  // @@protoc_insertion_point(field_release:protocol.CFriend.friend)
+  
+  ::protocol::Friend* temp = friend__;
+  friend__ = nullptr;
+  return temp;
+}
+inline ::protocol::Friend* CFriend::_internal_mutable_friend_() {
+  
+  if (friend__ == nullptr) {
+    auto* p = CreateMaybeMessage<::protocol::Friend>(GetArenaForAllocation());
+    friend__ = p;
+  }
+  return friend__;
+}
+inline ::protocol::Friend* CFriend::mutable_friend_() {
+  ::protocol::Friend* _msg = _internal_mutable_friend_();
+  // @@protoc_insertion_point(field_mutable:protocol.CFriend.friend)
+  return _msg;
+}
+inline void CFriend::set_allocated_friend_(::protocol::Friend* friend_) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete friend__;
+  }
+  if (friend_) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<::protocol::Friend>::GetOwningArena(friend_);
+    if (message_arena != submessage_arena) {
+      friend_ = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, friend_, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  friend__ = friend_;
+  // @@protoc_insertion_point(field_set_allocated:protocol.CFriend.friend)
+}
+
 // -------------------------------------------------------------------
 
 // CUpdateItems
@@ -13057,86 +13330,6 @@ inline void CUpdateMail::set_allocated_mail(::protocol::Mail* mail) {
   // @@protoc_insertion_point(field_set_allocated:protocol.CUpdateMail.mail)
 }
 
-// repeated .protocol.MailEquipItem equipItems = 3;
-inline int CUpdateMail::_internal_equipitems_size() const {
-  return equipitems_.size();
-}
-inline int CUpdateMail::equipitems_size() const {
-  return _internal_equipitems_size();
-}
-inline void CUpdateMail::clear_equipitems() {
-  equipitems_.Clear();
-}
-inline ::protocol::MailEquipItem* CUpdateMail::mutable_equipitems(int index) {
-  // @@protoc_insertion_point(field_mutable:protocol.CUpdateMail.equipItems)
-  return equipitems_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protocol::MailEquipItem >*
-CUpdateMail::mutable_equipitems() {
-  // @@protoc_insertion_point(field_mutable_list:protocol.CUpdateMail.equipItems)
-  return &equipitems_;
-}
-inline const ::protocol::MailEquipItem& CUpdateMail::_internal_equipitems(int index) const {
-  return equipitems_.Get(index);
-}
-inline const ::protocol::MailEquipItem& CUpdateMail::equipitems(int index) const {
-  // @@protoc_insertion_point(field_get:protocol.CUpdateMail.equipItems)
-  return _internal_equipitems(index);
-}
-inline ::protocol::MailEquipItem* CUpdateMail::_internal_add_equipitems() {
-  return equipitems_.Add();
-}
-inline ::protocol::MailEquipItem* CUpdateMail::add_equipitems() {
-  ::protocol::MailEquipItem* _add = _internal_add_equipitems();
-  // @@protoc_insertion_point(field_add:protocol.CUpdateMail.equipItems)
-  return _add;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protocol::MailEquipItem >&
-CUpdateMail::equipitems() const {
-  // @@protoc_insertion_point(field_list:protocol.CUpdateMail.equipItems)
-  return equipitems_;
-}
-
-// repeated .protocol.MailEtcItem etcItems = 4;
-inline int CUpdateMail::_internal_etcitems_size() const {
-  return etcitems_.size();
-}
-inline int CUpdateMail::etcitems_size() const {
-  return _internal_etcitems_size();
-}
-inline void CUpdateMail::clear_etcitems() {
-  etcitems_.Clear();
-}
-inline ::protocol::MailEtcItem* CUpdateMail::mutable_etcitems(int index) {
-  // @@protoc_insertion_point(field_mutable:protocol.CUpdateMail.etcItems)
-  return etcitems_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protocol::MailEtcItem >*
-CUpdateMail::mutable_etcitems() {
-  // @@protoc_insertion_point(field_mutable_list:protocol.CUpdateMail.etcItems)
-  return &etcitems_;
-}
-inline const ::protocol::MailEtcItem& CUpdateMail::_internal_etcitems(int index) const {
-  return etcitems_.Get(index);
-}
-inline const ::protocol::MailEtcItem& CUpdateMail::etcitems(int index) const {
-  // @@protoc_insertion_point(field_get:protocol.CUpdateMail.etcItems)
-  return _internal_etcitems(index);
-}
-inline ::protocol::MailEtcItem* CUpdateMail::_internal_add_etcitems() {
-  return etcitems_.Add();
-}
-inline ::protocol::MailEtcItem* CUpdateMail::add_etcitems() {
-  ::protocol::MailEtcItem* _add = _internal_add_etcitems();
-  // @@protoc_insertion_point(field_add:protocol.CUpdateMail.etcItems)
-  return _add;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protocol::MailEtcItem >&
-CUpdateMail::etcitems() const {
-  // @@protoc_insertion_point(field_list:protocol.CUpdateMail.etcItems)
-  return etcitems_;
-}
-
 // -------------------------------------------------------------------
 
 // CAllUpdateMail
@@ -13478,6 +13671,8 @@ CSendMail::etcitems() const {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

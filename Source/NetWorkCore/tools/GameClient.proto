@@ -37,6 +37,7 @@ enum MessageCode {
     C_UPDATEITEMS = 33; // 인벤토리 아이템 장착, 장착해제등
     
     S_FRIENDSYSTEM = 32; // 친구 시스템 
+    C_FRIEND = 34; // 친구 추가
     
     // 메일관련
     C_LOADMAIL = 40;
@@ -285,6 +286,12 @@ message Friend {
 
 message SFriendSystem {
     repeated Friend friend = 1;
+    int32 result = 3;
+}
+
+message CFriend {
+    int32 type = 1; // 0 : add
+    Friend friend = 2;
 }
 
 message CUpdateItems {
@@ -325,8 +332,6 @@ message CLoadMail {
 message CUpdateMail {
     int32 type = 1; // 0 : add, 1 : read, 2 : reciveItem, 3 : remove
     Mail mail = 2;
-    repeated MailEquipItem equipItems = 3;
-    repeated MailEtcItem etcItems = 4;
 }
 
 message CAllUpdateMail {
