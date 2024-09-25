@@ -52,7 +52,7 @@ public:
 
 private:
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<class AActor> DefaultDamgeActor;
+	TSubclassOf<class ABJS_DemageActor> DefaultDamgeActor;
 
 protected:
 	void UpdateHpWidget();

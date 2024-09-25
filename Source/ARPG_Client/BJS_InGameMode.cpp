@@ -138,7 +138,7 @@ void ABJS_InGameMode::BeginPlay()
 		// Cast<ABJS_Character>(player)->SetActivate(false);
 	}
 
-	UE_LOG(LogTemp, Log, TEXT("Create Player Num : %d"), CharaterPool.Find(instance->GetPlayerClass())->Num());
+	UE_LOG(LogTemp, Log, TEXT("Create Player Num : %d"), ActorPool.Find(instance->GetPlayerClass())->Num());
 }
 
 void ABJS_InGameMode::Tick(float DeltaSeconds)

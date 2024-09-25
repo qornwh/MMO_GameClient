@@ -26,6 +26,7 @@ public:
 	void SetDemage(int32 Demage);
 	void SetHeal(int32 Heal);
 	void SetRandomLoc();
+	void SetActivate(bool Flag);
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))

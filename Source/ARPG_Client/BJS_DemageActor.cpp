@@ -6,6 +6,7 @@
 #include <string>
 
 #include "BJS_DemageWidget.h"
+#include "BJS_GameModeBase.h"
 #include "Components/WidgetComponent.h"
 
 // Sets default values
@@ -48,7 +49,13 @@ void ABJS_DemageActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	if (OnOff)
-		Destroy();
+	{
+		auto mode = Cast<ABJS_GameModeBase>(GetWorld()->GetAuthGameMode());
+		if (mode)
+		{
+			mode->CustomDespawnActor<ABJS_DemageActor>(ABJS_DemageActor::StaticClass(), this);
+		}
+	}
 	OnOff = true;
 }
 
@@ -86,5 +93,23 @@ void ABJS_DemageActor::SetRandomLoc()
 			
 	FVector NewLocation = CurrentVector + (RightVector * rightVal);
 	SetActorLocation(NewLocation);
+}
+
+void ABJS_DemageActor::SetActivate(bool Flag)
+{
+	if (Flag)
+	{
+		OnOff = false;
+		SetRandomLoc();
+		SetActorEnableCollision(true);
+		SetActorTickEnabled(true);
+		SetActorHiddenInGame(false);
+	}
+	else
+	{
+		SetActorEnableCollision(false);
+		SetActorTickEnabled(false);
+		SetActorHiddenInGame(true);
+	}
 }
 

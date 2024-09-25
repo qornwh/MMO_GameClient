@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "BJS_Character.h"
+#include "BJS_DemageActor.h"
 #include "GameFramework/GameModeBase.h"
 #include "BJS_GameModeBase.generated.h"
 
@@ -23,14 +24,9 @@ protected:
 	class ABJS_SocketActor* SocketActor;
 	class APlayerStart* PlayerStart;
 
-	template<class T>
-	T* CustomSpawnActor(UClass* Class, FVector SpawnLocation = FVector::ZeroVector, FRotator SpawnRotation = FRotator::ZeroRotator);
-	template<class T>
-	void CustomDespawnActor(UClass* Class, AActor* Actor);
-
 // private:
 	// 일단 오브젝트 풀링을 사용한다.
-	TMap<UClass*, TArray<TObjectPtr<AActor>>> CharaterPool;
+	TMap<UClass*, TArray<TObjectPtr<AActor>>> ActorPool;
 
 public:
 	ABJS_GameModeBase();
@@ -46,6 +42,11 @@ public:
 
 	APlayerController* GetPlayerController();
 	void SetShowMouseCousor(bool Flag);
+
+	template<class T>
+	T* CustomSpawnActor(UClass* Class, FVector SpawnLocation = FVector::ZeroVector, FRotator SpawnRotation = FRotator::ZeroRotator);
+	template<class T>
+	void CustomDespawnActor(UClass* Class, AActor* Actor);
 
 protected:
 	UPROPERTY(VisibleAnywhere)
@@ -67,11 +68,20 @@ T* ABJS_GameModeBase::CustomSpawnActor(UClass* Class, FVector SpawnLocation, FRo
 
 	if (TIsDerivedFrom<T, ABJS_Character>::IsDerived)
 	{
-		if (CharaterPool.Contains(Class) && CharaterPool.Find(Class)->Num() > 0)
+		if (ActorPool.Contains(Class) && ActorPool.Find(Class)->Num() > 0)
 		{
-			Actor = CharaterPool.Find(Class)->Pop();
-			Cast<ABJS_Character>(Actor)->SetActivate(true);
+			Actor = ActorPool.Find(Class)->Pop();
 			Actor->SetActorLocationAndRotation(SpawnLocation, SpawnRotation);
+			Cast<ABJS_Character>(Actor)->SetActivate(true);
+		}
+	}
+	else if (TIsDerivedFrom<T, ABJS_DemageActor>::IsDerived)
+	{
+		if (ActorPool.Contains(Class) && ActorPool.Find(Class)->Num() > 0)
+		{
+			Actor = ActorPool.Find(Class)->Pop();
+			Actor->SetActorLocationAndRotation(SpawnLocation, SpawnRotation);
+			Cast<ABJS_DemageActor>(Actor)->SetActivate(true);
 		}
 	}
 
@@ -89,12 +99,22 @@ void ABJS_GameModeBase::CustomDespawnActor(UClass* Class, AActor* Actor)
 	{
 		if (TIsDerivedFrom<T, ABJS_Character>::IsDerived)
 		{
-			if (!CharaterPool.Contains(Class))
+			if (!ActorPool.Contains(Class))
 			{
-				CharaterPool.Add(Class);
+				ActorPool.Add(Class);
 			}
-			CharaterPool.Find(Class)->Add(Actor);
+			ActorPool.Find(Class)->Add(Actor);
 			Cast<ABJS_Character>(Actor)->SetActivate(false);
+		}
+		else if (TIsDerivedFrom<T, ABJS_DemageActor>::IsDerived)
+		{
+			if (!ActorPool.Contains(Class))
+			{
+				ActorPool.Add(Class);
+			}
+			ActorPool.Find(Class)->Add(Actor);
+			UE_LOG(LogTemp, Log, TEXT("damage actor size : %d !!!"), ActorPool.Find(Class)->Num());
+			Cast<ABJS_DemageActor>(Actor)->SetActivate(false);
 		}
 	}
 } 

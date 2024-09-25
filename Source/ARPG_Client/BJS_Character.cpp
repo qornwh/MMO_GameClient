@@ -15,6 +15,7 @@
 #include "BJS_CharaterState.h"
 #include "BJS_DemageActor.h"
 #include "BJS_GameInstance.h"
+#include "BJS_GameModeBase.h"
 #include "SkillBindStruct.h"
 #include "SkillStruct.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -35,7 +36,7 @@ ABJS_Character::ABJS_Character()
 	AnimInstanceClass = MoveAnimInstanceClass.Class;
 
 	// Demage는 블루프린트화 안하고 바로 C++붙임
-	static ConstructorHelpers::FClassFinder<AActor> DamageActorClass(TEXT("/Script/CoreUObject.Class'/Script/ARPG_Client.BJS_DemageActor'"));
+	static ConstructorHelpers::FClassFinder<ABJS_DemageActor> DamageActorClass(TEXT("/Script/CoreUObject.Class'/Script/ARPG_Client.BJS_DemageActor'"));
 	check(DamageActorClass.Succeeded());
 	DefaultDamgeActor = DamageActorClass.Class;
 
@@ -353,8 +354,12 @@ void ABJS_Character::TakeDemage(float Demage, ABJS_Character* Target)
 		CameraRotation.Pitch *= -1;
 
 		FVector Loc = GetActorLocation() + (CameraActor->GetActorForwardVector() * -1 * 20);
-		ABJS_DemageActor* DemageActor = GetWorld()->SpawnActor<ABJS_DemageActor>(DefaultDamgeActor, Loc, CameraRotation);
-		DemageActor->SetDemage(Demage);
+		auto mode = Cast<ABJS_GameModeBase>(GetWorld()->GetAuthGameMode());
+		if (mode)
+		{
+			ABJS_DemageActor* DemageActor = mode->CustomSpawnActor<ABJS_DemageActor>(DefaultDamgeActor, Loc, CameraRotation);
+			DemageActor->SetDemage(Demage);
+		}
 	}
 }
 
@@ -371,8 +376,12 @@ void ABJS_Character::TakeHeal(float Heal)
 		CameraRotation.Pitch *= -1;
 
 		FVector Loc = GetActorLocation() + (CameraActor->GetActorForwardVector() * -1 * 20);
-		ABJS_DemageActor* DemageActor = GetWorld()->SpawnActor<ABJS_DemageActor>(DefaultDamgeActor, Loc, CameraRotation);
-		DemageActor->SetHeal(Heal);
+		auto mode = Cast<ABJS_GameModeBase>(GetWorld()->GetAuthGameMode());
+		if (mode)
+		{
+			ABJS_DemageActor* DemageActor = mode->CustomSpawnActor<ABJS_DemageActor>(DefaultDamgeActor, Loc, CameraRotation);
+			DemageActor->SetHeal(Heal);
+		}
 	}
 }
 
