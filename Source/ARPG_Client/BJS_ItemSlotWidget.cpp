@@ -16,8 +16,9 @@ UBJS_ItemSlotWidget::UBJS_ItemSlotWidget()
 void UBJS_ItemSlotWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-	
-	btn_item->OnDoubleClick.AddDynamic(this, &UBJS_ItemSlotWidget::SendToolTipItemInfo);
+
+	if (!btn_item->OnDoubleClick.IsBound())
+		btn_item->OnDoubleClick.AddDynamic(this, &UBJS_ItemSlotWidget::SendToolTipItemInfo);
 }
 
 void UBJS_ItemSlotWidget::SetEquip(EquipItem& Item)
@@ -77,7 +78,9 @@ void UBJS_ItemSlotWidget::SetSlots(bool Flag)
 		img_item->SetVisibility(ESlateVisibility::Visible);
 		tb_cnt->SetVisibility(ESlateVisibility::Visible);
 		cb_check->SetVisibility(ESlateVisibility::Visible);
-		btn_item->OnRightClick.AddDynamic(this, &UBJS_ItemSlotWidget::SendItemEquipped);
+		
+		if (!btn_item->OnRightClick.IsBound())
+			btn_item->OnRightClick.AddDynamic(this, &UBJS_ItemSlotWidget::SendItemEquipped);
 	}
 	else
 	{
@@ -93,7 +96,9 @@ void UBJS_ItemSlotWidget::SetSocket(bool Flag)
 	if (Flag)
 	{
 		img_item->SetVisibility(ESlateVisibility::Visible);
-		btn_item->OnRightClick.AddDynamic(this, &UBJS_ItemSlotWidget::SendItemEquipped);
+		
+		if (!btn_item->OnRightClick.IsBound())
+			btn_item->OnRightClick.AddDynamic(this, &UBJS_ItemSlotWidget::SendItemEquipped);
 	}
 	else
 	{
