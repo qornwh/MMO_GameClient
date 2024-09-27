@@ -8,9 +8,8 @@
 #include "Components/CheckBox.h"
 #include "BJS_ItemSlotWidget.generated.h"
 
-/**
- * 
- */
+DECLARE_DELEGATE_OneParam(FSendItem, int32); 
+
 UCLASS()
 class ARPG_CLIENT_API UBJS_ItemSlotWidget : public UBJS_SubWidget
 {
@@ -25,7 +24,6 @@ public:
 	void SetEtc(EtcItem& Item);
 	EquipItem& GetEquip();
 	EtcItem& GetEtc();
-
 	void SetImg(UTexture2D* Image);
 	void SetCnt(int32 Cnt);
 	void SetSlots(bool Flag);
@@ -37,9 +35,11 @@ public:
 	void SetEtcEquip();
 	
 	UFUNCTION()
-	void SendItemEquipped();
+	void OnSendItem();
 	UFUNCTION()
 	void SendToolTipItemInfo();
+
+	FSendItem SendItem;
 
 private:
 	UPROPERTY(EditAnywhere, meta=(BindWidget))

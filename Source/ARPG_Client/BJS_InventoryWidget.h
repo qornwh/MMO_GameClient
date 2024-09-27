@@ -49,6 +49,8 @@ public:
 	void SellItem();
 	UFUNCTION()
 	void OnHiddenInventory();
+	UFUNCTION()
+	void OnItemEquip(int32 EquipId);
 
 protected:
 	virtual void NativeConstruct() override;

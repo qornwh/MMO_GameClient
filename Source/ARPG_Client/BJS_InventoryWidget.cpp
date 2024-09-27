@@ -14,7 +14,6 @@
 #include "Components/Button.h"
 #include "Components/GridPanel.h"
 #include "Components/Image.h"
-#include "Components/TextBlock.h"
 #include "Components/UniformGridPanel.h"
 #include "Components/UniformGridSlot.h"
 
@@ -71,6 +70,8 @@ void UBJS_InventoryWidget::BJS_InitWidget()
 			etcSlot->SetSlots(false);
 			EquipSlot.Add(equipSlot);
 			EtcSlot.Add(etcSlot);
+
+			equipSlot->SendItem.BindUObject(this, &UBJS_InventoryWidget::OnItemEquip);
 		}
 	}
 
@@ -78,6 +79,8 @@ void UBJS_InventoryWidget::BJS_InitWidget()
 	btn_etc->OnClicked.AddDynamic(this, &UBJS_InventoryWidget::ViewInventoryEtc);
 	btn_sell->OnClicked.AddDynamic(this, &UBJS_InventoryWidget::SellItem);
 	btn_check->OnClicked.AddDynamic(this, &UBJS_InventoryWidget::InvetoryReset);
+	slot_attsocket->SendItem.BindUObject(this, &UBJS_InventoryWidget::OnItemEquip);
+	slot_spesocket->SendItem.BindUObject(this, &UBJS_InventoryWidget::OnItemEquip);
 	slot_attsocket->SetSocket(false);
 	slot_spesocket->SetSocket(false);
 	SetSlot();
@@ -424,6 +427,19 @@ void UBJS_InventoryWidget::OnHiddenInventory()
 	if (mode)
 	{
 		mode->ChangeInventoryUI();
+	}
+}
+
+void UBJS_InventoryWidget::OnItemEquip(int32 EquipItemId)
+{
+	auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
+	if (mode)
+	{
+		if (mode->GetMyInventory()->IsEquipItem(EquipItemId))
+		{
+			auto& Item = *(mode->GetMyInventory()->GetEquipItems().Find(EquipItemId));
+			mode->SendEquippedItem(Item);
+		}
 	}
 }
 

@@ -58,6 +58,7 @@ public:
 	bool UseEquipItem(int32 UniqueId);
 	bool ItemEquipped(int32 UniqueId, int32 Equipped, int32 Position);
 	bool UseEtcItem(int32 Code, int32 Count);
+	bool IsEquipItem(int32 UniqueId);
 
 	void AddGold(int32 gold);
 	void UseGold(int32 gold);

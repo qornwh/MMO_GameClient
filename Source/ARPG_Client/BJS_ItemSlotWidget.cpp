@@ -19,6 +19,9 @@ void UBJS_ItemSlotWidget::NativeConstruct()
 
 	if (!btn_item->OnDoubleClick.IsBound())
 		btn_item->OnDoubleClick.AddDynamic(this, &UBJS_ItemSlotWidget::SendToolTipItemInfo);
+		
+	if (!btn_item->OnRightClick.IsBound())
+		btn_item->OnRightClick.AddDynamic(this, &UBJS_ItemSlotWidget::OnSendItem);
 }
 
 void UBJS_ItemSlotWidget::SetEquip(EquipItem& Item)
@@ -78,9 +81,6 @@ void UBJS_ItemSlotWidget::SetSlots(bool Flag)
 		img_item->SetVisibility(ESlateVisibility::Visible);
 		tb_cnt->SetVisibility(ESlateVisibility::Visible);
 		cb_check->SetVisibility(ESlateVisibility::Visible);
-		
-		if (!btn_item->OnRightClick.IsBound())
-			btn_item->OnRightClick.AddDynamic(this, &UBJS_ItemSlotWidget::SendItemEquipped);
 	}
 	else
 	{
@@ -96,14 +96,10 @@ void UBJS_ItemSlotWidget::SetSocket(bool Flag)
 	if (Flag)
 	{
 		img_item->SetVisibility(ESlateVisibility::Visible);
-		
-		if (!btn_item->OnRightClick.IsBound())
-			btn_item->OnRightClick.AddDynamic(this, &UBJS_ItemSlotWidget::SendItemEquipped);
 	}
 	else
 	{
 		img_item->SetVisibility(ESlateVisibility::Hidden);
-		btn_item->OnRightClick.RemoveAll(this);
 	}
 	cb_check->SetVisibility(ESlateVisibility::Hidden);
 	tb_cnt->SetVisibility(ESlateVisibility::Hidden);
@@ -130,7 +126,6 @@ void UBJS_ItemSlotWidget::SetRecive(bool Flag)
 		tb_cnt->SetVisibility(ESlateVisibility::Visible);
 		SetCnt(CurEtcItem.Count);
 	}
-		
 }
 
 void UBJS_ItemSlotWidget::ResetCheck()
@@ -148,14 +143,13 @@ void UBJS_ItemSlotWidget::SetEtcEquip()
 	CurEtcItem.SetEmptyItem();
 }
 
-void UBJS_ItemSlotWidget::SendItemEquipped()
+void UBJS_ItemSlotWidget::OnSendItem()
 {
-	auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
-	if (mode)
+	if (SendItem.IsBound())
 	{
 		if (CurEquipItem.UniqueId > 0)
 		{
-			mode->SendEquippedItem(CurEquipItem);
+			SendItem.Execute(CurEquipItem.UniqueId);
 		}
 	}
 }

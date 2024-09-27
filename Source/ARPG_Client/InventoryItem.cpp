@@ -167,6 +167,15 @@ bool InventoryItem::UseEtcItem(int32 Code, int32 Count)
 	return false;
 }
 
+bool InventoryItem::IsEquipItem(int32 UniqueId)
+{
+	if (!EquipItems.Contains(UniqueId))
+	{
+		return false;
+	}
+	return true;
+}
+
 void InventoryItem::AddGold(int32 gold)
 {
 	Gold += gold;
