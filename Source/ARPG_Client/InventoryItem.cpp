@@ -49,6 +49,13 @@ void EquipItem::UpdateItem(int32 use)
     Use = use;
 }
 
+bool EquipItem::IsEmpty()
+{
+	if (UniqueId == -1 && ItemCode == -1)
+		return true;
+	return false;
+}
+
 void EquipItem::SetEmptyItem()
 {
 	UniqueId = -1;

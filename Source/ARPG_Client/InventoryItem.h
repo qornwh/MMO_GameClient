@@ -20,6 +20,7 @@ struct EquipItem
 	bool EqualEquipItem(const EquipItem& other) const;
 
 	void UpdateItem(int32 use = 1);
+    bool IsEmpty();
 	void SetEmptyItem();
 	int32 UniqueId;
 	int32 ItemCode;
