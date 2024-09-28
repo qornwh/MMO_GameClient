@@ -29,16 +29,7 @@ UBJS_GameInstance::UBJS_GameInstance()
 	// 3. 소켓 액터 초기화시 gameInstance의 소켓주소를 받아서 연동한다.
 	// 4. 데이터 수신은 gameMode의 Update에서 실행한다. 큐에 쌓아두는 방식
 	// 5. 데이터 송신은 gameMode의 socket을 가져와서 send바로 때리는 방식.
-
-	UE_LOG(LogTemp, Log, TEXT("Create BJS_GameInstance !!!"));
-
-	MyCharaterState = MakeShared<BJS_CharaterState>();
-	MyCharaterList.Init(false, 4);
-	MyWeaponList.Init(false, 4);
-	MyInventory = MakeShared<InventoryItem>();
-	MyFriend = MakeShared<FriendSystem>();
-	MyMail = MakeShared<MailBox>();
-
+	ResetData();
 	LoadBP();
 	LoadDataTable();
 	LoadSkill();
@@ -389,6 +380,25 @@ void UBJS_GameInstance::LoadPromptBP()
 	static ConstructorHelpers::FClassFinder<UUserWidget> UI_PROMPT3_HUD(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/MyGame/UMG/BJS_WBP_Message3.BJS_WBP_Message3_C'"));
 	check(UI_PROMPT3_HUD.Succeeded());
 	PromptClass3 = UI_PROMPT3_HUD.Class;
+}
+
+void UBJS_GameInstance::ResetData()
+{
+	if (MyCharaterState.IsValid())
+		MyCharaterState.Reset();
+	if (MyInventory.IsValid())
+		MyInventory.Reset();
+	if (MyFriend.IsValid())
+		MyFriend.Reset();
+	if (MyMail.IsValid())
+		MyMail.Reset();
+	
+	MyCharaterState = MakeShared<BJS_CharaterState>();
+	MyCharaterList.Init(false, 4);
+	MyWeaponList.Init(false, 4);
+	MyInventory = MakeShared<InventoryItem>();
+	MyFriend = MakeShared<FriendSystem>();
+	MyMail = MakeShared<MailBox>();
 }
 
 TArray<FPlayerStruct*>& UBJS_GameInstance::GetPlayerStructs()

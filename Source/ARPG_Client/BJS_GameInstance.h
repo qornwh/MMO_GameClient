@@ -50,6 +50,7 @@ public:
 	void LoadCharaterImg();
 	void LoadItemIcon();
 	void LoadPromptBP();
+	void ResetData();
 
 public:
 	TArray<struct FPlayerStruct*>& GetPlayerStructs();
@@ -91,12 +92,12 @@ private:
 	BJS_BufferPtr WriteBuffer;
 
 	// My State
-	TSharedPtr<class BJS_CharaterState> MyCharaterState;
 	TArray<bool> MyCharaterList;
 	TArray<bool> MyWeaponList;
 	int32 Cash;
 	int32 CurCharaterType;
 	int32 CurWeaponType;
+	TSharedPtr<class BJS_CharaterState> MyCharaterState;
 	TSharedPtr<class InventoryItem> MyInventory;
 	TSharedPtr<class FriendSystem> MyFriend;
 	TSharedPtr<class MailBox> MyMail;
