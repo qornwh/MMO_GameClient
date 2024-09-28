@@ -3,24 +3,25 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "BJS_SubWidget.h"
+#include "CustomButton.h"
 #include "InventoryItem.h"
 #include "Components/CheckBox.h"
 #include "BJS_ItemSlotWidget.generated.h"
 
 DECLARE_DELEGATE_OneParam(FSendItem, int32); 
+	
+enum ITEMSOCKETTYPE : int32
+{
+	NONE = 0,
+	ARMER = 1,
+	SENDMAIL = 2,
+	SUBINVENTORY = 3
+};
 
 UCLASS()
-class ARPG_CLIENT_API UBJS_ItemSlotWidget : public UBJS_SubWidget
+class ARPG_CLIENT_API UBJS_ItemSlotWidget : public UCustomButton
 {
 	GENERATED_BODY()
-	
-	enum SOCKETTYPE : int32
-	{
-		NONE = 0,
-		ARMER = 1,
-		MAIL = 2,
-	};
 
 public:
 	UBJS_ItemSlotWidget();
@@ -38,6 +39,8 @@ public:
 	bool GetCheck() const { return cb_check->GetCheckedState() == ECheckBoxState::Checked; }
 	void SetEmptyEquip();
 	void SetEtcEquip();
+	void SetSocketType(ITEMSOCKETTYPE SocketType);
+	void SetSocketPosition(int32 Position);
 	
 	UFUNCTION()
 	void OnSendItem();
@@ -48,13 +51,10 @@ public:
 
 protected:
 	virtual void NativeConstruct() override;
-	// virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
-	// virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+	virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
+	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 
 private:
-	UPROPERTY(EditAnywhere, meta=(BindWidget))
-	class UCustomButton* btn_item;
-
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UImage* img_item;
 
@@ -68,5 +68,6 @@ private:
 	EquipItem CurEquipItem{-1, -1, -1, 0, 0, 0, -1, 0};
 	EtcItem CurEtcItem{-1, 0, 0,  -1};
 	ToolTipType Type = ToolTipType::NOT_DATA;
-	SOCKETTYPE SocketType = SOCKETTYPE::NONE;
+	ITEMSOCKETTYPE CurSocketType = ITEMSOCKETTYPE::NONE;
+	int32 CurSocketPosition = 0;
 };

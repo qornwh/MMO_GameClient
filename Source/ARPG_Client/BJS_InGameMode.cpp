@@ -589,11 +589,11 @@ void ABJS_InGameMode::UpdateMailUi()
 	}
 }
 
-void ABJS_InGameMode::SetMailEquipItem(int32 EquipUnipeId)
+void ABJS_InGameMode::SetMailEquipItem(int32 EquipUnipeId, int32 Position)
 {
 	if (MailBoxUi)
 	{
-		MailBoxUi->SetSendMailEquipItem(EquipUnipeId);
+		MailBoxUi->SetSendMailEquipItem(EquipUnipeId, Position);
 	}
 }
 

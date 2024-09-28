@@ -28,13 +28,6 @@ FReply UCustomButton::NativeOnMouseButtonDown(const FGeometry& InGeometry, const
 		OnRightClick.Broadcast();
 		return FReply::Handled();
 	}
-	else if (InMouseEvent.GetEffectingButton() == EKeys::LeftMouseButton)
-	{
-		// 왼쪽 클릭 드래그 앤 드롭 시작
-		UDragDropOperation* DragDropOperation = NewObject<UDragDropOperation>();
-		DragDropOperation->DefaultDragVisual = this;
-		return UWidgetBlueprintLibrary::DetectDragIfPressed(InMouseEvent, this, EKeys::LeftMouseButton).NativeReply;
-	}
 
 	return Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
 }

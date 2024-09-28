@@ -5,6 +5,8 @@
 
 #include "BJS_InGameMode.h"
 #include "CustomButton.h"
+#include "ItemDragDropOperation.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Components/CheckBox.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
@@ -17,12 +19,13 @@ void UBJS_ItemSlotWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	if (!btn_item->OnDoubleClick.IsBound())
-		btn_item->OnDoubleClick.AddDynamic(this, &UBJS_ItemSlotWidget::SendToolTipItemInfo);
+	if (!OnDoubleClick.IsBound())
+		OnDoubleClick.AddDynamic(this, &UBJS_ItemSlotWidget::SendToolTipItemInfo);
 		
-	if (!btn_item->OnRightClick.IsBound())
-		btn_item->OnRightClick.AddDynamic(this, &UBJS_ItemSlotWidget::OnSendItem);
+	if (!OnRightClick.IsBound())
+		OnRightClick.AddDynamic(this, &UBJS_ItemSlotWidget::OnSendItem);
 	cb_check->SetVisibility(ESlateVisibility::Hidden);
+	// img_item->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UBJS_ItemSlotWidget::SetEquip(EquipItem& Item)
@@ -149,6 +152,16 @@ void UBJS_ItemSlotWidget::SetEtcEquip()
 	CurEtcItem.SetEmptyItem();
 }
 
+void UBJS_ItemSlotWidget::SetSocketType(ITEMSOCKETTYPE SocketType)
+{
+	CurSocketType = SocketType;
+}
+
+void UBJS_ItemSlotWidget::SetSocketPosition(int32 Position)
+{
+	CurSocketPosition = Position;
+}
+
 void UBJS_ItemSlotWidget::OnSendItem()
 {
 	if (SendItem.IsBound())
@@ -172,7 +185,7 @@ void UBJS_ItemSlotWidget::SendToolTipItemInfo()
 		mode->OpenToolTipUI();
 	}
 }
-/*
+
 bool UBJS_ItemSlotWidget::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
 	auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
@@ -185,9 +198,9 @@ bool UBJS_ItemSlotWidget::NativeOnDrop(const FGeometry& InGeometry, const FDragD
 			auto Target = Cast<UBJS_ItemSlotWidget>(Operation->WidgetReference);
 			if (Target && !Target->GetEquip().IsEmpty())
 			{
-				if (SocketType == SOCKETTYPE::MAIL)
+				if (CurSocketType == ITEMSOCKETTYPE::SENDMAIL)
 				{
-					mode->SetMailEquipItem(Target->GetEquip().UniqueId);
+					mode->SetMailEquipItem(Target->GetEquip().UniqueId, CurSocketPosition);
 				}
 			}
 		}
@@ -197,6 +210,21 @@ bool UBJS_ItemSlotWidget::NativeOnDrop(const FGeometry& InGeometry, const FDragD
 
 FReply UBJS_ItemSlotWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
+	if (CurSocketType == ITEMSOCKETTYPE::SENDMAIL)
+	{
+		SetSocket(false);
+		return FReply::Handled();
+	}
+
+	if (CurSocketType == ITEMSOCKETTYPE::SUBINVENTORY)
+	{
+		if (InMouseEvent.GetEffectingButton() == EKeys::LeftMouseButton)
+		{
+			// 왼쪽 클릭 드래그 앤 드롭 시작
+			UDragDropOperation* DragDropOperation = NewObject<UDragDropOperation>();
+			DragDropOperation->DefaultDragVisual = this;
+			return UWidgetBlueprintLibrary::DetectDragIfPressed(InMouseEvent, this, EKeys::LeftMouseButton).NativeReply;
+		}
+	}
 	return Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
 }
-*/

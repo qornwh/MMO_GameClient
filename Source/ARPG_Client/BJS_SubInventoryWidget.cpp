@@ -50,7 +50,9 @@ void UBJS_SubInventoryWidget::BJS_InitWidget()
 			EquipSlot.Add(equipSlot);
 			EtcSlot.Add(etcSlot);
 
+			// 일단 장비아이템만 
 			equipSlot->SendItem.BindUObject(this, &UBJS_SubInventoryWidget::OnSendItem);
+			equipSlot->SetSocketType(ITEMSOCKETTYPE::SUBINVENTORY);
 		}
 	}
 	SetSlot();

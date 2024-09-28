@@ -50,7 +50,7 @@ public:
 	void SetMailInfo(int32 MailCode);
 	void SetMailSocketInfo(int32 SocketNum, int32 SocketState, int32 SocketType);
 	void SetGold(int32 Gold);
-	void SetSendMailEquipItem(int32 EquipUnipeId);
+	void SetSendMailEquipItem(int32 EquipUnipeId, int32 Position);
 
 protected:
 	virtual void NativeConstruct() override;

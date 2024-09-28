@@ -82,6 +82,8 @@ void UBJS_MailWidget::SetVisibility(ESlateVisibility InVisibility)
 		etb_send_gold->SetText(FText());
 		metb_message->SetText(FText());
 		sub_inventory->ReLoadSlot();
+		socket1->SetSlots(false);
+		socket2->SetSlots(false);
 	}
 }
 
@@ -144,11 +146,8 @@ void UBJS_MailWidget::SetBtnSendImage(TObjectPtr<UTexture2D> Image)
 		FSlateBrush Brush;
 		Brush.SetResourceObject(Image);
 		Brush.ImageSize = FVector2D(Image->GetSizeX(), Image->GetSizeY());
-
 		FButtonStyle Style = btn_send_tab->GetStyle();
-
 		Style.Normal.SetResourceObject(Image);
-
 		btn_send_tab->SetStyle(Style);
 	}
 }
@@ -314,8 +313,28 @@ void UBJS_MailWidget::SetGold(int32 Gold)
 	tb_recive_gold->SetText(FText::FromString(goldStr));
 }
 
-void UBJS_MailWidget::SetSendMailEquipItem(int32 EquipUnipeId)
+void UBJS_MailWidget::SetSendMailEquipItem(int32 EquipUnipeId, int32 Position)
 {
+	UE_LOG(LogTemp, Log, TEXT("여기까지 옴 !!!! %d %d"), EquipUnipeId, Position);
+
+	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
+	if (instance)
+	{
+		auto item = instance->GetMyInventory()->GetEquipItems().Find(EquipUnipeId);
+		if (item)
+		{
+			auto EquipImgs = instance->GetItemEquipIconImgMap();
+			UBJS_ItemSlotWidget* socket = nullptr;
+			if (Position == 1)
+				socket = send_socket1;
+			else
+				socket = send_socket2;
+			
+			socket->SetEquip(*item);
+			socket->SetSocket(true);
+			socket->SetImg(EquipImgs[item->ItemCode]);
+		}
+	}
 }
 
 void UBJS_MailWidget::NativeConstruct()
@@ -332,4 +351,11 @@ void UBJS_MailWidget::NativeConstruct()
 	btn_recive_tab->OnClicked.AddDynamic(this, &UBJS_MailWidget::ViewMailRecive);
 	btn_send_tab->OnClicked.AddDynamic(this, &UBJS_MailWidget::ViewMailSend);
 	btn_send_mail->OnClicked.AddDynamic(this, &UBJS_MailWidget::SendMail);
+
+	send_socket1->SetSocketType(ITEMSOCKETTYPE::SENDMAIL);
+	send_socket1->SetSocketPosition(1);
+	send_socket1->SetSocket(false);
+	send_socket2->SetSocketType(ITEMSOCKETTYPE::SENDMAIL);
+	send_socket2->SetSocketPosition(2);
+	send_socket2->SetSocket(false);
 }
