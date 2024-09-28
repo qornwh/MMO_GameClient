@@ -17,6 +17,7 @@ struct EquipItem
 	~EquipItem();
 
 	EquipItem& operator=(const EquipItem& other);
+	bool EqualEquipItem(const EquipItem& other) const;
 
 	void UpdateItem(int32 use = 1);
 	void SetEmptyItem();
@@ -36,6 +37,7 @@ struct EtcItem
 	~EtcItem();
 
 	EtcItem& operator=(const EtcItem& other);
+	bool EqualEtcItem(const EtcItem& other) const;
 
 	void UpdateItem(int32 count = 1);
 	void SetEmptyItem();

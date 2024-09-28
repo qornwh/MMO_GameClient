@@ -31,6 +31,19 @@ EquipItem& EquipItem::operator=(const EquipItem& other)
 	return *this;
 }
 
+bool EquipItem::EqualEquipItem(const EquipItem& other) const
+{
+	if (UniqueId == other.UniqueId
+		&& ItemCode == other.ItemCode
+		&& EquipType == other.EquipType
+		&& Attack == other.Attack
+		&& Speed == other.Speed)
+	{
+		return true;
+	}
+	return false;
+}
+
 void EquipItem::UpdateItem(int32 use)
 {
     Use = use;
@@ -61,6 +74,17 @@ EtcItem& EtcItem::operator=(const EtcItem& other)
 	Count = other.Count;
 	Type = other.Type;
 	return *this;
+}
+
+bool EtcItem::EqualEtcItem(const EtcItem& other) const
+{
+	if (ItemCode == other.ItemCode
+		&& Count == other.Count
+		&& Type == other.Type)
+	{
+		return true;
+	}
+	return false;
 }
 
 void EtcItem::UpdateItem(int32 count)
