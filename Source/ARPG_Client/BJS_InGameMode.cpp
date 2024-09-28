@@ -402,7 +402,7 @@ void ABJS_InGameMode::SendChatMessage(FString Message, int32 Type)
 	protocol::SChat pkt;
 	std::string msgStr = TCHAR_TO_UTF8(*Message);
 	pkt.set_text(msgStr);
-	pkt.set_uuid(MyState->GetUUid());
+	pkt.set_uuid(MyState.Pin()->GetUUid());
 	pkt.set_type(Type);
 	SocketActor->SendMessage(pkt, protocol::MessageCode::S_CHAT);
 }
@@ -412,7 +412,7 @@ void ABJS_InGameMode::ReadChatMessage(FString Message, int32 Type, int32 Uuid)
 	auto ui = Cast<UBJS_GameUI>(MainUi);
 	if (ui)
 	{
-		if (BJSMonsterStateList.Contains(Uuid))
+		if (BJSCharaterStateList.Contains(Uuid))
 		{
 			auto player = BJSCharaterStateList[Uuid];
 			if (player.IsValid())
@@ -488,13 +488,14 @@ void ABJS_InGameMode::ChangeMailBoxUI()
 void ABJS_InGameMode::ClaseMyPlayer()
 {
 	protocol::SClosePlayer pkt;
-	pkt.set_uuid(MyState->GetUUid());
+	pkt.set_uuid(MyState.Pin()->GetUUid());
 	SocketActor->SendMessage(pkt, protocol::MessageCode::S_CLOSEPLAYER);
 	
 	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
 	if (instance)
 	{
 		instance->SocketDisConnect();
+		instance->ResetData();
 	}
 
 	UGameplayStatics::OpenLevel(this, TEXT("LoginMap"));
@@ -643,7 +644,7 @@ TMap<int32, TSharedPtr<BJS_CharaterState>>& ABJS_InGameMode::GetMonsterStateList
 
 TSharedPtr<BJS_CharaterState> ABJS_InGameMode::GetMyState()
 {
-	return MyState;
+	return MyState.Pin();
 }
 
 TSharedPtr<InventoryItem> ABJS_InGameMode::GetMyInventory()

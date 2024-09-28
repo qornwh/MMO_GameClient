@@ -80,7 +80,7 @@ public:
 private:
 	TMap<int32, TSharedPtr<class BJS_CharaterState>> BJSCharaterStateList;
 	TMap<int32, TSharedPtr<class BJS_CharaterState>> BJSMonsterStateList;
-	TSharedPtr<class BJS_CharaterState> MyState;
+	TWeakPtr<class BJS_CharaterState> MyState;
 	TWeakPtr<class InventoryItem> MyInventory;
 	TWeakPtr<class FriendSystem> MyFriend;
 	TWeakPtr<class MailBox> MyMail;
