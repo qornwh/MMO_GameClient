@@ -23,6 +23,7 @@ public:
 
 	virtual void BJS_InitWidget() override;
 	virtual void BJS_UpdateWidget() override;
+	virtual void SetVisibility(ESlateVisibility InVisibility) override;
 
 	UFUNCTION()
 	void OnHiddenMailBox();
@@ -49,6 +50,7 @@ public:
 	void SetMailInfo(int32 MailCode);
 	void SetMailSocketInfo(int32 SocketNum, int32 SocketState, int32 SocketType);
 	void SetGold(int32 Gold);
+	void SetSendMailEquipItem(int32 EquipUnipeId);
 
 protected:
 	virtual void NativeConstruct() override;
@@ -97,9 +99,17 @@ private:
 
 	// send
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
+	class UMultiLineEditableText* metb_message;
+	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UEditableText* etb_send_gold;
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UButton* btn_send_mail;
+	UPROPERTY(EditAnywhere, meta=(BindWidget))
+	class UBJS_SubInventoryWidget* sub_inventory;
+	UPROPERTY(EditAnywhere, meta=(BindWidget))
+	class UBJS_ItemSlotWidget* send_socket1;
+	UPROPERTY(EditAnywhere, meta=(BindWidget))
+	class UBJS_ItemSlotWidget* send_socket2;
 
 	TSubclassOf<class UBJS_MailSlot> MailSlotClass;
 	TArray<TObjectPtr<class UBJS_MailSlot>> MailSlotList;

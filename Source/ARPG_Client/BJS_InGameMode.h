@@ -56,6 +56,7 @@ public:
 	void UpdateToolTipEquipItem(EquipItem& TargetItem);
 	void UpdateToolTipEtcItem(EtcItem& TargetItem);
 	void UpdateMailUi();
+	void SetMailEquipItem(int32 EquipUnipeId);
 	void UpdateMail(int32 MailCode, int32 State);
 	void AllUpdateMail(int32 State);
 	void UpdateFriendUi();

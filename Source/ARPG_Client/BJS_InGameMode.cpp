@@ -589,6 +589,14 @@ void ABJS_InGameMode::UpdateMailUi()
 	}
 }
 
+void ABJS_InGameMode::SetMailEquipItem(int32 EquipUnipeId)
+{
+	if (MailBoxUi)
+	{
+		MailBoxUi->SetSendMailEquipItem(EquipUnipeId);
+	}
+}
+
 void ABJS_InGameMode::UpdateMail(int32 MailCode, int32 State)
 {
 	if (GetMyMail()->GetMailList().Contains(MailCode))

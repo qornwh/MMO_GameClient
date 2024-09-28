@@ -8,9 +8,12 @@
 #include "BJS_MailSlot.h"
 #include "BJS_InGameMode.h"
 #include "BJS_ItemSlotWidget.h"
+#include "BJS_SubInventoryWidget.h"
 #include "Components/Button.h"
 #include "Components/CanvasPanel.h"
+#include "Components/EditableText.h"
 #include "Components/HorizontalBox.h"
+#include "Components/MultiLineEditableText.h"
 #include "Components/MultiLineEditableTextBox.h"
 #include "Components/ScrollBox.h"
 #include "Components/TextBlock.h"
@@ -41,6 +44,7 @@ UBJS_MailWidget::~UBJS_MailWidget()
 void UBJS_MailWidget::BJS_InitWidget()
 {
 	Super::BJS_InitWidget();
+	sub_inventory->BJS_InitWidget();
 
 	FMargin padding{30, 30, 30, 0};
 	for (int32 i = 0; i < MaxMailBoxSize; i++)
@@ -67,6 +71,17 @@ void UBJS_MailWidget::BJS_UpdateWidget()
 	{
 		header->SetTextCash(instance->GetCash());
 		header->SetTextGold(instance->GetMyInventory()->GetGold());
+	}
+}
+
+void UBJS_MailWidget::SetVisibility(ESlateVisibility InVisibility)
+{
+	Super::SetVisibility(InVisibility);
+	if (InVisibility == ESlateVisibility::Visible)
+	{
+		etb_send_gold->SetText(FText());
+		metb_message->SetText(FText());
+		sub_inventory->ReLoadSlot();
 	}
 }
 
@@ -299,12 +314,16 @@ void UBJS_MailWidget::SetGold(int32 Gold)
 	tb_recive_gold->SetText(FText::FromString(goldStr));
 }
 
+void UBJS_MailWidget::SetSendMailEquipItem(int32 EquipUnipeId)
+{
+}
+
 void UBJS_MailWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+	header->SetTextTitle("MailBox");
 	header->OnBack.BindUObject(this, &UBJS_MailWidget::OnHiddenMailBox);
-	header->SetTextTitle("Inventory");
 	btn_refresh->OnClicked.AddDynamic(this, &UBJS_MailWidget::RefreshMail);
 	btn_mail_recive->OnClicked.AddDynamic(this, &UBJS_MailWidget::ReceiveItem);
 	btn_all_recive->OnClicked.AddDynamic(this, &UBJS_MailWidget::ReceiveItemAll);

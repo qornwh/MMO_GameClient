@@ -3,6 +3,23 @@
 
 #include "CustomButton.h"
 
+#include "ItemDragDropOperation.h"
+#include "Blueprint/DragDropOperation.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
+
+void UCustomButton::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation)
+{
+	UItemDragDropOperation* DragDropOperation = Cast<UItemDragDropOperation>(UWidgetBlueprintLibrary::CreateDragDropOperation(UItemDragDropOperation::StaticClass()));
+	DragDropOperation->DefaultDragVisual = this;
+	DragDropOperation->WidgetReference = this;
+	OutOperation = DragDropOperation;
+}
+
+bool UCustomButton::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
+{
+	return Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
+}
+
 FReply UCustomButton::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
 	if (InMouseEvent.GetEffectingButton() == EKeys::RightMouseButton)
@@ -10,6 +27,13 @@ FReply UCustomButton::NativeOnMouseButtonDown(const FGeometry& InGeometry, const
 		// 오른쪽 클릭 델리게이트 호출
 		OnRightClick.Broadcast();
 		return FReply::Handled();
+	}
+	else if (InMouseEvent.GetEffectingButton() == EKeys::LeftMouseButton)
+	{
+		// 왼쪽 클릭 드래그 앤 드롭 시작
+		UDragDropOperation* DragDropOperation = NewObject<UDragDropOperation>();
+		DragDropOperation->DefaultDragVisual = this;
+		return UWidgetBlueprintLibrary::DetectDragIfPressed(InMouseEvent, this, EKeys::LeftMouseButton).NativeReply;
 	}
 
 	return Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);

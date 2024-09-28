@@ -14,11 +14,16 @@ UCLASS()
 class ARPG_CLIENT_API UBJS_ItemSlotWidget : public UBJS_SubWidget
 {
 	GENERATED_BODY()
+	
+	enum SOCKETTYPE : int32
+	{
+		NONE = 0,
+		ARMER = 1,
+		MAIL = 2,
+	};
 
 public:
 	UBJS_ItemSlotWidget();
-
-	virtual void NativeConstruct() override;
 
 	void SetEquip(EquipItem& Item);
 	void SetEtc(EtcItem& Item);
@@ -41,6 +46,11 @@ public:
 
 	FSendItem SendItem;
 
+protected:
+	virtual void NativeConstruct() override;
+	// virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
+	// virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+
 private:
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UCustomButton* btn_item;
@@ -58,4 +68,5 @@ private:
 	EquipItem CurEquipItem{-1, -1, -1, 0, 0, 0, -1, 0};
 	EtcItem CurEtcItem{-1, 0, 0,  -1};
 	ToolTipType Type = ToolTipType::NOT_DATA;
+	SOCKETTYPE SocketType = SOCKETTYPE::NONE;
 };

@@ -22,6 +22,7 @@ void UBJS_ItemSlotWidget::NativeConstruct()
 		
 	if (!btn_item->OnRightClick.IsBound())
 		btn_item->OnRightClick.AddDynamic(this, &UBJS_ItemSlotWidget::OnSendItem);
+	cb_check->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UBJS_ItemSlotWidget::SetEquip(EquipItem& Item)
@@ -36,6 +37,7 @@ void UBJS_ItemSlotWidget::SetEtc(EtcItem& Item)
 	CurEtcItem = Item;
 	CurEquipItem.SetEmptyItem();
 	Type = ToolTipType::ETC_ITEM_TYPE;
+	SetCnt(Item.Count);
 }
 
 EquipItem& UBJS_ItemSlotWidget::GetEquip()
@@ -87,7 +89,8 @@ void UBJS_ItemSlotWidget::SetSlots(bool Flag)
 		img_item->SetVisibility(ESlateVisibility::Hidden);
 		tb_cnt->SetVisibility(ESlateVisibility::Hidden);
 		cb_check->SetVisibility(ESlateVisibility::Hidden);
-		btn_item->OnRightClick.RemoveAll(this);
+		CurEquipItem.SetEmptyItem();
+		CurEtcItem.SetEmptyItem();
 	}
 }
 
@@ -96,13 +99,16 @@ void UBJS_ItemSlotWidget::SetSocket(bool Flag)
 	if (Flag)
 	{
 		img_item->SetVisibility(ESlateVisibility::Visible);
+		tb_cnt->SetVisibility(ESlateVisibility::Visible);
 	}
 	else
 	{
 		img_item->SetVisibility(ESlateVisibility::Hidden);
+		tb_cnt->SetVisibility(ESlateVisibility::Hidden);
+		CurEquipItem.SetEmptyItem();
+		CurEtcItem.SetEmptyItem();
 	}
 	cb_check->SetVisibility(ESlateVisibility::Hidden);
-	tb_cnt->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UBJS_ItemSlotWidget::SetRecive(bool Flag)
@@ -166,3 +172,31 @@ void UBJS_ItemSlotWidget::SendToolTipItemInfo()
 		mode->OpenToolTipUI();
 	}
 }
+/*
+bool UBJS_ItemSlotWidget::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
+{
+	auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
+	if (mode)
+	{
+		UItemDragDropOperation* Operation = Cast<UItemDragDropOperation>(InOperation);
+		if (Operation && Operation->WidgetReference)
+		{
+			// 드롭 성공 시 수행할 동작
+			auto Target = Cast<UBJS_ItemSlotWidget>(Operation->WidgetReference);
+			if (Target && !Target->GetEquip().IsEmpty())
+			{
+				if (SocketType == SOCKETTYPE::MAIL)
+				{
+					mode->SetMailEquipItem(Target->GetEquip().UniqueId);
+				}
+			}
+		}
+	}
+	return false;
+}
+
+FReply UBJS_ItemSlotWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	return Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
+}
+*/
