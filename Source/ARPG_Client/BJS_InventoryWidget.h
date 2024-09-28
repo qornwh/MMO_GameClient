@@ -6,9 +6,6 @@
 #include "BJS_UserWidgetBase.h"
 #include "BJS_InventoryWidget.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class ARPG_CLIENT_API UBJS_InventoryWidget : public UBJS_UserWidgetBase
 {
@@ -89,8 +86,8 @@ private:
 
 	TArray<TObjectPtr<class UTexture2D>> EnableInventoryButtonImageList;
 	
-	int32 ColSize = 5;
-	int32 RowSize = 4;
+	const int32 ColSize = 5;
+	const int32 RowSize = 4;
 	int32 InventoryModeState = 0;
 
 	// 인벤토리 사이즈 고정

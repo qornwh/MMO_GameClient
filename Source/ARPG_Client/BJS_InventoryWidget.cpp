@@ -263,6 +263,7 @@ void UBJS_InventoryWidget::SetSlot()
 	int32 row = 0;
 	int32 col = 0;
 	ugp_EquipItemSlots->ClearChildren();
+	ugp_ItemSlots->ClearChildren();
 
 	for (auto empty : EquipSlot)
 	{
@@ -279,8 +280,6 @@ void UBJS_InventoryWidget::SetSlot()
 			GridSlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Fill);
 		}
 	}
-
-	ugp_ItemSlots->ClearChildren();
 
 	row = 0;
 	col = 0;
