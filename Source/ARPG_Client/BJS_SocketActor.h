@@ -74,6 +74,7 @@ private:
 	void UpdateItemsHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
 	void LoadMailHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
 	void UpdateMailHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
+	void UpdateSendMailHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset);
 
 private:
 	FSocket* MySocket = nullptr;

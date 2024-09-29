@@ -9,6 +9,7 @@
 #include "BJS_InGameMode.h"
 #include "BJS_ItemSlotWidget.h"
 #include "BJS_SubInventoryWidget.h"
+#include "GameClient.pb.h"
 #include "Components/Button.h"
 #include "Components/CanvasPanel.h"
 #include "Components/EditableText.h"
@@ -79,11 +80,7 @@ void UBJS_MailWidget::SetVisibility(ESlateVisibility InVisibility)
 	Super::SetVisibility(InVisibility);
 	if (InVisibility == ESlateVisibility::Visible)
 	{
-		etb_send_gold->SetText(FText());
-		metb_message->SetText(FText());
-		sub_inventory->ReLoadSlot();
-		socket1->SetSlots(false);
-		socket2->SetSlots(false);
+		SetSlot();
 	}
 }
 
@@ -107,6 +104,12 @@ void UBJS_MailWidget::SetSlot()
 		}
 
 		SetMailInfo(CurrentMailCode);
+		etb_title->SetText(FText());
+		metb_message->SetText(FText());
+		etb_send_gold->SetText(FText::FromString(L"0"));
+		sub_inventory->ReLoadSlot();
+		send_socket1->SetSlots(false);
+		send_socket2->SetSlots(false);
 	}
 }
 
@@ -232,13 +235,64 @@ void UBJS_MailWidget::RefreshMail()
 
 void UBJS_MailWidget::SendMail()
 {
+	
 	auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
 	if (mode)
 	{
+		if (!etb_send_gold->GetText().IsNumeric())
+		{
+			UE_LOG(LogTemp, Log, TEXT("골드칸에 숫자만 입력해 주세요 !!!"));
+			return;
+		}
+		
+		int32 SendGold = FCString::Atoi(*etb_send_gold->GetText().ToString());
+		if (mode->GetMyInventory()->GetGold() < SendGold)
+		{
+			UE_LOG(LogTemp, Log, TEXT("골드가 부족합니다 !!!"));
+			return;
+		}
+		
 		auto socket = mode->GetSocketActor();
 		if (socket)
 		{
-			
+			protocol::CSendMail pkt;
+			protocol::Mail* mail = new protocol::Mail();
+			mail->set_gold(SendGold);
+			mail->set_message(TCHAR_TO_UTF8(*metb_message->GetText().ToString()));
+			mail->set_title(TCHAR_TO_UTF8(*etb_title->GetText().ToString()));
+			pkt.set_allocated_mails(mail);
+			if (!send_socket1->GetEquip().IsEmpty())
+			{
+				auto& sendItem = send_socket1->GetEquip();
+				protocol::MailEquipItem* MailItem = pkt.add_equipitems();
+				mail->set_socket1(1);
+				mail->set_socket1type(sendItem.EquipType);
+				protocol::ItemEquip* Item = new protocol::ItemEquip();
+				Item->set_item_code(sendItem.ItemCode);
+				Item->set_item_type(sendItem.EquipType);
+				Item->set_attack(sendItem.Attack);
+				Item->set_speed(sendItem.Speed);
+				Item->set_position(1);
+				Item->set_unipeid(sendItem.UniqueId);
+				MailItem->set_allocated_item(Item);
+			}
+			if (!send_socket2->GetEquip().IsEmpty())
+			{
+				auto& item = send_socket2->GetEquip();
+				protocol::MailEquipItem* MailItem = pkt.add_equipitems();
+				mail->set_socket2(1);
+				mail->set_socket2type(item.EquipType);
+				protocol::ItemEquip* Item = new protocol::ItemEquip();
+				Item->set_item_code(item.ItemCode);
+				Item->set_item_type(item.EquipType);
+				Item->set_attack(item.Attack);
+				Item->set_speed(item.Speed);
+				Item->set_position(2);
+				Item->set_unipeid(item.UniqueId);
+				MailItem->set_allocated_item(Item);
+			}
+
+			mode->GetSocketActor()->SendMessage(pkt, protocol::MessageCode::C_SENDMAIL);
 		}
 	}
 }
@@ -315,8 +369,6 @@ void UBJS_MailWidget::SetGold(int32 Gold)
 
 void UBJS_MailWidget::SetSendMailEquipItem(int32 EquipUnipeId, int32 Position)
 {
-	UE_LOG(LogTemp, Log, TEXT("여기까지 옴 !!!! %d %d"), EquipUnipeId, Position);
-
 	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
 	if (instance)
 	{

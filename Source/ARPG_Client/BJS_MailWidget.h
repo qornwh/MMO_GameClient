@@ -101,6 +101,8 @@ private:
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UMultiLineEditableText* metb_message;
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
+	class UEditableText* etb_title;
+	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UEditableText* etb_send_gold;
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UButton* btn_send_mail;

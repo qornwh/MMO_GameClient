@@ -44,6 +44,7 @@ enum MessageCode {
     C_UPDATEMAIL = 41; // 메일 삭제, 메일 추가, 아이템 수령, 메일 읽음 
     C_ALLUPDATEMAIL = 42; // 전체 아이템 수령, 전체 메일 삭제
     C_SENDMAIL = 43; // 메일 전송
+    S_SENDMAIL = 44; // 메일 전송 결과
     
     // 더미용
     D_LOAD = 101;
@@ -346,4 +347,11 @@ message CSendMail {
     Mail mails = 2;
     repeated MailEquipItem equipItems = 3; // 내가 가진 장비
     repeated MailEtcItem etcItems = 4; // 내가 가진 기타템
+}
+
+message SSendMail {
+    int32 result = 1;
+    int32 gold = 2;
+    repeated ItemEquip itemEquips = 3; // 메시지보내고 소모된 아이템들
+    repeated ItemEquip etcItems = 4; // 메시지보내고 소모된 아이템들
 }

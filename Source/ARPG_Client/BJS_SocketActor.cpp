@@ -158,6 +158,11 @@ void ABJS_SocketActor::HandlePacket(BYTE* Buffer, PacketHeader* Header)
 			UpdateMailHandler(Buffer, Header, static_cast<int32>(sizeof(PacketHeader)));
 		}
 		break;
+	case protocol::MessageCode::S_SENDMAIL:
+		{
+			UpdateSendMailHandler(Buffer, Header, static_cast<int32>(sizeof(PacketHeader)));
+		}
+		break;
 	}
 }
 
@@ -957,5 +962,38 @@ void ABJS_SocketActor::UpdateMailHandler(BYTE* Buffer, PacketHeader* Header, int
 			}
 			mode->UpdateMailUi();
 		}
+	}
+}
+
+void ABJS_SocketActor::UpdateSendMailHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset)
+{
+	protocol::SSendMail pkt;
+	
+	if (PacketHandlerUtils::ParsePacketHandler(pkt, Buffer, Header->GetSize() - Offset, Offset))
+	{
+		auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
+		if (mode)
+		{
+			if (pkt.result() > 0)
+			{
+				auto Inventory = mode->GetMyInventory();
+				
+				for (auto& item : pkt.itemequips())
+				{
+					mode->GetMyInventory()->UseEquipItem(item.unipeid());
+					mode->UpdateInventoryEquipUI(item.unipeid(), 0);
+				}
+				
+				Inventory->SetGold(pkt.gold());
+				mode->UpdateInventoryUI();
+			}
+			else
+			{
+				// 에러 메시지 띄우기
+				FString msg{TEXT("메일 보내기에 실패했습니다(해당되는 플레이어가 없습니다).")};
+				OnChatMessage.Execute(msg, 2, -1);
+			}
+		}
+		mode->UpdateMailUi();
 	}
 }

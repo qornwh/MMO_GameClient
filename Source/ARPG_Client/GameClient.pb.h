@@ -47,7 +47,7 @@ struct TableStruct_GameClient_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[47]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[48]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -181,6 +181,9 @@ extern SPlayerDataDefaultTypeInternal _SPlayerData_default_instance_;
 class SRoomQuest;
 struct SRoomQuestDefaultTypeInternal;
 extern SRoomQuestDefaultTypeInternal _SRoomQuest_default_instance_;
+class SSendMail;
+struct SSendMailDefaultTypeInternal;
+extern SSendMailDefaultTypeInternal _SSendMail_default_instance_;
 class SUnitDemage;
 struct SUnitDemageDefaultTypeInternal;
 extern SUnitDemageDefaultTypeInternal _SUnitDemage_default_instance_;
@@ -240,6 +243,7 @@ template<> ::protocol::SLoadInventory* Arena::CreateMaybeMessage<::protocol::SLo
 template<> ::protocol::SMove* Arena::CreateMaybeMessage<::protocol::SMove>(Arena*);
 template<> ::protocol::SPlayerData* Arena::CreateMaybeMessage<::protocol::SPlayerData>(Arena*);
 template<> ::protocol::SRoomQuest* Arena::CreateMaybeMessage<::protocol::SRoomQuest>(Arena*);
+template<> ::protocol::SSendMail* Arena::CreateMaybeMessage<::protocol::SSendMail>(Arena*);
 template<> ::protocol::SUnitDemage* Arena::CreateMaybeMessage<::protocol::SUnitDemage>(Arena*);
 template<> ::protocol::SUnitStates* Arena::CreateMaybeMessage<::protocol::SUnitStates>(Arena*);
 template<> ::protocol::Unit* Arena::CreateMaybeMessage<::protocol::Unit>(Arena*);
@@ -283,6 +287,7 @@ enum MessageCode : int {
   C_UPDATEMAIL = 41,
   C_ALLUPDATEMAIL = 42,
   C_SENDMAIL = 43,
+  S_SENDMAIL = 44,
   D_LOAD = 101,
   MessageCode_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   MessageCode_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
@@ -8575,6 +8580,200 @@ class CSendMail final :
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_GameClient_2eproto;
 };
+// -------------------------------------------------------------------
+
+class SSendMail final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:protocol.SSendMail) */ {
+ public:
+  inline SSendMail() : SSendMail(nullptr) {}
+  ~SSendMail() override;
+  explicit constexpr SSendMail(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  SSendMail(const SSendMail& from);
+  SSendMail(SSendMail&& from) noexcept
+    : SSendMail() {
+    *this = ::std::move(from);
+  }
+
+  inline SSendMail& operator=(const SSendMail& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SSendMail& operator=(SSendMail&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SSendMail& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SSendMail* internal_default_instance() {
+    return reinterpret_cast<const SSendMail*>(
+               &_SSendMail_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    47;
+
+  friend void swap(SSendMail& a, SSendMail& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SSendMail* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SSendMail* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SSendMail* New() const final {
+    return new SSendMail();
+  }
+
+  SSendMail* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SSendMail>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const SSendMail& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const SSendMail& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SSendMail* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "protocol.SSendMail";
+  }
+  protected:
+  explicit SSendMail(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kItemEquipsFieldNumber = 3,
+    kEtcItemsFieldNumber = 4,
+    kResultFieldNumber = 1,
+    kGoldFieldNumber = 2,
+  };
+  // repeated .protocol.ItemEquip itemEquips = 3;
+  int itemequips_size() const;
+  private:
+  int _internal_itemequips_size() const;
+  public:
+  void clear_itemequips();
+  ::protocol::ItemEquip* mutable_itemequips(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protocol::ItemEquip >*
+      mutable_itemequips();
+  private:
+  const ::protocol::ItemEquip& _internal_itemequips(int index) const;
+  ::protocol::ItemEquip* _internal_add_itemequips();
+  public:
+  const ::protocol::ItemEquip& itemequips(int index) const;
+  ::protocol::ItemEquip* add_itemequips();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protocol::ItemEquip >&
+      itemequips() const;
+
+  // repeated .protocol.ItemEquip etcItems = 4;
+  int etcitems_size() const;
+  private:
+  int _internal_etcitems_size() const;
+  public:
+  void clear_etcitems();
+  ::protocol::ItemEquip* mutable_etcitems(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protocol::ItemEquip >*
+      mutable_etcitems();
+  private:
+  const ::protocol::ItemEquip& _internal_etcitems(int index) const;
+  ::protocol::ItemEquip* _internal_add_etcitems();
+  public:
+  const ::protocol::ItemEquip& etcitems(int index) const;
+  ::protocol::ItemEquip* add_etcitems();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protocol::ItemEquip >&
+      etcitems() const;
+
+  // int32 result = 1;
+  void clear_result();
+  ::PROTOBUF_NAMESPACE_ID::int32 result() const;
+  void set_result(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_result() const;
+  void _internal_set_result(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int32 gold = 2;
+  void clear_gold();
+  ::PROTOBUF_NAMESPACE_ID::int32 gold() const;
+  void set_gold(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_gold() const;
+  void _internal_set_gold(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:protocol.SSendMail)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protocol::ItemEquip > itemequips_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protocol::ItemEquip > etcitems_;
+  ::PROTOBUF_NAMESPACE_ID::int32 result_;
+  ::PROTOBUF_NAMESPACE_ID::int32 gold_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_GameClient_2eproto;
+};
 // ===================================================================
 
 
@@ -13668,9 +13867,135 @@ CSendMail::etcitems() const {
   return etcitems_;
 }
 
+// -------------------------------------------------------------------
+
+// SSendMail
+
+// int32 result = 1;
+inline void SSendMail::clear_result() {
+  result_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 SSendMail::_internal_result() const {
+  return result_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 SSendMail::result() const {
+  // @@protoc_insertion_point(field_get:protocol.SSendMail.result)
+  return _internal_result();
+}
+inline void SSendMail::_internal_set_result(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  result_ = value;
+}
+inline void SSendMail::set_result(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_result(value);
+  // @@protoc_insertion_point(field_set:protocol.SSendMail.result)
+}
+
+// int32 gold = 2;
+inline void SSendMail::clear_gold() {
+  gold_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 SSendMail::_internal_gold() const {
+  return gold_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 SSendMail::gold() const {
+  // @@protoc_insertion_point(field_get:protocol.SSendMail.gold)
+  return _internal_gold();
+}
+inline void SSendMail::_internal_set_gold(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  gold_ = value;
+}
+inline void SSendMail::set_gold(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_gold(value);
+  // @@protoc_insertion_point(field_set:protocol.SSendMail.gold)
+}
+
+// repeated .protocol.ItemEquip itemEquips = 3;
+inline int SSendMail::_internal_itemequips_size() const {
+  return itemequips_.size();
+}
+inline int SSendMail::itemequips_size() const {
+  return _internal_itemequips_size();
+}
+inline void SSendMail::clear_itemequips() {
+  itemequips_.Clear();
+}
+inline ::protocol::ItemEquip* SSendMail::mutable_itemequips(int index) {
+  // @@protoc_insertion_point(field_mutable:protocol.SSendMail.itemEquips)
+  return itemequips_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protocol::ItemEquip >*
+SSendMail::mutable_itemequips() {
+  // @@protoc_insertion_point(field_mutable_list:protocol.SSendMail.itemEquips)
+  return &itemequips_;
+}
+inline const ::protocol::ItemEquip& SSendMail::_internal_itemequips(int index) const {
+  return itemequips_.Get(index);
+}
+inline const ::protocol::ItemEquip& SSendMail::itemequips(int index) const {
+  // @@protoc_insertion_point(field_get:protocol.SSendMail.itemEquips)
+  return _internal_itemequips(index);
+}
+inline ::protocol::ItemEquip* SSendMail::_internal_add_itemequips() {
+  return itemequips_.Add();
+}
+inline ::protocol::ItemEquip* SSendMail::add_itemequips() {
+  ::protocol::ItemEquip* _add = _internal_add_itemequips();
+  // @@protoc_insertion_point(field_add:protocol.SSendMail.itemEquips)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protocol::ItemEquip >&
+SSendMail::itemequips() const {
+  // @@protoc_insertion_point(field_list:protocol.SSendMail.itemEquips)
+  return itemequips_;
+}
+
+// repeated .protocol.ItemEquip etcItems = 4;
+inline int SSendMail::_internal_etcitems_size() const {
+  return etcitems_.size();
+}
+inline int SSendMail::etcitems_size() const {
+  return _internal_etcitems_size();
+}
+inline void SSendMail::clear_etcitems() {
+  etcitems_.Clear();
+}
+inline ::protocol::ItemEquip* SSendMail::mutable_etcitems(int index) {
+  // @@protoc_insertion_point(field_mutable:protocol.SSendMail.etcItems)
+  return etcitems_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protocol::ItemEquip >*
+SSendMail::mutable_etcitems() {
+  // @@protoc_insertion_point(field_mutable_list:protocol.SSendMail.etcItems)
+  return &etcitems_;
+}
+inline const ::protocol::ItemEquip& SSendMail::_internal_etcitems(int index) const {
+  return etcitems_.Get(index);
+}
+inline const ::protocol::ItemEquip& SSendMail::etcitems(int index) const {
+  // @@protoc_insertion_point(field_get:protocol.SSendMail.etcItems)
+  return _internal_etcitems(index);
+}
+inline ::protocol::ItemEquip* SSendMail::_internal_add_etcitems() {
+  return etcitems_.Add();
+}
+inline ::protocol::ItemEquip* SSendMail::add_etcitems() {
+  ::protocol::ItemEquip* _add = _internal_add_etcitems();
+  // @@protoc_insertion_point(field_add:protocol.SSendMail.etcItems)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protocol::ItemEquip >&
+SSendMail::etcitems() const {
+  // @@protoc_insertion_point(field_list:protocol.SSendMail.etcItems)
+  return etcitems_;
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
