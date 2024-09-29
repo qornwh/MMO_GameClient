@@ -190,8 +190,11 @@ void UBJS_InventoryWidget::RemoveEquipSlot(int32 EquipUnipeId)
 		if (!instance->GetMyInventory()->GetEquipItems().Contains(EquipUnipeId))
 		{
 			auto slot = EquipItemSlots.Find(EquipUnipeId);
-			EquipItemSlots.Remove(EquipUnipeId);
-			(*slot)->SetSlots(false);
+			if (slot)
+			{
+				(*slot)->SetSlots(false);
+				EquipItemSlots.Remove(EquipUnipeId);
+			}
 		}
 		else
 		{

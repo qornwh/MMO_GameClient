@@ -210,7 +210,10 @@ FReply UBJS_ItemSlotWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry,
 {
 	if (CurSocketType == ITEMSOCKETTYPE::SENDMAIL)
 	{
-		SetSocket(false);
+		if (InMouseEvent.GetEffectingButton() == EKeys::RightMouseButton)
+		{
+			SetSocket(false);
+		}
 		return FReply::Handled();
 	}
 
