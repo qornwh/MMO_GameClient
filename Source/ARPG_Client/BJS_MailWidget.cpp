@@ -8,6 +8,7 @@
 #include "BJS_MailSlot.h"
 #include "BJS_InGameMode.h"
 #include "BJS_ItemSlotWidget.h"
+#include "BJS_PromptWidget.h"
 #include "BJS_SubInventoryWidget.h"
 #include "GameClient.pb.h"
 #include "Components/Button.h"
@@ -235,20 +236,33 @@ void UBJS_MailWidget::RefreshMail()
 
 void UBJS_MailWidget::SendMail()
 {
-	
 	auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
 	if (mode)
 	{
 		if (!etb_send_gold->GetText().IsNumeric())
 		{
-			UE_LOG(LogTemp, Log, TEXT("골드칸에 숫자만 입력해 주세요 !!!"));
+			FString str =  FString(TEXT("골드칸에 숫자만 입력해 주세요 !!!"));;
+			auto Widget = mode->OpenPromptWidget();
+			Widget->SetText(str);
+			etb_send_gold->SetText(FText::FromString(FString{TEXT("0")}));
 			return;
 		}
 		
 		int32 SendGold = FCString::Atoi(*etb_send_gold->GetText().ToString());
 		if (mode->GetMyInventory()->GetGold() < SendGold)
 		{
-			UE_LOG(LogTemp, Log, TEXT("골드가 부족합니다 !!!"));
+			FString str =  FString(TEXT("골드가 부족합니다 !!!"));;
+			auto Widget = mode->OpenPromptWidget();
+			Widget->SetText(str);
+			etb_send_gold->SetText(FText::FromString(FString{TEXT("0")}));
+			return;
+		}
+
+		if (etb_title->GetText().IsEmpty())
+		{
+			FString str =  FString(TEXT("보낼 사용자 이름을 입력해 주세요 !!!"));;
+			auto Widget = mode->OpenPromptWidget();
+			Widget->SetText(str);
 			return;
 		}
 		
