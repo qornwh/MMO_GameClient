@@ -162,13 +162,16 @@ void ABJS_Bullet::HitCheck()
 		auto Monster = Cast<ABJS_Monster>(Actor);
 		if (Actor && Actor != this && Monster)
 		{
-			mode->SetTakeDemageList(Monster->GetState());
-			FVector loc = Monster->GetActorLocation();
-			FRotator rot = Monster->GetActorRotation();
-			Monster->GetState()->SetX(loc.X);
-			Monster->GetState()->SetY(loc.Y);
-			Monster->GetState()->SetZ(loc.Z);
-			Monster->GetState()->SetYaw(rot.Yaw);
+			if (CharaterState.IsValid() && CharaterState.Pin()->GetUUid() == mode->GetMyState()->GetUUid())
+			{
+				mode->SetTakeDemageList(Monster->GetState());
+				FVector loc = Monster->GetActorLocation();
+				FRotator rot = Monster->GetActorRotation();
+				Monster->GetState()->SetX(loc.X);
+				Monster->GetState()->SetY(loc.Y);
+				Monster->GetState()->SetZ(loc.Z);
+				Monster->GetState()->SetYaw(rot.Yaw);
+			}
 		}
 	}
 	mode->TakeDemage(true, SkillCode, mode->GetMyState());
