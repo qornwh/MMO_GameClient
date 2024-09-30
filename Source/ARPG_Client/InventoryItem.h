@@ -42,6 +42,7 @@ struct EtcItem
 
 	void UpdateItem(int32 count = 1);
 	void SetEmptyItem();
+	bool IsEmpty();
 	int32 ItemCode;
 	int32 Count;
 	int32 Type;

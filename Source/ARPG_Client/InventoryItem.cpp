@@ -106,6 +106,15 @@ void EtcItem::SetEmptyItem()
 	Type = -1;
 }
 
+bool EtcItem::IsEmpty()
+{
+	if (ItemCode > 0 && ItemCode > 0)
+	{
+		return true;
+	}
+	return false;
+}
+
 InventoryItem::InventoryItem() : Gold(0)
 {
 }
