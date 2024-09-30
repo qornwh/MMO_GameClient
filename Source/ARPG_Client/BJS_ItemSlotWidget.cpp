@@ -123,6 +123,7 @@ void UBJS_ItemSlotWidget::SetRecive(bool Flag)
 		img_item->SetOpacity(0.5);
 	}
 	
+	img_item->SetVisibility(ESlateVisibility::Visible);
 	cb_check->SetVisibility(ESlateVisibility::Hidden);
 	if (Type == ToolTipType::EQUIP_ITEM_TYPE)
 	{
@@ -177,10 +178,21 @@ void UBJS_ItemSlotWidget::SendToolTipItemInfo()
 	if (mode)
 	{
 		if (Type == ToolTipType::EQUIP_ITEM_TYPE)
-			mode->UpdateToolTipEquipItem(CurEquipItem);
+		{
+			if (!CurEquipItem.IsEmpty())
+			{
+				mode->UpdateToolTipEquipItem(CurEquipItem);
+				mode->OpenToolTipUI();
+			}
+		}
 		else if (Type == ToolTipType::ETC_ITEM_TYPE)
-			mode->UpdateToolTipEtcItem(CurEtcItem);
-		mode->OpenToolTipUI();
+		{
+			if (!CurEtcItem.IsEmpty())
+			{
+				mode->UpdateToolTipEtcItem(CurEtcItem);
+				mode->OpenToolTipUI();
+			}
+		}
 	}
 }
 
