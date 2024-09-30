@@ -113,8 +113,8 @@ void ABJS_GameModeBase::CustomDespawnActor(UClass* Class, AActor* Actor)
 				ActorPool.Add(Class);
 			}
 			ActorPool.Find(Class)->Add(Actor);
-			UE_LOG(LogTemp, Log, TEXT("damage actor size : %d !!!"), ActorPool.Find(Class)->Num());
 			Cast<ABJS_DemageActor>(Actor)->SetActivate(false);
+			// UE_LOG(LogTemp, Log, TEXT("damage actor size : %d !!!"), ActorPool.Find(Class)->Num());
 		}
 	}
 } 

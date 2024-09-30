@@ -69,6 +69,7 @@ public:
 
 	TMap<int32, TObjectPtr<class USkeletalMesh>>& GetCharaterMeshList();
 	TMap<int32, TObjectPtr<class USkeletalMesh>>& GetWeaponMeshList();
+	TMap<int32, TObjectPtr<class UStaticMesh>>& GetMonsterMeshList();
 	TMap<int32, TObjectPtr<class UParticleSystem>>& GetParticleSkillMap();
 	TMap<int32, TObjectPtr<class UNiagaraSystem>>& GetNiagaraSkillMap();
 	TObjectPtr<class UParticleSystem> GetFireStartFX();
@@ -126,7 +127,7 @@ private:
 	// Mesh
 	TMap<int32, TObjectPtr<class USkeletalMesh>> CharacterMeshList;
 	TMap<int32, TObjectPtr<class USkeletalMesh>> WeaponMeshList;
-	TMap<int32, TObjectPtr<class USkeletalMesh>> MonsterMeshList;
+	TMap<int32, TObjectPtr<class UStaticMesh>> MonsterMeshList;
 
 	// Skill
 	TMap<int32, TObjectPtr<class UParticleSystem>> ParticleSkillMap;

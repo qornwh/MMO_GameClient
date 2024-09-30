@@ -210,6 +210,16 @@ void UBJS_GameInstance::LoadBP()
 	check(CharacterBP.Succeeded());
 	PlayerClass = CharacterBP.Class;
 
+	// 몬스터 메시 로드
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> MonsterMesh1(
+		TEXT("/Script/Engine.StaticMesh'/Game/MyGame/Assets/Monster/Monster_Mesh_1.Monster_Mesh_1'"));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> MonsterMesh2(
+		TEXT("/Script/Engine.StaticMesh'/Game/MyGame/Assets/Monster/Monster_Mesh_2.Monster_Mesh_2'"));
+	check(MonsterMesh1.Succeeded());
+	check(MonsterMesh2.Succeeded());
+	MonsterMeshList.Add(1, MonsterMesh1.Object);
+	MonsterMeshList.Add(2, MonsterMesh2.Object);
+
 	// 몬스터 BP 로드
 	static ConstructorHelpers::FClassFinder<AActor> MonsterBP(TEXT("/Script/Engine.Blueprint'/Game/MyGame/BluePrint/BP_Monster.BP_Monster_C'"));
 	check(MonsterBP.Succeeded());
@@ -494,6 +504,11 @@ TMap<int32, TObjectPtr<USkeletalMesh>>& UBJS_GameInstance::GetCharaterMeshList()
 TMap<int32, TObjectPtr<USkeletalMesh>>& UBJS_GameInstance::GetWeaponMeshList()
 {
 	return WeaponMeshList;
+}
+
+TMap<int32, TObjectPtr<UStaticMesh>>& UBJS_GameInstance::GetMonsterMeshList()
+{
+	return MonsterMeshList;
 }
 
 TMap<int32, struct FSkillStruct*>& UBJS_GameInstance::GetSkillStructs()

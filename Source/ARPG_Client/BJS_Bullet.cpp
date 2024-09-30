@@ -52,7 +52,6 @@ void ABJS_Bullet::BeginPlay()
 void ABJS_Bullet::Destroyed()
 {
 	Super::Destroyed();
-	UE_LOG(LogTemp, Log, TEXT("Bulet Destroy !!!"));
 }
 
 // Called every frame

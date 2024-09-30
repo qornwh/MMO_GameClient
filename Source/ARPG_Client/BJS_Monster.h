@@ -13,20 +13,24 @@ class ARPG_CLIENT_API ABJS_Monster : public ABJS_Character
 
 public:
 	ABJS_Monster();
+	virtual void SetState(TSharedPtr<BJS_CharaterState> state) override;
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void Move(float DeltaTime) override;
 	virtual void Tick(float DeltaTime) override;
-
-public:	
-	virtual void SetState(TSharedPtr<BJS_CharaterState> state) override;
 	virtual void Attack() override;
 	virtual void AttackEnd() override;
 	
 	UFUNCTION()
 	void OnHitEvent(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly)
+	class UStaticMeshComponent* MonsterMeshComponent;
 	
 	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly)
 	TSubclassOf<class AActor> BulletClass;
+	
+private:
+	TMap<int32, TObjectPtr<class UStaticMesh>> MonsterMeshList;
 };

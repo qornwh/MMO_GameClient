@@ -120,8 +120,7 @@ void ABJS_InGameMode::BeginPlay()
 	MyMail = instance->GetMyMail();
 	SetShowMouseCousor(false);
 
-	/// TEST
-
+	// 미리 캐릭터 200개 가량 로드해둠
 	for (int32 i = 0; i < 200; i++)
 	{
 		FVector SpawnLocation = FVector::ZeroVector;
@@ -130,15 +129,7 @@ void ABJS_InGameMode::BeginPlay()
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 		ABJS_Character* player = GetWorld()->SpawnActor<ABJS_Character>(instance->GetPlayerClass(), SpawnLocation, SpawnRotation, SpawnParams);;
 		CustomDespawnActor<ABJS_Character>(instance->GetPlayerClass(), player);
-		// if (!CharaterPool.Contains(instance->GetPlayerClass()))
-		// {
-		// 	CharaterPool.Add(instance->GetPlayerClass());
-		// }
-		// CharaterPool.Find(instance->GetPlayerClass())->Add(player);
-		// Cast<ABJS_Character>(player)->SetActivate(false);
 	}
-
-	UE_LOG(LogTemp, Log, TEXT("Create Player Num : %d"), ActorPool.Find(instance->GetPlayerClass())->Num());
 }
 
 void ABJS_InGameMode::Tick(float DeltaSeconds)

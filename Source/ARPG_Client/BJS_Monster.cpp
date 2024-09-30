@@ -1,16 +1,11 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "BJS_Monster.h"
 
 #include "BJS_Bullet.h"
 #include "BJS_CharaterState.h"
 #include "BJS_GameInstance.h"
 #include "BJS_InGameMode.h"
-#include "PlayerStruct.h"
 #include "Components/CapsuleComponent.h"
 
-// Sets default values
 ABJS_Monster::ABJS_Monster()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -19,28 +14,30 @@ ABJS_Monster::ABJS_Monster()
 	GetCapsuleComponent()->InitCapsuleSize(40.f, 96.0f);
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Monster"));
 	GetCapsuleComponent()->SetNotifyRigidBodyCollision(true);
+
+	MonsterMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MonsterMeshComponent"));
+	MonsterMeshComponent->SetupAttachment(RootComponent);
 }
 
-// Called when the game starts or when spawned
 void ABJS_Monster::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	auto mode = Cast<UBJS_GameInstance>(GetGameInstance());
-	if (mode)
+	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
+	if (instance)
 	{
-		BulletClass = mode->GetMonsterSkillClass();		
+		BulletClass = instance->GetMonsterSkillClass();		
+		MonsterMeshList = instance->GetMonsterMeshList();
+
+		MonsterMeshComponent->SetStaticMesh(MonsterMeshList[1]);
 	}
 	
-	// GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &ABJS_Monster::OnHitEvent);
 	IsHitted = true;
 }
 
-// Called every frame
 void ABJS_Monster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void ABJS_Monster::Move(float DeltaTime)
@@ -87,6 +84,12 @@ void ABJS_Monster::OnHitEvent(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 void ABJS_Monster::SetState(TSharedPtr<BJS_CharaterState> state)
 {
 	Super::SetState(state);
+
+	int32 MonsterTyep = state->GetCode();
+	if (MonsterMeshList.Contains(MonsterTyep))
+	{
+		MonsterMeshComponent->SetStaticMesh(MonsterMeshList[MonsterTyep]);
+	}
 }
 
 void ABJS_Monster::Attack()
