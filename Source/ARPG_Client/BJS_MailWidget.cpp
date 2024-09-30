@@ -280,7 +280,7 @@ void UBJS_MailWidget::SendMail()
 				auto& sendItem = send_socket1->GetEquip();
 				protocol::MailEquipItem* MailItem = pkt.add_equipitems();
 				mail->set_socket1(1);
-				mail->set_socket1type(sendItem.EquipType);
+				mail->set_socket1type(1);
 				protocol::ItemEquip* Item = new protocol::ItemEquip();
 				Item->set_item_code(sendItem.ItemCode);
 				Item->set_item_type(sendItem.EquipType);
@@ -290,12 +290,16 @@ void UBJS_MailWidget::SendMail()
 				Item->set_unipeid(sendItem.UniqueId);
 				MailItem->set_allocated_item(Item);
 			}
+			else
+			{
+				mail->set_socket1(-1);
+			}
 			if (!send_socket2->GetEquip().IsEmpty())
 			{
 				auto& item = send_socket2->GetEquip();
 				protocol::MailEquipItem* MailItem = pkt.add_equipitems();
 				mail->set_socket2(1);
-				mail->set_socket2type(item.EquipType);
+				mail->set_socket2type(1);
 				protocol::ItemEquip* Item = new protocol::ItemEquip();
 				Item->set_item_code(item.ItemCode);
 				Item->set_item_type(item.EquipType);
@@ -304,6 +308,10 @@ void UBJS_MailWidget::SendMail()
 				Item->set_position(2);
 				Item->set_unipeid(item.UniqueId);
 				MailItem->set_allocated_item(Item);
+			}
+			else
+			{
+				mail->set_socket2(-1);
 			}
 
 			mode->GetSocketActor()->SendMessage(pkt, protocol::MessageCode::C_SENDMAIL);
@@ -363,15 +371,13 @@ void UBJS_MailWidget::SetMailSocketInfo(int32 SocketNum, int32 SocketState, int3
 				Socket->SetImg(EtcImgs[etc->ItemCode]);
 			}
 		}
-		else
-		{
-			Socket->SetImg(nullptr);
-		}
 
 		if (SocketState == 0)
 			Socket->SetRecive(false);
 		else if (SocketState == 1)
 			Socket->SetRecive(true);
+		else
+			Socket->SetSocket(false);
 	}
 }
 
