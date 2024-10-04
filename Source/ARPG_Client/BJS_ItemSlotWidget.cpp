@@ -23,7 +23,6 @@ void UBJS_ItemSlotWidget::NativeConstruct()
 		OnDoubleClick.AddDynamic(this, &UBJS_ItemSlotWidget::SendToolTipItemInfo);
 	if (!OnRightClick.IsBound())
 		OnRightClick.AddDynamic(this, &UBJS_ItemSlotWidget::OnSendItem);
-	cb_check->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UBJS_ItemSlotWidget::SetEquip(EquipItem& Item)
