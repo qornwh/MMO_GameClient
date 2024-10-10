@@ -12,9 +12,10 @@
 
 ## 플레이 화면들
 
-![1번](https://github.com/qornwh/MMO_GameClient/blob/main/스크린샷-2024-09-01-150818.png)
-![2번](https://github.com/qornwh/MMO_GameClient/blob/main/스크린샷-2024-09-01-112807.png)
-![3번](https://github.com/qornwh/MMO_GameClient/blob/main/스크린샷-2024-09-01-145811.png)
+![1번](https://github.com/qornwh/MMO_GameClient/blob/main/플레이_화면1.png)
+![2번](https://github.com/qornwh/MMO_GameClient/blob/main/플레이_화면2.png)
+![3번](https://github.com/qornwh/MMO_GameClient/blob/main/플레이_화면3.png)
+![4번](https://github.com/qornwh/MMO_GameClient/blob/main/플레이_화면4.png)
 
 ---
 
