@@ -25,7 +25,7 @@ ABJS_Character::ABJS_Character()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	
+
 	GetCharacterMovement()->JumpZVelocity = 600.f;
 	GetCharacterMovement()->GravityScale = 1.75f;
 	GetCharacterMovement()->MaxWalkSpeed = 500.f;
@@ -132,7 +132,7 @@ void ABJS_Character::UpdateBuff(float DeltaTime)
 				auto skill = instance->GetSkillStructs()[buff.Value.Code];
 				int32 Type = skill->Type;
 				float Value = skill->Value;
-				
+
 				if (Type == CharaterSkill::SKILLTYPES::MSP)
 				{
 					State->BuffState.AddSpeed(-Value);
@@ -146,7 +146,7 @@ void ABJS_Character::UpdateBuff(float DeltaTime)
 void ABJS_Character::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
+
 	UpdateHpWidget();
 	UpdateBuff(DeltaTime);
 	Move(DeltaTime);
@@ -287,7 +287,7 @@ void ABJS_Character::PlaySkill(int32 Code, bool ignore)
 		{
 			State->BuffState.AddSpeed(Value);
 		}
-		
+
 		if (IsAim && Weapon && Type == 0)
 		{
 			// 공격 스킬
@@ -328,7 +328,7 @@ void ABJS_Character::SetState(TSharedPtr<BJS_CharaterState> state)
 		State.Reset();
 		return;
 	}
-	
+
 	State = state;
 	const auto HpWidget = Cast<UBJS_CharaterUIWidget>(HpBar->GetUserWidgetObject());
 	if (HpWidget != nullptr)
@@ -408,28 +408,22 @@ void ABJS_Character::UpdateHpWidget()
 	if (HpWidget != nullptr)
 	{
 		auto PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-		auto CameraActor = Cast<AActor>(PlayerController->GetViewTarget());
+		FVector ActorLocation = GetActorLocation();
+		FVector CameraLocation;
+		FRotator CameraRotation;
+		PlayerController->GetPlayerViewPoint(CameraLocation, CameraRotation);
+		CameraRotation.Yaw += 180;
+		HpBar->SetWorldRotation(CameraRotation);
 
-		if (CameraActor)
+		auto dist = FVector::Dist(ActorLocation, CameraLocation);
+		HpWidget->SetHp(static_cast<float>(State->GetHp()) / State->GetMaxHp());
+		if (dist > 3000.f)
 		{
-			FVector ActorLocation = GetActorLocation();
-			FVector CameraLocation;
-			FRotator CameraRotation;
-			PlayerController->GetPlayerViewPoint(CameraLocation, CameraRotation);
-			CameraRotation.Yaw += 180;
-			CameraRotation.Pitch *= -1;
-			HpBar->SetWorldRotation(CameraRotation);
-
-			auto dist = FVector::Dist(ActorLocation, CameraLocation);
-			HpWidget->SetHp(static_cast<float>(State->GetHp()) / State->GetMaxHp());
-			if (dist > 3000.f)
-			{
-				HpWidget->SetVisibility(ESlateVisibility::Hidden);
-			}
-			else
-			{
-				HpWidget->SetVisibility(ESlateVisibility::Visible);
-			}
+			HpWidget->SetVisibility(ESlateVisibility::Hidden);
+		}
+		else
+		{
+			HpWidget->SetVisibility(ESlateVisibility::Visible);
 		}
 	}
 }
@@ -444,7 +438,7 @@ void ABJS_Character::LoadInfo(int32 MeshCode, int32 WeaponCode)
 	if (instance)
 	{
 		auto& skillBinds = instance->GetSkillBindStructs()[WeaponCode];
-		auto skillStruct  = instance->GetSkillStructs();
+		auto skillStruct = instance->GetSkillStructs();
 		for (auto skillBind : skillBinds)
 		{
 			int32 keyBind = skillBind->KeyCode;
@@ -457,7 +451,7 @@ void ABJS_Character::LoadInfo(int32 MeshCode, int32 WeaponCode)
 				// 일단 임시
 				SetBulletFX(BulletFXList[skillCode], skillCode);
 			}
-			
+
 			// 스킬 초기화
 			if (BuffList.Contains(skillCode))
 			{
@@ -465,7 +459,7 @@ void ABJS_Character::LoadInfo(int32 MeshCode, int32 WeaponCode)
 			}
 			BuffList.Add(skillCode, CharaterSkill{skillCode, duration, cooltime});
 		}
-		
+
 		GetMesh()->SetAnimInstanceClass(AnimInstanceClass);
 		AnimInstance = Cast<UBJS_AnimInstance_Base>(GetMesh()->GetAnimInstance());
 	}
