@@ -6,7 +6,7 @@
 
 ---
 
-[![Video Label](https://img.youtube.com/vi/iSU0Be_88D8/0.jpg)](https://youtu.be/iSU0Be_88D8)
+[![Video Label](https://img.youtube.com/vi/Z_v4MGjklCA/0.jpg)](https://youtu.be/Z_v4MGjklCA)
 
 ---
 
