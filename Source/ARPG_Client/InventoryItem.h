@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "google/protobuf/stubs/port.h"
 
 enum ToolTipType
 {
@@ -11,30 +12,34 @@ enum ToolTipType
 	ETC_ITEM_TYPE = 2
 };
 
+enum EquipItemType
+{
+	AttackItem = 1,
+	SpeedItem = 2
+};
+
+
 struct EquipItem
 {
-	EquipItem(int32 uniqueId, int32 itemCode, int32 equipType, int32 attack, int32 speed, int32 isEquip, int32 position, int32 use);
+	EquipItem(int32 itemCode, int32 equipType, int32 attack, int32 speed, int32 equipPos, int32 invenPos);
 	~EquipItem();
 
 	EquipItem& operator=(const EquipItem& other);
 	bool EqualEquipItem(const EquipItem& other) const;
-
-	void UpdateItem(int32 use = 1);
     bool IsEmpty();
 	void SetEmptyItem();
-	int32 UniqueId;
+	
 	int32 ItemCode;
 	int32 EquipType;
 	int32 Attack;
 	int32 Speed;
-	int32 IsEquip;
-	int32 Position;
-	int32 Use;
+	int32 EquipPos;
+	int32 InvenPos;
 };
 
 struct EtcItem
 {
-	EtcItem(int32 itemCode, int32 type, int32 count, int32 position);
+	EtcItem(int32 itemCode, int32 type, int32 count, int32 invenPos);
 	~EtcItem();
 
 	EtcItem& operator=(const EtcItem& other);
@@ -46,7 +51,7 @@ struct EtcItem
 	int32 ItemCode;
 	int32 Count;
 	int32 Type;
-	int32 Position;
+	int32 InvenPos;
 };
 
 class ARPG_CLIENT_API InventoryItem : public TSharedFromThis<InventoryItem>
@@ -55,25 +60,61 @@ public:
 	InventoryItem();
 	~InventoryItem();
 
-	EquipItem& AddEquipItem(int32 uniqueId, int32 itemCode, int32 equipType, int32 attack, int32 speed, int32 isEquip, int32 position, int32 use);
-	EtcItem& AddEtcItem(int32 itemCode, int32 type, int32 count, int32 position);
-	EquipItem& AddEquipItem(EquipItem& Equip);
-	EtcItem& AddEtcItem(EtcItem& Etc);
-	bool UseEquipItem(int32 UniqueId);
-	bool ItemEquipped(int32 UniqueId, int32 Equipped, int32 Position);
-	bool UseEtcItem(int32 Code, int32 Count);
-	bool IsEquipItem(int32 UniqueId);
+	EquipItem& AddEquipItem(int32 itemCode, int32 equipType, int32 attack, int32 speed, int32 equipPos, int32 invenPos);
+	EtcItem& AddEtcItem(int32 itemCode, int32 type, int32 count, int32 invenPos);
+	// EquipItem& AddEquipItem(EquipItem& Equip);
+	// EtcItem& AddEtcItem(EtcItem& Etc);
+	// bool UseEquipItem(int32 UniqueId);
+	bool ItemEquipped(int32 invenPos, int32 equipPos);
+	// bool UseEtcItem(int32 Code, int32 Count);
 
 	void AddGold(int32 gold);
 	void UseGold(int32 gold);
 	void SetGold(int32 gold);
 
-	TMap<int32, EquipItem>& GetEquipItems() { return EquipItems; }
-	TMap<int32, EtcItem>& GetEtcItems() { return EtcItems; }
+	TArray<EquipItem>& GetInventoryEquipItemList() { return InventoryEquipItemList; }
+	TArray<EtcItem>& GetInventoryEtcItemList() { return InventoryEtcItemList; }
+	TArray<EquipItem>& GetEquippedItemList() { return EquippedItemList; }
 	int32 GetGold() { return Gold; }
+	void RemoveEquipItem(int32 Invenpos);
+	void UseEtcItem(int32 Invenpos, int32 Count);
+	void EquippedItem(int Invenpos, int Equippos);
 
 private:
-	TMap<int32, EquipItem> EquipItems;
-	TMap<int32, EtcItem> EtcItems;
+	TArray<EquipItem> InventoryEquipItemList;
+	TArray<EtcItem> InventoryEtcItemList;
+	TArray<EquipItem> EquippedItemList;
 	int32 Gold = 0;
+
+	const int32 InventorySize = 20;
+	const int32 EquipSize = 3;
 };
+
+inline void InventoryItem::RemoveEquipItem(int32 Invenpos)
+{
+	InventoryEquipItemList[Invenpos].SetEmptyItem();
+}
+
+inline void InventoryItem::UseEtcItem(int32 Invenpos, int32 Count)
+{
+	if (!InventoryEtcItemList[Invenpos].IsEmpty())
+	{
+		InventoryEtcItemList[Invenpos].Count -= Count;
+		if (InventoryEtcItemList[Invenpos].Count <= 0)
+			InventoryEtcItemList[Invenpos].SetEmptyItem();
+	}
+}
+
+inline void InventoryItem::EquippedItem(int Invenpos, int Equippos)
+{
+	EquipItem& invenItem = InventoryEquipItemList[Invenpos];
+	EquipItem& equipItem = EquippedItemList[Equippos];
+
+	EquipItem tempItem = invenItem;
+	invenItem = equipItem;
+	equipItem = tempItem;
+	invenItem.InvenPos = Invenpos;
+	invenItem.EquipPos = -1;
+	equipItem.InvenPos = -1;
+	equipItem.EquipPos = Equippos;
+}

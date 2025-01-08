@@ -103,160 +103,105 @@ void UBJS_InventoryWidget::BJS_UpdateWidget()
 	}
 }
 
-void UBJS_InventoryWidget::AddEquipSlot(int32 EquipUnipeId)
+void UBJS_InventoryWidget::UpdateEquipSlot(int32 InvenPos)
 {
 	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
 	if (instance)
 	{
-		if (instance->GetMyInventory()->GetEquipItems().Contains(EquipUnipeId))
+		auto& item = instance->GetMyInventory()->GetInventoryEquipItemList()[InvenPos];
+		if (!item.IsEmpty())
 		{
-			auto item = instance->GetMyInventory()->GetEquipItems().Find(EquipUnipeId);
 			auto& ImageMap = instance->GetItemEquipIconImgMap();
-
-			if (item->IsEquip == 0)
-			{
-				int32 idx = item->Position;
-				if (InvenSize > idx)
-				{
-					auto slot = EquipSlot[idx];
-					slot->SetEquip(*item);
-					slot->SetSlots(true);
-					slot->SetImg(ImageMap[item->ItemCode]);
-					EquipItemSlots.Add(EquipUnipeId, slot);
-				}
-			}
-			else if (item->IsEquip == 1)
-			{
-				if (item->EquipType == 1)
-				{
-					slot_attsocket->SetEquip(*item);
-					slot_attsocket->SetSocket(true);
-					slot_attsocket->SetImg(ImageMap[item->ItemCode]);
-				}
-				else if (item->EquipType == 2)
-				{
-					slot_spesocket->SetEquip(*item);
-					slot_spesocket->SetSocket(true);
-					slot_spesocket->SetImg(ImageMap[item->ItemCode]);
-				}
-
-				if (EquipItemSlots.Contains(EquipUnipeId))
-				{
-					auto slot = EquipItemSlots.Find(EquipUnipeId);
-					EquipItemSlots.Remove(EquipUnipeId);
-					(*slot)->ResetCheck();
-					(*slot)->SetSlots(false);
-				}
-			}
-		}
-	}
-}
-
-void UBJS_InventoryWidget::UpdateEquipSlot(int32 EquipUnipeId)
-{
-	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
-	if (instance)
-	{
-		if (instance->GetMyInventory()->GetEquipItems().Contains(EquipUnipeId))
-		{
-			auto item = instance->GetMyInventory()->GetEquipItems().Find(EquipUnipeId);
-			int32 isEquip = item->IsEquip;
-			if (isEquip == 1)
-			{
-				// 장착
-				if (EquipItemSlots.Contains(EquipUnipeId))
-				{
-					AddEquipSlot(EquipUnipeId);
-				}
-			}
-			else
-			{
-				// 장착해제
-				if (!EquipItemSlots.Contains(EquipUnipeId))
-				{
-					RemoveEquipSlot(EquipUnipeId);
-					AddEquipSlot(EquipUnipeId);
-				}
-			}
-		}
-	}
-}
-
-void UBJS_InventoryWidget::RemoveEquipSlot(int32 EquipUnipeId)
-{
-	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
-	if (instance)
-	{
-		if (!instance->GetMyInventory()->GetEquipItems().Contains(EquipUnipeId))
-		{
-			auto slot = EquipItemSlots.Find(EquipUnipeId);
-			if (slot)
-			{
-				(*slot)->SetSlots(false);
-				EquipItemSlots.Remove(EquipUnipeId);
-			}
+			auto slot = EquipSlot[InvenPos];
+			slot->SetEquip(item);
+			slot->SetSlots(true);
+			slot->SetImg(ImageMap[item.ItemCode]);
 		}
 		else
 		{
-			// 장착 해제
-			auto item = instance->GetMyInventory()->GetEquipItems().Find(EquipUnipeId);
-			if (item->EquipType == 1)
-			{
-				if (slot_attsocket->GetEquip().UniqueId == EquipUnipeId)
-				{
-					slot_attsocket->SetSocket(false);
-					slot_attsocket->SetEmptyEquip();
-				}
-			}
-			else if (item->EquipType == 2)
-			{
-				if (slot_spesocket->GetEquip().UniqueId == EquipUnipeId)
-				{
-					slot_spesocket->SetSocket(false);
-					slot_spesocket->SetEmptyEquip();
-				}
-			}
+			RemoveEquipSlot(InvenPos);
 		}
 	}
 }
 
-void UBJS_InventoryWidget::UpdateEtcSlot(int32 EtcItemCode)
+void UBJS_InventoryWidget::RemoveEquipSlot(int32 InvenPos)
 {
 	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
 	if (instance)
 	{
-		if (instance->GetMyInventory()->GetEtcItems().Contains(EtcItemCode))
+		auto slot = EquipSlot[InvenPos];
+		slot->SetSlots(false);
+		slot->SetImg(nullptr);
+	}
+}
+
+void UBJS_InventoryWidget::UpdateEquippedSlot(int32 EquipPos)
+{
+	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
+	if (instance)
+	{
+		auto& item = instance->GetMyInventory()->GetEquippedItemList()[EquipPos];
+		if (!item.IsEmpty())
 		{
-			// 추가, 업데이트
-			if (EtcItemSlots.Contains(EtcItemCode))
+			auto& ImageMap = instance->GetItemEquipIconImgMap();
+			UBJS_ItemSlotWidget* slot;
+			if (EquipPos == 1)
 			{
-				auto slot = EtcItemSlots[EtcItemCode];
-				auto item = instance->GetMyInventory()->GetEtcItems().Find(EtcItemCode);
-				slot->SetEtc(*item);
-				slot->SetCnt(item->Count);
+				slot = slot_attsocket;
 			}
 			else
 			{
-				auto item = instance->GetMyInventory()->GetEtcItems().Find(EtcItemCode);
-				int idx = item->Position;
-				if (InvenSize > idx)
-				{
-					auto slot = EtcSlot[idx];
-					auto& ImageMap = instance->GetItemEtcIconImgMap();
-					slot->SetEtc(*item);
-					slot->SetSlots(true);
-					slot->SetImg(ImageMap[EtcItemCode]);
-					slot->SetCnt(item->Count);
-					EtcItemSlots.Add(EtcItemCode, slot);
-				}
+				slot = slot_spesocket;
 			}
+			slot->SetEquip(item);
+			slot->SetSlots(true);
+			slot->SetImg(ImageMap[item.ItemCode]);
 		}
 		else
 		{
-			// 삭제
-			auto slot = EtcItemSlots.Find(EtcItemCode);
-			EtcItemSlots.Remove(EtcItemCode);
-			(*slot)->SetSlots(false);
+			RemoveEquippedSlot(EquipPos);
+		}
+	}
+}
+
+void UBJS_InventoryWidget::RemoveEquippedSlot(int32 EquipPos)
+{
+	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
+	if (instance)
+	{
+		UBJS_ItemSlotWidget* slot;
+		if (EquipPos == 1)
+		{
+			slot = slot_attsocket;
+		}
+		else
+		{
+			slot = slot_spesocket;
+		}
+		slot->SetSlots(false);
+		slot->SetImg(nullptr);
+	}
+}
+
+void UBJS_InventoryWidget::UpdateEtcSlot(int32 InvenPos)
+{
+	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
+	if (instance)
+	{
+		auto& item = instance->GetMyInventory()->GetInventoryEquipItemList()[InvenPos];
+		if (!item.IsEmpty())
+		{
+			auto& ImageMap = instance->GetItemEquipIconImgMap();
+			auto slot = EtcSlot[InvenPos];
+			slot->SetEquip(item);
+			slot->SetSlots(true);
+			slot->SetImg(ImageMap[item.ItemCode]);
+		}
+		else
+		{
+			auto slot = EtcSlot[InvenPos];
+			slot->SetSlots(false);
+			slot->SetImg(nullptr);
 		}
 	}
 }
@@ -398,7 +343,7 @@ void UBJS_InventoryWidget::SellItem()
 		{
 			if (ItemSlot->GetCheck())
 			{
-				mode->SellEquipItems.Add(ItemSlot->GetEquip().UniqueId, ItemSlot->GetEquip());
+				mode->SellEquipItems.Add(ItemSlot->GetEquip().InvenPos, ItemSlot->GetEquip());
 				ItemSlot->ResetCheck();
 			}
 		}
@@ -432,16 +377,12 @@ void UBJS_InventoryWidget::OnHiddenInventory()
 	}
 }
 
-void UBJS_InventoryWidget::OnItemEquip(int32 EquipItemId)
+void UBJS_InventoryWidget::OnItemEquip(int32 InvenPos, int32 EquipPos)
 {
 	auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
 	if (mode)
 	{
-		if (mode->GetMyInventory()->IsEquipItem(EquipItemId))
-		{
-			auto& Item = *(mode->GetMyInventory()->GetEquipItems().Find(EquipItemId));
-			mode->SendEquippedItem(Item);
-		}
+		mode->SendEquippedItem(InvenPos, EquipPos);
 	}
 }
 

@@ -51,7 +51,7 @@ void UBJS_SubInventoryWidget::BJS_InitWidget()
 			EtcSlot.Add(etcSlot);
 
 			// 일단 장비아이템만 
-			equipSlot->SendItem.BindUObject(this, &UBJS_SubInventoryWidget::OnSendItem);
+			// equipSlot->SendItem.BindUObject(this, &UBJS_SubInventoryWidget::OnSendItem);
 			equipSlot->SetSocketType(ITEMSOCKETTYPE::SUBINVENTORY);
 		}
 	}
@@ -144,16 +144,14 @@ void UBJS_SubInventoryWidget::ReLoadSlot()
 	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
 	if (instance)
 	{
-		auto& EquipItems = instance->GetMyInventory()->GetEquipItems();
+		auto& EquipItems = instance->GetMyInventory()->GetInventoryEquipItemList();
 		auto& EquipImageMap = instance->GetItemEquipIconImgMap();
-		auto& EtcItems = instance->GetMyInventory()->GetEtcItems();
+		auto& EtcItems = instance->GetMyInventory()->GetInventoryEtcItemList();
 		auto& EtcImageMap = instance->GetItemEtcIconImgMap();
 
-		for (auto entry : EquipItems)
+		for (auto& Item : EquipItems)
 		{
-			auto& Item = entry.Value;
-
-			int32 index = Item.Position;
+			int32 index = Item.InvenPos;
 			if (ugp_EquipItemSlots->GetChildrenCount() > index)
 			{
 				UBJS_ItemSlotWidget* slot = Cast<UBJS_ItemSlotWidget>(ugp_EquipItemSlots->GetChildAt(index));
@@ -166,11 +164,9 @@ void UBJS_SubInventoryWidget::ReLoadSlot()
 			}
 		}
 
-		for (auto entry : EtcItems)
+		for (auto& Item : EtcItems)
 		{
-			auto& Item = entry.Value;
-
-			int32 index = Item.Position;
+			int32 index = Item.InvenPos;
 			if (ugp_ItemSlots->GetChildrenCount() > index)
 			{
 				UBJS_ItemSlotWidget* slot = Cast<UBJS_ItemSlotWidget>(ugp_ItemSlots->GetChildAt(index));
@@ -219,19 +215,19 @@ void UBJS_SubInventoryWidget::ViewInventoryEquip()
 	SetBtnEtcImage(EnableInventoryButtonImageList[0]);
 }
 
-void UBJS_SubInventoryWidget::OnSendItem(int32 EquipId)
-{
-	auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
-	if (mode)
-	{
-		if (EquipId > 0)
-		{
-			auto& EquipItems = mode->GetMyInventory()->GetEquipItems();
-			if (EquipItems.Contains(EquipId))
-			{
-				auto Item = EquipItems.Find(EquipId);
-				UE_LOG(LogTemp, Log, TEXT("메일 아이템 추가 !!! %d %d"), EquipId, Item->ItemCode);
-			}
-		}
-	}
-}
+// void UBJS_SubInventoryWidget::OnSendItem(int32 EquipId)
+// {
+// 	auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
+// 	if (mode)
+// 	{
+// 		if (EquipId > 0)
+// 		{
+// 			auto& EquipItems = mode->GetMyInventory()->GetEquipItems();
+// 			if (EquipItems.Contains(EquipId))
+// 			{
+// 				auto Item = EquipItems.Find(EquipId);
+// 				UE_LOG(LogTemp, Log, TEXT("메일 아이템 추가 !!! %d %d"), EquipId, Item->ItemCode);
+// 			}
+// 		}
+// 	}
+// }

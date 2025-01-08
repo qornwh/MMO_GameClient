@@ -492,25 +492,38 @@ void ABJS_InGameMode::ClaseMyPlayer()
 	UGameplayStatics::OpenLevel(this, TEXT("LoginMap"));
 }
 
-void ABJS_InGameMode::UpdateInventoryEquipUI(int32 EquipUnipeId, int32 State)
+void ABJS_InGameMode::UpdateInventoryEquipUI(int32 InvenPos, int32 State)
 {
 	auto ui = Cast<UBJS_InventoryWidget>(InventoryUi);
 	if (ui)
 	{
 		if (State == 1)
 		{
-			// add
-			ui->AddEquipSlot(EquipUnipeId);
-		}
-		else if (State == 2)
-		{
-			// update
-			ui->UpdateEquipSlot(EquipUnipeId);
+			// set
+			ui->UpdateEquipSlot(InvenPos);
 		}
 		else if (State == 0)
 		{
 			// delete
-			ui->RemoveEquipSlot(EquipUnipeId);
+			ui->RemoveEquipSlot(InvenPos);
+		}
+	}
+}
+
+void ABJS_InGameMode::UpdateEquippedItemUI(int32 EquipPos, int32 State)
+{
+	auto ui = Cast<UBJS_InventoryWidget>(InventoryUi);
+	if (ui)
+	{
+		if (State == 1)
+		{
+			// set
+			ui->UpdateEquippedSlot(EquipPos);
+		}
+		else if (State == 0)
+		{
+			// delete
+			ui->UpdateEquippedSlot(EquipPos);
 		}
 	}
 }
@@ -534,26 +547,30 @@ void ABJS_InGameMode::UpdateInventoryUI()
 	}
 }
 
-void ABJS_InGameMode::SendEquippedItem(const EquipItem& TargetItem)
+void ABJS_InGameMode::EquippedItemUI(int32 Invenpos, int32 Equippos)
 {
-	int32 TargetId = TargetItem.UniqueId;
-	if (GetMyInventory()->GetEquipItems().Contains(TargetId))
+	auto ui = Cast<UBJS_InventoryWidget>(InventoryUi);
+	if (ui)
 	{
-		auto item = GetMyInventory()->GetEquipItems().Find(TargetId);
-		if (item->IsEquip == TargetItem.IsEquip)
-		{
-			protocol::CUpdateItems pkt;
-			auto sendItem = pkt.add_itemequips();
-			sendItem->set_unipeid(item->UniqueId);
-			sendItem->set_attack(item->Attack);
-			sendItem->set_item_code(item->ItemCode);
-			sendItem->set_speed(item->Speed);
-			sendItem->set_is_equip(item->IsEquip == 0 ? 1 : 0);
-			sendItem->set_item_type(item->EquipType);
-			
-			SocketActor->SendMessage(pkt, protocol::MessageCode::C_UPDATEITEMS);
-		}
+		auto& invenItem = GetMyInventory()->GetInventoryEquipItemList()[Invenpos];
+		auto& equipItem = GetMyInventory()->GetEquippedItemList()[Equippos];
+
+		if (invenItem.IsEmpty() && equipItem.IsEmpty())
+			return;
+
+		auto tempItem = invenItem;
+		invenItem = equipItem;
+		equipItem = tempItem;
 	}
+}
+
+void ABJS_InGameMode::SendEquippedItem(int32 Invenpos, int32 Equippos)
+{
+	protocol::CUpdateItems pkt;
+	pkt.set_invenpos(Invenpos);
+	pkt.set_equippos(Equippos);
+			
+	SocketActor->SendMessage(pkt, protocol::MessageCode::C_UPDATEITEMS);
 }
 
 void ABJS_InGameMode::UpdateToolTipEquipItem(EquipItem& TargetItem)
@@ -580,11 +597,11 @@ void ABJS_InGameMode::UpdateMailUi()
 	}
 }
 
-void ABJS_InGameMode::SetMailEquipItem(int32 EquipUnipeId, int32 Position)
+void ABJS_InGameMode::SetMailEquipItem(int32 InvenPos, int32 SocketPos)
 {
 	if (MailBoxUi)
 	{
-		MailBoxUi->SetSendMailEquipItem(EquipUnipeId, Position);
+		MailBoxUi->SetSendMailEquipItem(InvenPos, SocketPos);
 	}
 }
 
@@ -668,11 +685,12 @@ void ABJS_InGameMode::SellItems()
 	for (auto& itemEntry : SellEquipItems)
 	{
 		protocol::ItemEquip* sellItem = pkt.add_itemequips();
-		sellItem->set_unipeid(itemEntry.Value.UniqueId);
 		sellItem->set_item_code(itemEntry.Value.ItemCode);
 		sellItem->set_attack(itemEntry.Value.Attack);
 		sellItem->set_speed(itemEntry.Value.Speed);
 		sellItem->set_item_type(itemEntry.Value.EquipType);
+		sellItem->set_equippos(itemEntry.Value.EquipPos);
+		sellItem->set_invenpos(itemEntry.Value.InvenPos);
 	}
 
 	for (auto& itemEntry : SellEtcItems)

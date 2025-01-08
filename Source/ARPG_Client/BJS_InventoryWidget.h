@@ -26,10 +26,11 @@ public:
 	virtual void BJS_InitWidget() override;
 	virtual void BJS_UpdateWidget() override;
 
-	void AddEquipSlot(int32 EquipUnipeId);
-	void UpdateEquipSlot(int32 EquipUnipeId);
-	void RemoveEquipSlot(int32 EquipUnipeId);
-	void UpdateEtcSlot(int32 EtcItemCode);
+	void UpdateEquipSlot(int32 InvenPos);
+	void RemoveEquipSlot(int32 InvenPos);
+	void UpdateEquippedSlot(int32 EquipPos);
+	void RemoveEquippedSlot(int32 EquipPos);
+	void UpdateEtcSlot(int32 InvenPos);
 	void SetSlot();
 	void SlotResetCheck();
 
@@ -47,7 +48,7 @@ public:
 	UFUNCTION()
 	void OnHiddenInventory();
 	UFUNCTION()
-	void OnItemEquip(int32 EquipId);
+	void OnItemEquip(int32 InvenPos, int32 EquipPos);
 
 protected:
 	virtual void NativeConstruct() override;
@@ -78,18 +79,16 @@ private:
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UBJS_ItemSlotWidget* slot_spesocket;
 	
+	TArray<TObjectPtr<class UTexture2D>> EnableInventoryButtonImageList;
 	TSubclassOf<class UBJS_ItemSlotWidget> ItemSlotClass;
 	TArray<TObjectPtr<class UBJS_ItemSlotWidget>> EquipSlot;
 	TArray<TObjectPtr<class UBJS_ItemSlotWidget>> EtcSlot;
 	TMap<int32, TObjectPtr<class UBJS_ItemSlotWidget>> EquipItemSlots;
 	TMap<int32, TObjectPtr<class UBJS_ItemSlotWidget>> EtcItemSlots;
-
-	TArray<TObjectPtr<class UTexture2D>> EnableInventoryButtonImageList;
 	
+	// 인벤토리 사이즈 고정
+	const int32 InvenSize = 20;
 	const int32 ColSize = 5;
 	const int32 RowSize = 4;
 	int32 InventoryModeState = 0;
-
-	// 인벤토리 사이즈 고정
-	const int32 InvenSize = 20;
 };

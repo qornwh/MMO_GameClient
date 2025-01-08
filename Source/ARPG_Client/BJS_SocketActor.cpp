@@ -699,21 +699,19 @@ void ABJS_SocketActor::UpdateInventoryHandler(BYTE* Buffer, PacketHeader* Header
 			for (auto& item : pkt.itemequips())
 			{
 				mode->GetMyInventory()->AddEquipItem(
-					item.unipeid(),
 					item.item_code(),
 					item.item_type(),
 					item.attack(),
 					item.speed(),
-					item.is_equip(),
-					item.position(),
-					0);
-				mode->UpdateInventoryEquipUI(item.unipeid(), 1);
+					item.equippos(),
+					item.invenpos());
+				mode->UpdateInventoryEquipUI(item.invenpos(), 1);
 			}
 
 			for (auto& item : pkt.itemetcs())
 			{
-				mode->GetMyInventory()->AddEtcItem(item.item_code(), item.item_type(), item.item_count(), item.position());
-				mode->UpdateInventoryEtcUI(item.item_code(), 1);
+				mode->GetMyInventory()->AddEtcItem(item.item_code(), item.item_type(), item.item_count(), item.invenpos());
+				mode->UpdateInventoryEtcUI(item.invenpos(), 1);
 			}
 			mode->GetMyInventory()->SetGold(pkt.gold());
 			mode->UpdateInventoryUI();
@@ -732,31 +730,36 @@ void ABJS_SocketActor::LoadInventoryHandler(BYTE* Buffer, PacketHeader* Header, 
 			for (auto& item : pkt.itemequips())
 			{
 				mode->GetMyInventory()->AddEquipItem(
-					item.unipeid(),
 					item.item_code(),
 					item.item_type(),
 					item.attack(),
 					item.speed(),
-					item.is_equip(),
-					item.position(),
-					0);
-				mode->UpdateInventoryEquipUI(item.unipeid(), 1);
-				
-				// 일단 여기서 아이템 스텟을 상승 시킨다.
-				int32 attack = item.attack();
-				int32 speed = item.speed();
-				if (item.is_equip() == 1)
+					item.equippos(),
+					item.invenpos());
+
+				if (item.invenpos() >= 0)
 				{
-					auto state = mode->GetMyState();
-					state->ItemState.AddAttack(attack);
-					state->ItemState.AddSpeed(speed);
+					mode->UpdateInventoryEquipUI(item.invenpos(), 1);
+				}
+				else if (item.equippos() >= 0)
+				{
+					// 일단 여기서 아이템 스텟을 상승 시킨다.
+					// int32 attack = item.attack();
+					// int32 speed = item.speed();
+					// if (item.is_equip() == 1)
+					// {
+					// 	auto state = mode->GetMyState();
+					// 	state->ItemState.AddAttack(attack);
+					// 	state->ItemState.AddSpeed(speed);
+					// }	
+					mode->UpdateEquippedItemUI(item.equippos(), 1);
 				}
 			}
 
 			for (auto& item : pkt.itemetcs())
 			{
-				mode->GetMyInventory()->AddEtcItem(item.item_code(), item.item_type(), item.item_count(), item.position());
-				mode->UpdateInventoryEtcUI(item.item_code(), 1);
+				mode->GetMyInventory()->AddEtcItem(item.item_code(), item.item_type(), item.item_count(), item.invenpos());
+				mode->UpdateInventoryEtcUI(item.invenpos(), 1);
 			}
 			mode->GetMyInventory()->SetGold(pkt.gold());
 			mode->UpdateInventoryUI();
@@ -775,13 +778,13 @@ void ABJS_SocketActor::SellItemsHandler(BYTE* Buffer, PacketHeader* Header, int3
 		{
 			for (auto& item : pkt.itemequips())
 			{
-				mode->GetMyInventory()->UseEquipItem(item.unipeid());
-				mode->UpdateInventoryEquipUI(item.unipeid(), 0);
+				mode->GetMyInventory()->RemoveEquipItem(item.invenpos()); // 기존 아이템 삭제
+				mode->UpdateInventoryEquipUI(item.invenpos(), 0);
 			}
 
 			for (auto& item : pkt.itemetcs())
 			{
-				mode->GetMyInventory()->UseEtcItem(item.item_code(), item.item_count());
+				mode->GetMyInventory()->UseEtcItem(item.invenpos(), item.item_count()); // 기존 아이템 개수및 삭제
 				mode->UpdateInventoryEtcUI(item.item_code(), 0);
 			}
 
@@ -868,25 +871,12 @@ void ABJS_SocketActor::UpdateItemsHandler(BYTE* Buffer, PacketHeader* Header, in
 		auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
 		if (mode)
 		{
-			for (auto& item : pkt.itemequips())
-			{
-				mode->GetMyInventory()->ItemEquipped(item.unipeid(), item.is_equip(), item.position());
-				mode->UpdateInventoryEquipUI(item.unipeid(), 2);
-
-				// 일단 여기서 아이템 스텟을 상승 시킨다.
-				int32 attack = item.attack();
-				int32 speed = item.speed();
-				if (!item.is_equip())
-				{
-					attack *= -1;
-					speed *= -1;
-				}
-				auto state = mode->GetMyState();
-				state->ItemState.AddAttack(attack);
-				state->ItemState.AddSpeed(speed);
-			}
-
-			mode->UpdateInventoryUI();
+			int invenpos = pkt.invenpos();
+			int equippos = pkt.equippos();
+			
+			mode->GetMyInventory()->EquippedItem(invenpos, equippos); // 아이템 장착 스왑
+			mode->UpdateInventoryEquipUI(invenpos, 1);
+			mode->UpdateEquippedItemUI(equippos, 1);
 		}
 	}
 }
@@ -917,7 +907,7 @@ void ABJS_SocketActor::LoadMailHandler(BYTE* Buffer, PacketHeader* Header, int32
 				int32 socketPos = mailItem.socket();
 				auto& item = mailItem.item();
 
-				EquipItem newItem{item.unipeid(), item.item_code(), item.item_type(), item.attack(), item.speed(), item.is_equip(), item.position(), 0};
+				EquipItem newItem{item.item_code(), item.item_type(), item.attack(), item.speed(), item.equippos(), item.invenpos()};
 				MailBox->AddMailEquipItem(mailCode, socketPos, newItem);
 			}
 
@@ -927,7 +917,7 @@ void ABJS_SocketActor::LoadMailHandler(BYTE* Buffer, PacketHeader* Header, int32
 				int32 socketPos = mailItem.socket();
 				auto& item = mailItem.item();
 
-				EtcItem newItem{item.item_code(), item.item_type(), item.item_count(), item.position()};
+				EtcItem newItem{item.item_code(), item.item_type(), item.item_count(), item.invenpos()};
 				MailBox->AddMailEtcItem(mailCode, socketPos, newItem);
 			}
 
@@ -978,10 +968,10 @@ void ABJS_SocketActor::UpdateSendMailHandler(BYTE* Buffer, PacketHeader* Header,
 			{
 				auto Inventory = mode->GetMyInventory();
 				
-				for (auto& item : pkt.itemequips())
+				for (auto& removeItem : pkt.itemequips())
 				{
-					mode->GetMyInventory()->UseEquipItem(item.unipeid());
-					mode->UpdateInventoryEquipUI(item.unipeid(), 0);
+					mode->GetMyInventory()->RemoveEquipItem(removeItem.invenpos());
+					mode->UpdateInventoryEquipUI(removeItem.invenpos(), 0);
 				}
 				
 				Inventory->SetGold(pkt.gold());

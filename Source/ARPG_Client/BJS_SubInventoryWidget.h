@@ -33,8 +33,8 @@ public:
 	void ViewInventoryEtc();
 	UFUNCTION()
 	void ViewInventoryEquip();
-	UFUNCTION()
-	void OnSendItem(int32 EquipId);
+	// UFUNCTION()
+	// void OnSendItem(int32 EquipId);
 
 private:
 	UPROPERTY(EditAnywhere, meta=(BindWidget))

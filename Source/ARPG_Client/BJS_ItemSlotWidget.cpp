@@ -164,9 +164,16 @@ void UBJS_ItemSlotWidget::OnSendItem()
 {
 	if (SendItem.IsBound())
 	{
-		if (CurEquipItem.UniqueId > 0)
+		if (CurEquipItem.InvenPos >= 0)
 		{
-			SendItem.Execute(CurEquipItem.UniqueId);
+			if (CurEquipItem.EquipType == EquipItemType::AttackItem)
+				SendItem.Execute(CurEquipItem.InvenPos, 1);
+			else if (CurEquipItem.EquipType == EquipItemType::SpeedItem)
+				SendItem.Execute(CurEquipItem.InvenPos, 2);
+		}
+		else
+		{
+			SendItem.Execute(-1, CurEquipItem.EquipPos);
 		}
 	}
 }
@@ -203,13 +210,13 @@ bool UBJS_ItemSlotWidget::NativeOnDrop(const FGeometry& InGeometry, const FDragD
 		UItemDragDropOperation* Operation = Cast<UItemDragDropOperation>(InOperation);
 		if (Operation && Operation->WidgetReference)
 		{
-			// 드롭 성공 시 수행할 동작
+			// 드래그앤드롭 성공 시 수행할 동작
 			auto Target = Cast<UBJS_ItemSlotWidget>(Operation->WidgetReference);
 			if (Target && !Target->GetEquip().IsEmpty())
 			{
 				if (CurSocketType == ITEMSOCKETTYPE::SENDMAIL)
 				{
-					mode->SetMailEquipItem(Target->GetEquip().UniqueId, CurSocketPosition);
+					mode->SetMailEquipItem(Target->GetEquip().InvenPos, CurSocketPosition);
 				}
 			}
 		}

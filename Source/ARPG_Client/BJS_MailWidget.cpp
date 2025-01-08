@@ -286,8 +286,7 @@ void UBJS_MailWidget::SendMail()
 				Item->set_item_type(sendItem.EquipType);
 				Item->set_attack(sendItem.Attack);
 				Item->set_speed(sendItem.Speed);
-				Item->set_position(1);
-				Item->set_unipeid(sendItem.UniqueId);
+				Item->set_invenpos(1);
 				MailItem->set_allocated_item(Item);
 			}
 			else
@@ -305,8 +304,7 @@ void UBJS_MailWidget::SendMail()
 				Item->set_item_type(item.EquipType);
 				Item->set_attack(item.Attack);
 				Item->set_speed(item.Speed);
-				Item->set_position(2);
-				Item->set_unipeid(item.UniqueId);
+				Item->set_invenpos(2);
 				MailItem->set_allocated_item(Item);
 			}
 			else
@@ -387,24 +385,24 @@ void UBJS_MailWidget::SetGold(int32 Gold)
 	tb_recive_gold->SetText(FText::FromString(goldStr));
 }
 
-void UBJS_MailWidget::SetSendMailEquipItem(int32 EquipUnipeId, int32 Position)
+void UBJS_MailWidget::SetSendMailEquipItem(int32 InvenPos, int32 SocketPos)
 {
 	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
 	if (instance)
 	{
-		auto item = instance->GetMyInventory()->GetEquipItems().Find(EquipUnipeId);
-		if (item)
+		auto& item = instance->GetMyInventory()->GetInventoryEquipItemList()[InvenPos];
+		if (!item.IsEmpty())
 		{
-			auto EquipImgs = instance->GetItemEquipIconImgMap();
-			UBJS_ItemSlotWidget* socket = nullptr;
-			if (Position == 1)
+			auto& EquipImgs = instance->GetItemEquipIconImgMap();
+			UBJS_ItemSlotWidget* socket;
+			if (SocketPos == 1)
 				socket = send_socket1;
 			else
 				socket = send_socket2;
 			
-			socket->SetEquip(*item);
+			socket->SetEquip(item);
 			socket->SetSocket(true);
-			socket->SetImg(EquipImgs[item->ItemCode]);
+			socket->SetImg(EquipImgs[item.ItemCode]);
 		}
 	}
 }

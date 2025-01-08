@@ -15,6 +15,9 @@
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
 
+#pragma warning(disable:4800)
+#pragma warning(disable:4125)
+
 PROTOBUF_PRAGMA_INIT_SEG
 namespace protocol {
 constexpr Login::Login(
@@ -445,9 +448,8 @@ constexpr ItemEquip::ItemEquip(
   , item_type_(0)
   , attack_(0)
   , speed_(0)
-  , is_equip_(0)
-  , unipeid_(0)
-  , position_(0){}
+  , equippos_(0)
+  , invenpos_(0){}
 struct ItemEquipDefaultTypeInternal {
   constexpr ItemEquipDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -462,7 +464,7 @@ constexpr ItemEtc::ItemEtc(
   : item_code_(0)
   , item_count_(0)
   , item_type_(0)
-  , position_(0){}
+  , invenpos_(0){}
 struct ItemEtcDefaultTypeInternal {
   constexpr ItemEtcDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -570,7 +572,8 @@ struct CFriendDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT CFriendDefaultTypeInternal _CFriend_default_instance_;
 constexpr CUpdateItems::CUpdateItems(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : itemequips_(){}
+  : invenpos_(0)
+  , equippos_(0){}
 struct CUpdateItemsDefaultTypeInternal {
   constexpr CUpdateItemsDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -987,9 +990,8 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_GameClient_2eproto::offsets[] 
   PROTOBUF_FIELD_OFFSET(::protocol::ItemEquip, item_type_),
   PROTOBUF_FIELD_OFFSET(::protocol::ItemEquip, attack_),
   PROTOBUF_FIELD_OFFSET(::protocol::ItemEquip, speed_),
-  PROTOBUF_FIELD_OFFSET(::protocol::ItemEquip, is_equip_),
-  PROTOBUF_FIELD_OFFSET(::protocol::ItemEquip, unipeid_),
-  PROTOBUF_FIELD_OFFSET(::protocol::ItemEquip, position_),
+  PROTOBUF_FIELD_OFFSET(::protocol::ItemEquip, equippos_),
+  PROTOBUF_FIELD_OFFSET(::protocol::ItemEquip, invenpos_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::protocol::ItemEtc, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -999,7 +1001,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_GameClient_2eproto::offsets[] 
   PROTOBUF_FIELD_OFFSET(::protocol::ItemEtc, item_code_),
   PROTOBUF_FIELD_OFFSET(::protocol::ItemEtc, item_count_),
   PROTOBUF_FIELD_OFFSET(::protocol::ItemEtc, item_type_),
-  PROTOBUF_FIELD_OFFSET(::protocol::ItemEtc, position_),
+  PROTOBUF_FIELD_OFFSET(::protocol::ItemEtc, invenpos_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::protocol::UpdateInventory, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -1067,7 +1069,8 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_GameClient_2eproto::offsets[] 
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::protocol::CUpdateItems, itemequips_),
+  PROTOBUF_FIELD_OFFSET(::protocol::CUpdateItems, invenpos_),
+  PROTOBUF_FIELD_OFFSET(::protocol::CUpdateItems, equippos_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::protocol::Mail, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -1182,15 +1185,15 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 253, -1, -1, sizeof(::protocol::CPlayerAim)},
   { 261, -1, -1, sizeof(::protocol::SExpLv)},
   { 270, -1, -1, sizeof(::protocol::ItemEquip)},
-  { 283, -1, -1, sizeof(::protocol::ItemEtc)},
-  { 293, -1, -1, sizeof(::protocol::UpdateInventory)},
-  { 302, -1, -1, sizeof(::protocol::SLoadInventory)},
-  { 311, -1, -1, sizeof(::protocol::CSellItems)},
-  { 321, -1, -1, sizeof(::protocol::DLoad)},
-  { 328, -1, -1, sizeof(::protocol::Friend)},
-  { 338, -1, -1, sizeof(::protocol::SFriendSystem)},
-  { 346, -1, -1, sizeof(::protocol::CFriend)},
-  { 354, -1, -1, sizeof(::protocol::CUpdateItems)},
+  { 282, -1, -1, sizeof(::protocol::ItemEtc)},
+  { 292, -1, -1, sizeof(::protocol::UpdateInventory)},
+  { 301, -1, -1, sizeof(::protocol::SLoadInventory)},
+  { 310, -1, -1, sizeof(::protocol::CSellItems)},
+  { 320, -1, -1, sizeof(::protocol::DLoad)},
+  { 327, -1, -1, sizeof(::protocol::Friend)},
+  { 337, -1, -1, sizeof(::protocol::SFriendSystem)},
+  { 345, -1, -1, sizeof(::protocol::CFriend)},
+  { 353, -1, -1, sizeof(::protocol::CUpdateItems)},
   { 361, -1, -1, sizeof(::protocol::Mail)},
   { 376, -1, -1, sizeof(::protocol::MailEquipItem)},
   { 385, -1, -1, sizeof(::protocol::MailEtcItem)},
@@ -1308,72 +1311,72 @@ const char descriptor_table_protodef_GameClient_2eproto[] PROTOBUF_SECTION_VARIA
   " \003(\005\"+\n\013CPlayerJump\022\016\n\006isJump\030\001 \001(\010\022\014\n\004u"
   "uid\030\002 \001(\005\")\n\nCPlayerAim\022\r\n\005isAim\030\001 \001(\010\022\014"
   "\n\004uuid\030\002 \001(\005\"/\n\006SExpLv\022\014\n\004uuid\030\001 \001(\005\022\n\n\002"
-  "lv\030\002 \001(\005\022\013\n\003exp\030\003 \001(\005\"\205\001\n\tItemEquip\022\021\n\ti"
-  "tem_code\030\001 \001(\005\022\021\n\titem_type\030\002 \001(\005\022\016\n\006att"
-  "ack\030\003 \001(\005\022\r\n\005speed\030\004 \001(\005\022\020\n\010is_equip\030\005 \001"
-  "(\005\022\017\n\007unipeId\030\006 \001(\005\022\020\n\010position\030\007 \001(\005\"U\n"
-  "\007ItemEtc\022\021\n\titem_code\030\001 \001(\005\022\022\n\nitem_coun"
-  "t\030\002 \001(\005\022\021\n\titem_type\030\003 \001(\005\022\020\n\010position\030\004"
-  " \001(\005\"m\n\017UpdateInventory\022\'\n\nitemEquips\030\001 "
-  "\003(\0132\023.protocol.ItemEquip\022#\n\010itemEtcs\030\002 \003"
-  "(\0132\021.protocol.ItemEtc\022\014\n\004gold\030\003 \001(\005\"l\n\016S"
-  "LoadInventory\022\'\n\nitemEquips\030\001 \003(\0132\023.prot"
-  "ocol.ItemEquip\022#\n\010itemEtcs\030\002 \003(\0132\021.proto"
-  "col.ItemEtc\022\014\n\004gold\030\003 \001(\005\"x\n\nCSellItems\022"
-  "\'\n\nitemEquips\030\001 \003(\0132\023.protocol.ItemEquip"
-  "\022#\n\010itemEtcs\030\002 \003(\0132\021.protocol.ItemEtc\022\014\n"
-  "\004gold\030\003 \001(\005\022\016\n\006result\030\004 \001(\010\"%\n\005DLoad\022\034\n\004"
-  "unit\030e \001(\0132\016.protocol.Unit\"M\n\006Friend\022\022\n\n"
-  "playerCode\030\001 \001(\005\022\022\n\nplayerName\030\002 \001(\t\022\016\n\006"
-  "access\030\003 \001(\010\022\013\n\003add\030\004 \001(\010\"A\n\rSFriendSyst"
-  "em\022 \n\006friend\030\001 \003(\0132\020.protocol.Friend\022\016\n\006"
-  "result\030\003 \001(\005\"9\n\007CFriend\022\014\n\004type\030\001 \001(\005\022 \n"
-  "\006friend\030\002 \001(\0132\020.protocol.Friend\"7\n\014CUpda"
-  "teItems\022\'\n\nitemEquips\030\001 \003(\0132\023.protocol.I"
-  "temEquip\"\234\001\n\004Mail\022\014\n\004code\030\001 \001(\005\022\014\n\004read\030"
-  "\002 \001(\005\022\014\n\004gold\030\003 \001(\005\022\017\n\007socket1\030\004 \001(\005\022\023\n\013"
-  "socket1Type\030\005 \001(\005\022\017\n\007socket2\030\006 \001(\005\022\023\n\013so"
-  "cket2Type\030\007 \001(\005\022\r\n\005title\030\t \001(\t\022\017\n\007messag"
-  "e\030\n \001(\t\"T\n\rMailEquipItem\022\020\n\010mailCode\030\001 \001"
-  "(\005\022\016\n\006socket\030\002 \001(\005\022!\n\004item\030\003 \001(\0132\023.proto"
-  "col.ItemEquip\"P\n\013MailEtcItem\022\020\n\010mailCode"
-  "\030\001 \001(\005\022\016\n\006socket\030\002 \001(\005\022\037\n\004item\030\003 \001(\0132\021.p"
-  "rotocol.ItemEtc\"\216\001\n\tCLoadMail\022\014\n\004type\030\001 "
-  "\001(\005\022\035\n\005mails\030\002 \003(\0132\016.protocol.Mail\022+\n\neq"
-  "uipItems\030\003 \003(\0132\027.protocol.MailEquipItem\022"
-  "\'\n\010etcItems\030\004 \003(\0132\025.protocol.MailEtcItem"
-  "\"9\n\013CUpdateMail\022\014\n\004type\030\001 \001(\005\022\034\n\004mail\030\002 "
-  "\001(\0132\016.protocol.Mail\"\223\001\n\016CAllUpdateMail\022\014"
-  "\n\004type\030\001 \001(\005\022\035\n\005mails\030\002 \003(\0132\016.protocol.M"
-  "ail\022+\n\nequipItems\030\003 \003(\0132\027.protocol.MailE"
-  "quipItem\022\'\n\010etcItems\030\004 \003(\0132\025.protocol.Ma"
-  "ilEtcItem\"\216\001\n\tCSendMail\022\014\n\004type\030\001 \001(\005\022\035\n"
-  "\005mails\030\002 \001(\0132\016.protocol.Mail\022+\n\nequipIte"
-  "ms\030\003 \003(\0132\027.protocol.MailEquipItem\022\'\n\010etc"
-  "Items\030\004 \003(\0132\025.protocol.MailEtcItem\"y\n\tSS"
-  "endMail\022\016\n\006result\030\001 \001(\005\022\014\n\004gold\030\002 \001(\005\022\'\n"
-  "\nitemEquips\030\003 \003(\0132\023.protocol.ItemEquip\022%"
-  "\n\010etcItems\030\004 \003(\0132\023.protocol.ItemEquip*\352\004"
-  "\n\013MessageCode\022\t\n\005LOGIN\020\000\022\n\n\006S_LOAD\020\001\022\022\n\016"
-  "S_INSERTPLAYER\020\002\022\n\n\006S_MOVE\020\003\022\n\n\006S_CHAT\020\004"
-  "\022\020\n\014S_PLAYERDATA\020\005\022\021\n\rS_CLOSEPLAYER\020\006\022\020\n"
-  "\014S_UNITSTATES\020\007\022\014\n\010C_ATTACK\020\010\022\020\n\014S_UNITD"
-  "EMAGE\020\n\022\017\n\013S_ROOMQUEST\020\014\022\017\n\013C_MOVEPOTAL\020"
-  "\r\022\r\n\tS_ENDGAME\020\016\022\017\n\013LOGINACCESS\020\017\022\n\n\006C_L"
-  "OAD\020\021\022\023\n\017CREATECHARACTER\020\022\022\023\n\017UPDATEINVE"
-  "NTROY\020\023\022\021\n\rC_BUYCHARATER\020\024\022\017\n\013C_BUYWEAPO"
-  "N\020\025\022\023\n\017C_UPDATEACCOUNT\020\026\022\021\n\rS_CURRENTINF"
-  "O\020\027\022\017\n\013S_BUYRESULT\020\030\022\020\n\014C_PLAYERJUMP\020\031\022\017"
-  "\n\013C_PLAYERAIM\020\032\022\013\n\007S_EXPLV\020\033\022\023\n\017S_LOADIN"
-  "VENTORY\020\036\022\017\n\013C_SELLITEMS\020\037\022\021\n\rC_UPDATEIT"
-  "EMS\020!\022\022\n\016S_FRIENDSYSTEM\020 \022\014\n\010C_FRIEND\020\"\022"
-  "\016\n\nC_LOADMAIL\020(\022\020\n\014C_UPDATEMAIL\020)\022\023\n\017C_A"
-  "LLUPDATEMAIL\020*\022\016\n\nC_SENDMAIL\020+\022\016\n\nS_SEND"
-  "MAIL\020,\022\n\n\006D_LOAD\020eb\006proto3"
+  "lv\030\002 \001(\005\022\013\n\003exp\030\003 \001(\005\"t\n\tItemEquip\022\021\n\tit"
+  "em_code\030\001 \001(\005\022\021\n\titem_type\030\002 \001(\005\022\016\n\006atta"
+  "ck\030\003 \001(\005\022\r\n\005speed\030\004 \001(\005\022\020\n\010equipPos\030\005 \001("
+  "\005\022\020\n\010invenPos\030\007 \001(\005\"U\n\007ItemEtc\022\021\n\titem_c"
+  "ode\030\001 \001(\005\022\022\n\nitem_count\030\002 \001(\005\022\021\n\titem_ty"
+  "pe\030\003 \001(\005\022\020\n\010invenPos\030\004 \001(\005\"m\n\017UpdateInve"
+  "ntory\022\'\n\nitemEquips\030\001 \003(\0132\023.protocol.Ite"
+  "mEquip\022#\n\010itemEtcs\030\002 \003(\0132\021.protocol.Item"
+  "Etc\022\014\n\004gold\030\003 \001(\005\"l\n\016SLoadInventory\022\'\n\ni"
+  "temEquips\030\001 \003(\0132\023.protocol.ItemEquip\022#\n\010"
+  "itemEtcs\030\002 \003(\0132\021.protocol.ItemEtc\022\014\n\004gol"
+  "d\030\003 \001(\005\"x\n\nCSellItems\022\'\n\nitemEquips\030\001 \003("
+  "\0132\023.protocol.ItemEquip\022#\n\010itemEtcs\030\002 \003(\013"
+  "2\021.protocol.ItemEtc\022\014\n\004gold\030\003 \001(\005\022\016\n\006res"
+  "ult\030\004 \001(\010\"%\n\005DLoad\022\034\n\004unit\030e \001(\0132\016.proto"
+  "col.Unit\"M\n\006Friend\022\022\n\nplayerCode\030\001 \001(\005\022\022"
+  "\n\nplayerName\030\002 \001(\t\022\016\n\006access\030\003 \001(\010\022\013\n\003ad"
+  "d\030\004 \001(\010\"A\n\rSFriendSystem\022 \n\006friend\030\001 \003(\013"
+  "2\020.protocol.Friend\022\016\n\006result\030\003 \001(\005\"9\n\007CF"
+  "riend\022\014\n\004type\030\001 \001(\005\022 \n\006friend\030\002 \001(\0132\020.pr"
+  "otocol.Friend\"2\n\014CUpdateItems\022\020\n\010invenPo"
+  "s\030\001 \001(\005\022\020\n\010equipPos\030\002 \001(\005\"\234\001\n\004Mail\022\014\n\004co"
+  "de\030\001 \001(\005\022\014\n\004read\030\002 \001(\005\022\014\n\004gold\030\003 \001(\005\022\017\n\007"
+  "socket1\030\004 \001(\005\022\023\n\013socket1Type\030\005 \001(\005\022\017\n\007so"
+  "cket2\030\006 \001(\005\022\023\n\013socket2Type\030\007 \001(\005\022\r\n\005titl"
+  "e\030\t \001(\t\022\017\n\007message\030\n \001(\t\"T\n\rMailEquipIte"
+  "m\022\020\n\010mailCode\030\001 \001(\005\022\016\n\006socket\030\002 \001(\005\022!\n\004i"
+  "tem\030\003 \001(\0132\023.protocol.ItemEquip\"P\n\013MailEt"
+  "cItem\022\020\n\010mailCode\030\001 \001(\005\022\016\n\006socket\030\002 \001(\005\022"
+  "\037\n\004item\030\003 \001(\0132\021.protocol.ItemEtc\"\216\001\n\tCLo"
+  "adMail\022\014\n\004type\030\001 \001(\005\022\035\n\005mails\030\002 \003(\0132\016.pr"
+  "otocol.Mail\022+\n\nequipItems\030\003 \003(\0132\027.protoc"
+  "ol.MailEquipItem\022\'\n\010etcItems\030\004 \003(\0132\025.pro"
+  "tocol.MailEtcItem\"9\n\013CUpdateMail\022\014\n\004type"
+  "\030\001 \001(\005\022\034\n\004mail\030\002 \001(\0132\016.protocol.Mail\"\223\001\n"
+  "\016CAllUpdateMail\022\014\n\004type\030\001 \001(\005\022\035\n\005mails\030\002"
+  " \003(\0132\016.protocol.Mail\022+\n\nequipItems\030\003 \003(\013"
+  "2\027.protocol.MailEquipItem\022\'\n\010etcItems\030\004 "
+  "\003(\0132\025.protocol.MailEtcItem\"\216\001\n\tCSendMail"
+  "\022\014\n\004type\030\001 \001(\005\022\035\n\005mails\030\002 \001(\0132\016.protocol"
+  ".Mail\022+\n\nequipItems\030\003 \003(\0132\027.protocol.Mai"
+  "lEquipItem\022\'\n\010etcItems\030\004 \003(\0132\025.protocol."
+  "MailEtcItem\"y\n\tSSendMail\022\016\n\006result\030\001 \001(\005"
+  "\022\014\n\004gold\030\002 \001(\005\022\'\n\nitemEquips\030\003 \003(\0132\023.pro"
+  "tocol.ItemEquip\022%\n\010etcItems\030\004 \003(\0132\023.prot"
+  "ocol.ItemEquip*\352\004\n\013MessageCode\022\t\n\005LOGIN\020"
+  "\000\022\n\n\006S_LOAD\020\001\022\022\n\016S_INSERTPLAYER\020\002\022\n\n\006S_M"
+  "OVE\020\003\022\n\n\006S_CHAT\020\004\022\020\n\014S_PLAYERDATA\020\005\022\021\n\rS"
+  "_CLOSEPLAYER\020\006\022\020\n\014S_UNITSTATES\020\007\022\014\n\010C_AT"
+  "TACK\020\010\022\020\n\014S_UNITDEMAGE\020\n\022\017\n\013S_ROOMQUEST\020"
+  "\014\022\017\n\013C_MOVEPOTAL\020\r\022\r\n\tS_ENDGAME\020\016\022\017\n\013LOG"
+  "INACCESS\020\017\022\n\n\006C_LOAD\020\021\022\023\n\017CREATECHARACTE"
+  "R\020\022\022\023\n\017UPDATEINVENTROY\020\023\022\021\n\rC_BUYCHARATE"
+  "R\020\024\022\017\n\013C_BUYWEAPON\020\025\022\023\n\017C_UPDATEACCOUNT\020"
+  "\026\022\021\n\rS_CURRENTINFO\020\027\022\017\n\013S_BUYRESULT\020\030\022\020\n"
+  "\014C_PLAYERJUMP\020\031\022\017\n\013C_PLAYERAIM\020\032\022\013\n\007S_EX"
+  "PLV\020\033\022\023\n\017S_LOADINVENTORY\020\036\022\017\n\013C_SELLITEM"
+  "S\020\037\022\022\n\016S_FRIENDSYSTEM\020 \022\014\n\010C_FRIEND\020\"\022\016\n"
+  "\nC_LOADMAIL\020(\022\020\n\014C_UPDATEMAIL\020)\022\023\n\017C_ALL"
+  "UPDATEMAIL\020*\022\016\n\nC_SENDMAIL\020+\022\016\n\nS_SENDMA"
+  "IL\020,\022\021\n\rC_UPDATEITEMS\020#\022\n\n\006D_LOAD\020eb\006pro"
+  "to3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_GameClient_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_GameClient_2eproto = {
-  false, false, 4666, descriptor_table_protodef_GameClient_2eproto, "GameClient.proto", 
+  false, false, 4643, descriptor_table_protodef_GameClient_2eproto, "GameClient.proto", 
   &descriptor_table_GameClient_2eproto_once, nullptr, 0, 48,
   schemas, file_default_instances, TableStruct_GameClient_2eproto::offsets,
   file_level_metadata_GameClient_2eproto, file_level_enum_descriptors_GameClient_2eproto, file_level_service_descriptors_GameClient_2eproto,
@@ -1419,8 +1422,8 @@ bool MessageCode_IsValid(int value) {
     case 30:
     case 31:
     case 32:
-    case 33:
     case 34:
+    case 35:
     case 40:
     case 41:
     case 42:
@@ -8801,16 +8804,16 @@ ItemEquip::ItemEquip(const ItemEquip& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::memcpy(&item_code_, &from.item_code_,
-    static_cast<size_t>(reinterpret_cast<char*>(&position_) -
-    reinterpret_cast<char*>(&item_code_)) + sizeof(position_));
+    static_cast<size_t>(reinterpret_cast<char*>(&invenpos_) -
+    reinterpret_cast<char*>(&item_code_)) + sizeof(invenpos_));
   // @@protoc_insertion_point(copy_constructor:protocol.ItemEquip)
 }
 
 void ItemEquip::SharedCtor() {
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&item_code_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&position_) -
-    reinterpret_cast<char*>(&item_code_)) + sizeof(position_));
+    0, static_cast<size_t>(reinterpret_cast<char*>(&invenpos_) -
+    reinterpret_cast<char*>(&item_code_)) + sizeof(invenpos_));
 }
 
 ItemEquip::~ItemEquip() {
@@ -8841,8 +8844,8 @@ void ItemEquip::Clear() {
   (void) cached_has_bits;
 
   ::memset(&item_code_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&position_) -
-      reinterpret_cast<char*>(&item_code_)) + sizeof(position_));
+      reinterpret_cast<char*>(&invenpos_) -
+      reinterpret_cast<char*>(&item_code_)) + sizeof(invenpos_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -8884,26 +8887,18 @@ const char* ItemEquip::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::
         } else
           goto handle_unusual;
         continue;
-      // int32 is_equip = 5;
+      // int32 equipPos = 5;
       case 5:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 40)) {
-          is_equip_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          equippos_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
-      // int32 unipeId = 6;
-      case 6:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 48)) {
-          unipeid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // int32 position = 7;
+      // int32 invenPos = 7;
       case 7:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 56)) {
-          position_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          invenpos_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -8961,22 +8956,16 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(4, this->_internal_speed(), target);
   }
 
-  // int32 is_equip = 5;
-  if (this->_internal_is_equip() != 0) {
+  // int32 equipPos = 5;
+  if (this->_internal_equippos() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(5, this->_internal_is_equip(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(5, this->_internal_equippos(), target);
   }
 
-  // int32 unipeId = 6;
-  if (this->_internal_unipeid() != 0) {
+  // int32 invenPos = 7;
+  if (this->_internal_invenpos() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(6, this->_internal_unipeid(), target);
-  }
-
-  // int32 position = 7;
-  if (this->_internal_position() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(7, this->_internal_position(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(7, this->_internal_invenpos(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -9015,19 +9004,14 @@ size_t ItemEquip::ByteSizeLong() const {
     total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32SizePlusOne(this->_internal_speed());
   }
 
-  // int32 is_equip = 5;
-  if (this->_internal_is_equip() != 0) {
-    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32SizePlusOne(this->_internal_is_equip());
+  // int32 equipPos = 5;
+  if (this->_internal_equippos() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32SizePlusOne(this->_internal_equippos());
   }
 
-  // int32 unipeId = 6;
-  if (this->_internal_unipeid() != 0) {
-    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32SizePlusOne(this->_internal_unipeid());
-  }
-
-  // int32 position = 7;
-  if (this->_internal_position() != 0) {
-    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32SizePlusOne(this->_internal_position());
+  // int32 invenPos = 7;
+  if (this->_internal_invenpos() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32SizePlusOne(this->_internal_invenpos());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
@@ -9064,14 +9048,11 @@ void ItemEquip::MergeFrom(const ItemEquip& from) {
   if (from._internal_speed() != 0) {
     _internal_set_speed(from._internal_speed());
   }
-  if (from._internal_is_equip() != 0) {
-    _internal_set_is_equip(from._internal_is_equip());
+  if (from._internal_equippos() != 0) {
+    _internal_set_equippos(from._internal_equippos());
   }
-  if (from._internal_unipeid() != 0) {
-    _internal_set_unipeid(from._internal_unipeid());
-  }
-  if (from._internal_position() != 0) {
-    _internal_set_position(from._internal_position());
+  if (from._internal_invenpos() != 0) {
+    _internal_set_invenpos(from._internal_invenpos());
   }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -9091,8 +9072,8 @@ void ItemEquip::InternalSwap(ItemEquip* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(ItemEquip, position_)
-      + sizeof(ItemEquip::position_)
+      PROTOBUF_FIELD_OFFSET(ItemEquip, invenpos_)
+      + sizeof(ItemEquip::invenpos_)
       - PROTOBUF_FIELD_OFFSET(ItemEquip, item_code_)>(
           reinterpret_cast<char*>(&item_code_),
           reinterpret_cast<char*>(&other->item_code_));
@@ -9123,16 +9104,16 @@ ItemEtc::ItemEtc(const ItemEtc& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::memcpy(&item_code_, &from.item_code_,
-    static_cast<size_t>(reinterpret_cast<char*>(&position_) -
-    reinterpret_cast<char*>(&item_code_)) + sizeof(position_));
+    static_cast<size_t>(reinterpret_cast<char*>(&invenpos_) -
+    reinterpret_cast<char*>(&item_code_)) + sizeof(invenpos_));
   // @@protoc_insertion_point(copy_constructor:protocol.ItemEtc)
 }
 
 void ItemEtc::SharedCtor() {
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&item_code_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&position_) -
-    reinterpret_cast<char*>(&item_code_)) + sizeof(position_));
+    0, static_cast<size_t>(reinterpret_cast<char*>(&invenpos_) -
+    reinterpret_cast<char*>(&item_code_)) + sizeof(invenpos_));
 }
 
 ItemEtc::~ItemEtc() {
@@ -9163,8 +9144,8 @@ void ItemEtc::Clear() {
   (void) cached_has_bits;
 
   ::memset(&item_code_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&position_) -
-      reinterpret_cast<char*>(&item_code_)) + sizeof(position_));
+      reinterpret_cast<char*>(&invenpos_) -
+      reinterpret_cast<char*>(&item_code_)) + sizeof(invenpos_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -9198,10 +9179,10 @@ const char* ItemEtc::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
         } else
           goto handle_unusual;
         continue;
-      // int32 position = 4;
+      // int32 invenPos = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
-          position_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          invenpos_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -9253,10 +9234,10 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(3, this->_internal_item_type(), target);
   }
 
-  // int32 position = 4;
-  if (this->_internal_position() != 0) {
+  // int32 invenPos = 4;
+  if (this->_internal_invenpos() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(4, this->_internal_position(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(4, this->_internal_invenpos(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -9290,9 +9271,9 @@ size_t ItemEtc::ByteSizeLong() const {
     total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32SizePlusOne(this->_internal_item_type());
   }
 
-  // int32 position = 4;
-  if (this->_internal_position() != 0) {
-    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32SizePlusOne(this->_internal_position());
+  // int32 invenPos = 4;
+  if (this->_internal_invenpos() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32SizePlusOne(this->_internal_invenpos());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
@@ -9326,8 +9307,8 @@ void ItemEtc::MergeFrom(const ItemEtc& from) {
   if (from._internal_item_type() != 0) {
     _internal_set_item_type(from._internal_item_type());
   }
-  if (from._internal_position() != 0) {
-    _internal_set_position(from._internal_position());
+  if (from._internal_invenpos() != 0) {
+    _internal_set_invenpos(from._internal_invenpos());
   }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -9347,8 +9328,8 @@ void ItemEtc::InternalSwap(ItemEtc* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(ItemEtc, position_)
-      + sizeof(ItemEtc::position_)
+      PROTOBUF_FIELD_OFFSET(ItemEtc, invenpos_)
+      + sizeof(ItemEtc::invenpos_)
       - PROTOBUF_FIELD_OFFSET(ItemEtc, item_code_)>(
           reinterpret_cast<char*>(&item_code_),
           reinterpret_cast<char*>(&other->item_code_));
@@ -11046,8 +11027,7 @@ class CUpdateItems::_Internal {
 
 CUpdateItems::CUpdateItems(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
-  itemequips_(arena) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor();
   if (!is_message_owned) {
     RegisterArenaDtor(arena);
@@ -11055,13 +11035,19 @@ CUpdateItems::CUpdateItems(::PROTOBUF_NAMESPACE_ID::Arena* arena,
   // @@protoc_insertion_point(arena_constructor:protocol.CUpdateItems)
 }
 CUpdateItems::CUpdateItems(const CUpdateItems& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      itemequips_(from.itemequips_) {
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::memcpy(&invenpos_, &from.invenpos_,
+    static_cast<size_t>(reinterpret_cast<char*>(&equippos_) -
+    reinterpret_cast<char*>(&invenpos_)) + sizeof(equippos_));
   // @@protoc_insertion_point(copy_constructor:protocol.CUpdateItems)
 }
 
 void CUpdateItems::SharedCtor() {
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&invenpos_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&equippos_) -
+    reinterpret_cast<char*>(&invenpos_)) + sizeof(equippos_));
 }
 
 CUpdateItems::~CUpdateItems() {
@@ -11091,7 +11077,9 @@ void CUpdateItems::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  itemequips_.Clear();
+  ::memset(&invenpos_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&equippos_) -
+      reinterpret_cast<char*>(&invenpos_)) + sizeof(equippos_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -11101,16 +11089,19 @@ const char* CUpdateItems::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_I
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // repeated .protocol.ItemEquip itemEquips = 1;
+      // int32 invenPos = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr -= 1;
-          do {
-            ptr += 1;
-            ptr = ctx->ParseMessage(_internal_add_itemequips(), ptr);
-            CHK_(ptr);
-            if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          invenpos_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 equipPos = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+          equippos_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
@@ -11143,12 +11134,16 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // repeated .protocol.ItemEquip itemEquips = 1;
-  for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->_internal_itemequips_size()); i < n; i++) {
+  // int32 invenPos = 1;
+  if (this->_internal_invenpos() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, this->_internal_itemequips(i), target, stream);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_invenpos(), target);
+  }
+
+  // int32 equipPos = 2;
+  if (this->_internal_equippos() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(2, this->_internal_equippos(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -11167,11 +11162,14 @@ size_t CUpdateItems::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated .protocol.ItemEquip itemEquips = 1;
-  total_size += 1UL * this->_internal_itemequips_size();
-  for (const auto& msg : this->itemequips_) {
-    total_size +=
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  // int32 invenPos = 1;
+  if (this->_internal_invenpos() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32SizePlusOne(this->_internal_invenpos());
+  }
+
+  // int32 equipPos = 2;
+  if (this->_internal_equippos() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32SizePlusOne(this->_internal_equippos());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
@@ -11196,7 +11194,12 @@ void CUpdateItems::MergeFrom(const CUpdateItems& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  itemequips_.MergeFrom(from.itemequips_);
+  if (from._internal_invenpos() != 0) {
+    _internal_set_invenpos(from._internal_invenpos());
+  }
+  if (from._internal_equippos() != 0) {
+    _internal_set_equippos(from._internal_equippos());
+  }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -11214,7 +11217,12 @@ bool CUpdateItems::IsInitialized() const {
 void CUpdateItems::InternalSwap(CUpdateItems* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  itemequips_.InternalSwap(&other->itemequips_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(CUpdateItems, equippos_)
+      + sizeof(CUpdateItems::equippos_)
+      - PROTOBUF_FIELD_OFFSET(CUpdateItems, invenpos_)>(
+          reinterpret_cast<char*>(&invenpos_),
+          reinterpret_cast<char*>(&other->invenpos_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata CUpdateItems::GetMetadata() const {

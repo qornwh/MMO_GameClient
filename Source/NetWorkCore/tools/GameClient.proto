@@ -34,7 +34,6 @@ enum MessageCode {
 
     S_LOADINVENTORY = 30; // 인벤토리 로드 메시지
     C_SELLITEMS = 31; // 인벤토리 아이템 다중 판매
-    C_UPDATEITEMS = 33; // 인벤토리 아이템 장착, 장착해제등
     
     S_FRIENDSYSTEM = 32; // 친구 시스템 
     C_FRIEND = 34; // 친구 추가
@@ -45,6 +44,8 @@ enum MessageCode {
     C_ALLUPDATEMAIL = 42; // 전체 아이템 수령, 전체 메일 삭제
     C_SENDMAIL = 43; // 메일 전송
     S_SENDMAIL = 44; // 메일 전송 결과
+    
+    C_UPDATEITEMS = 35; // 인벤토리 아이템 장착, 장착해제등
     
     // 더미용
     D_LOAD = 101;
@@ -242,16 +243,15 @@ message ItemEquip {
     int32 item_type = 2;
     int32 attack = 3;
     int32 speed = 4;
-    int32 is_equip = 5;
-    int32 unipeId = 6;
-    int32 position = 7;
+    int32 equipPos = 5;
+    int32 invenPos = 7;
 }
 
 message ItemEtc {
     int32 item_code = 1;
     int32 item_count = 2;
     int32 item_type = 3;
-    int32 position = 4;
+    int32 invenPos = 4;
 }
 
 message UpdateInventory {
@@ -296,7 +296,8 @@ message CFriend {
 }
 
 message CUpdateItems {
-    repeated ItemEquip itemEquips = 1; // 업데이트(장착, 장착해제) 내용
+    int32 invenPos = 1;
+    int32 equipPos = 2;
 }
 
 message Mail {
