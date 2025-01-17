@@ -74,6 +74,7 @@ public:
 	void SellItems();
 	UFUNCTION()
 	void ResetSellItems();
+	void AttackObject(int32 AttackNumber, int32 SkillCode, const FVector& Pos);
 
 public:
 	// 일단 임시로 판매리스트 열어둔다

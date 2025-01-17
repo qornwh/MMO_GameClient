@@ -11,9 +11,6 @@
 DECLARE_DELEGATE(FOnAttackAcess)
 DECLARE_DELEGATE_TwoParams(FOnSkillIconUI, int32, float)
 
-/**
- * 
- */
 UCLASS()
 class ARPG_CLIENT_API ABJS_ControlCharacter : public ABJS_Character
 {
@@ -84,11 +81,17 @@ protected:
 	virtual void StartJump() override;
 	void ChangeCamera();
 	void SetInputAction();
-	void SendAttackMessage(int32 Code = 0);
+	void SendAttackMessage(int32 SkillCode = 0);
 	void SendAimMessage();
 	void SendJumpMessage(bool flag);
 	void SendMoveMessage();
+	void SendAttackObjectMessage(int32 SkillCode, int32 AttackNumber, const TArray<TTuple<int, ABJS_Character*>>& successAttacks);
+
+	void BulletAttackObject();
+	
 	virtual void SetState(TSharedPtr<BJS_CharaterState> state) override;
+	virtual void PlayAttack(int32 Code, bool ignore = false) override;
+	virtual void PlaySkill(int32 Code, bool ignore = false) override;
 
 public:
 	void ShowInventoryUI();

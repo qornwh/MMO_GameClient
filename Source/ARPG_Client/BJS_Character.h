@@ -26,7 +26,8 @@ public:
 	void SetSkeletalMesh(class USkeletalMesh* CurrentMesh);
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	bool GetAim();
-	void SetAim(bool flag);
+	void SetAim(bool Flag);
+	void SetAttackTimer(float DeltaTime);
 	virtual void StopJump();
 	virtual void StartJump();
 
@@ -37,17 +38,14 @@ public:
 	virtual void Attack();
 	virtual void AttackEnd();
 	void PlayMotion(int32 Code, bool ignore = false);
-	void PlayAttack(int32 Code, bool ignore = false);
-	void PlaySkill(int32 Code, bool ignore = false);
+	virtual void PlayAttack(int32 Code, bool ignore = false);
+	virtual void PlaySkill(int32 Code, bool ignore = false);
 	TSharedPtr<class BJS_CharaterState> GetState();
 	virtual void SetState(TSharedPtr<class BJS_CharaterState> state);
 	void TakeDemage(float Demage, class ABJS_Character* Target = nullptr);
 	void TakeHeal(float Heal);
-	void SetTarget(int32 UUid);
-	int32 GetTarget();
 	bool GetHitted();
 	void LoadInfo(int32 MeshCode, int32 WeaponCode);
-
 	void SetActivate(bool Flag);
 
 private:
@@ -59,23 +57,27 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Widget, meta = (AllowPrivateAccess = "true"))
 	class UWidgetComponent* HpBar;
-
+	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly)
+	TSubclassOf<class AActor> BulletClass;
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UBJS_AnimInstance_Base> AnimInstanceClass;
 
 	TObjectPtr<class ABJS_WeaponActor> Weapon;
 	TObjectPtr<class UBJS_AnimInstance_Base> AnimInstance;
-
+	TObjectPtr<class UParticleSystem> FireStartFXList;
 	TMap<int32, TObjectPtr<class USkeletalMesh>> CharaterMeshList;
 	TMap<int32, TObjectPtr<class USkeletalMesh>> WeaponMeshList;
 	TMap<int32, TObjectPtr<class UNiagaraSystem>> BulletFXList;
-	TMap<int32, int32> SkillList;
 	TSharedPtr<class BJS_CharaterState> State;
-	TObjectPtr<class UParticleSystem> FireStartFXList;
+	TMap<int32, TObjectPtr<class ABJS_Bullet>> Bullets;
+	TMap<int32, CharaterSkill> BuffList;
+	TMap<int32, int32> SkillList;
 
 	bool IsAim = false;
 	bool IsAttack = true;
-	int32 TargetUUid = -1;
 	bool IsHitted = false;
-	TMap<int32, CharaterSkill> BuffList;
+	int32 PresentAttackNumber = -1;
+	const int32 BulletNumberMax = 20;
+	float AttackCheckTime = 0.25f;
+	float AttackTimer = -1.f;
 };

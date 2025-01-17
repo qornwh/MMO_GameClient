@@ -47,7 +47,7 @@ struct TableStruct_GameClient_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[48]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[49]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -199,6 +199,9 @@ extern UnitStateDefaultTypeInternal _UnitState_default_instance_;
 class UpdateInventory;
 struct UpdateInventoryDefaultTypeInternal;
 extern UpdateInventoryDefaultTypeInternal _UpdateInventory_default_instance_;
+class UserAttack;
+struct UserAttackDefaultTypeInternal;
+extern UserAttackDefaultTypeInternal _UserAttack_default_instance_;
 }  // namespace protocol
 PROTOBUF_NAMESPACE_OPEN
 template<> ::protocol::Attack* Arena::CreateMaybeMessage<::protocol::Attack>(Arena*);
@@ -249,6 +252,7 @@ template<> ::protocol::SUnitStates* Arena::CreateMaybeMessage<::protocol::SUnitS
 template<> ::protocol::Unit* Arena::CreateMaybeMessage<::protocol::Unit>(Arena*);
 template<> ::protocol::UnitState* Arena::CreateMaybeMessage<::protocol::UnitState>(Arena*);
 template<> ::protocol::UpdateInventory* Arena::CreateMaybeMessage<::protocol::UpdateInventory>(Arena*);
+template<> ::protocol::UserAttack* Arena::CreateMaybeMessage<::protocol::UserAttack>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace protocol {
 
@@ -288,6 +292,7 @@ enum MessageCode : int {
   C_SENDMAIL = 43,
   S_SENDMAIL = 44,
   C_UPDATEITEMS = 35,
+  C_ATTACKS = 100,
   D_LOAD = 101,
   MessageCode_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   MessageCode_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
@@ -3430,191 +3435,6 @@ class Attack final :
 };
 // -------------------------------------------------------------------
 
-class CAttack final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:protocol.CAttack) */ {
- public:
-  inline CAttack() : CAttack(nullptr) {}
-  ~CAttack() override;
-  explicit constexpr CAttack(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
-
-  CAttack(const CAttack& from);
-  CAttack(CAttack&& from) noexcept
-    : CAttack() {
-    *this = ::std::move(from);
-  }
-
-  inline CAttack& operator=(const CAttack& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline CAttack& operator=(CAttack&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetOwningArena() == from.GetOwningArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetOwningArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const CAttack& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const CAttack* internal_default_instance() {
-    return reinterpret_cast<const CAttack*>(
-               &_CAttack_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    18;
-
-  friend void swap(CAttack& a, CAttack& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(CAttack* other) {
-    if (other == this) return;
-    if (GetOwningArena() == other->GetOwningArena()) {
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(CAttack* other) {
-    if (other == this) return;
-    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline CAttack* New() const final {
-    return new CAttack();
-  }
-
-  CAttack* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<CAttack>(arena);
-  }
-  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const CAttack& from);
-  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom(const CAttack& from);
-  private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
-  public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
-      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(CAttack* other);
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "protocol.CAttack";
-  }
-  protected:
-  explicit CAttack(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                       bool is_message_owned = false);
-  private:
-  static void ArenaDtor(void* object);
-  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  public:
-
-  static const ClassData _class_data_;
-  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kPositionFieldNumber = 4,
-    kUuidFieldNumber = 1,
-    kSkillCodeFieldNumber = 2,
-    kTargetUuidFieldNumber = 3,
-  };
-  // .protocol.Position position = 4;
-  bool has_position() const;
-  private:
-  bool _internal_has_position() const;
-  public:
-  void clear_position();
-  const ::protocol::Position& position() const;
-  PROTOBUF_MUST_USE_RESULT ::protocol::Position* release_position();
-  ::protocol::Position* mutable_position();
-  void set_allocated_position(::protocol::Position* position);
-  private:
-  const ::protocol::Position& _internal_position() const;
-  ::protocol::Position* _internal_mutable_position();
-  public:
-  void unsafe_arena_set_allocated_position(
-      ::protocol::Position* position);
-  ::protocol::Position* unsafe_arena_release_position();
-
-  // int32 uuid = 1;
-  void clear_uuid();
-  ::PROTOBUF_NAMESPACE_ID::int32 uuid() const;
-  void set_uuid(::PROTOBUF_NAMESPACE_ID::int32 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::int32 _internal_uuid() const;
-  void _internal_set_uuid(::PROTOBUF_NAMESPACE_ID::int32 value);
-  public:
-
-  // int32 skill_code = 2;
-  void clear_skill_code();
-  ::PROTOBUF_NAMESPACE_ID::int32 skill_code() const;
-  void set_skill_code(::PROTOBUF_NAMESPACE_ID::int32 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::int32 _internal_skill_code() const;
-  void _internal_set_skill_code(::PROTOBUF_NAMESPACE_ID::int32 value);
-  public:
-
-  // int32 target_uuid = 3;
-  void clear_target_uuid();
-  ::PROTOBUF_NAMESPACE_ID::int32 target_uuid() const;
-  void set_target_uuid(::PROTOBUF_NAMESPACE_ID::int32 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::int32 _internal_target_uuid() const;
-  void _internal_set_target_uuid(::PROTOBUF_NAMESPACE_ID::int32 value);
-  public:
-
-  // @@protoc_insertion_point(class_scope:protocol.CAttack)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  ::protocol::Position* position_;
-  ::PROTOBUF_NAMESPACE_ID::int32 uuid_;
-  ::PROTOBUF_NAMESPACE_ID::int32 skill_code_;
-  ::PROTOBUF_NAMESPACE_ID::int32 target_uuid_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  friend struct ::TableStruct_GameClient_2eproto;
-};
-// -------------------------------------------------------------------
-
 class Demage final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:protocol.Demage) */ {
  public:
@@ -3663,7 +3483,7 @@ class Demage final :
                &_Demage_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    19;
+    18;
 
   friend void swap(Demage& a, Demage& b) {
     a.Swap(&b);
@@ -3859,7 +3679,7 @@ class SUnitDemage final :
                &_SUnitDemage_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    20;
+    19;
 
   friend void swap(SUnitDemage& a, SUnitDemage& b) {
     a.Swap(&b);
@@ -4033,7 +3853,7 @@ class SRoomQuest final :
                &_SRoomQuest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    21;
+    20;
 
   friend void swap(SRoomQuest& a, SRoomQuest& b) {
     a.Swap(&b);
@@ -4198,7 +4018,7 @@ class CMovePotal final :
                &_CMovePotal_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    22;
+    21;
 
   friend void swap(CMovePotal& a, CMovePotal& b) {
     a.Swap(&b);
@@ -4352,7 +4172,7 @@ class SEndGame final :
                &_SEndGame_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    23;
+    22;
 
   friend void swap(SEndGame& a, SEndGame& b) {
     a.Swap(&b);
@@ -4495,7 +4315,7 @@ class CBuyCharater final :
                &_CBuyCharater_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    24;
+    23;
 
   friend void swap(CBuyCharater& a, CBuyCharater& b) {
     a.Swap(&b);
@@ -4665,7 +4485,7 @@ class CBuyWeapon final :
                &_CBuyWeapon_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    25;
+    24;
 
   friend void swap(CBuyWeapon& a, CBuyWeapon& b) {
     a.Swap(&b);
@@ -4819,7 +4639,7 @@ class SBuyResult final :
                &_SBuyResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    26;
+    25;
 
   friend void swap(SBuyResult& a, SBuyResult& b) {
     a.Swap(&b);
@@ -5040,7 +4860,7 @@ class CPlayerJump final :
                &_CPlayerJump_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    27;
+    26;
 
   friend void swap(CPlayerJump& a, CPlayerJump& b) {
     a.Swap(&b);
@@ -5194,7 +5014,7 @@ class CPlayerAim final :
                &_CPlayerAim_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    28;
+    27;
 
   friend void swap(CPlayerAim& a, CPlayerAim& b) {
     a.Swap(&b);
@@ -5348,7 +5168,7 @@ class SExpLv final :
                &_SExpLv_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    29;
+    28;
 
   friend void swap(SExpLv& a, SExpLv& b) {
     a.Swap(&b);
@@ -5513,7 +5333,7 @@ class ItemEquip final :
                &_ItemEquip_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    30;
+    29;
 
   friend void swap(ItemEquip& a, ItemEquip& b) {
     a.Swap(&b);
@@ -5711,7 +5531,7 @@ class ItemEtc final :
                &_ItemEtc_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    31;
+    30;
 
   friend void swap(ItemEtc& a, ItemEtc& b) {
     a.Swap(&b);
@@ -5887,7 +5707,7 @@ class UpdateInventory final :
                &_UpdateInventory_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    32;
+    31;
 
   friend void swap(UpdateInventory& a, UpdateInventory& b) {
     a.Swap(&b);
@@ -6070,7 +5890,7 @@ class SLoadInventory final :
                &_SLoadInventory_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    33;
+    32;
 
   friend void swap(SLoadInventory& a, SLoadInventory& b) {
     a.Swap(&b);
@@ -6253,7 +6073,7 @@ class CSellItems final :
                &_CSellItems_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    34;
+    33;
 
   friend void swap(CSellItems& a, CSellItems& b) {
     a.Swap(&b);
@@ -6447,7 +6267,7 @@ class DLoad final :
                &_DLoad_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    35;
+    34;
 
   friend void swap(DLoad& a, DLoad& b) {
     a.Swap(&b);
@@ -6599,7 +6419,7 @@ class Friend final :
                &_Friend_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    36;
+    35;
 
   friend void swap(Friend& a, Friend& b) {
     a.Swap(&b);
@@ -6780,7 +6600,7 @@ class SFriendSystem final :
                &_SFriendSystem_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    37;
+    36;
 
   friend void swap(SFriendSystem& a, SFriendSystem& b) {
     a.Swap(&b);
@@ -6943,7 +6763,7 @@ class CFriend final :
                &_CFriend_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    38;
+    37;
 
   friend void swap(CFriend& a, CFriend& b) {
     a.Swap(&b);
@@ -7106,7 +6926,7 @@ class CUpdateItems final :
                &_CUpdateItems_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    39;
+    38;
 
   friend void swap(CUpdateItems& a, CUpdateItems& b) {
     a.Swap(&b);
@@ -7260,7 +7080,7 @@ class Mail final :
                &_Mail_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    40;
+    39;
 
   friend void swap(Mail& a, Mail& b) {
     a.Swap(&b);
@@ -7501,7 +7321,7 @@ class MailEquipItem final :
                &_MailEquipItem_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    41;
+    40;
 
   friend void swap(MailEquipItem& a, MailEquipItem& b) {
     a.Swap(&b);
@@ -7675,7 +7495,7 @@ class MailEtcItem final :
                &_MailEtcItem_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    42;
+    41;
 
   friend void swap(MailEtcItem& a, MailEtcItem& b) {
     a.Swap(&b);
@@ -7849,7 +7669,7 @@ class CLoadMail final :
                &_CLoadMail_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    43;
+    42;
 
   friend void swap(CLoadMail& a, CLoadMail& b) {
     a.Swap(&b);
@@ -8052,7 +7872,7 @@ class CUpdateMail final :
                &_CUpdateMail_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    44;
+    43;
 
   friend void swap(CUpdateMail& a, CUpdateMail& b) {
     a.Swap(&b);
@@ -8215,7 +8035,7 @@ class CAllUpdateMail final :
                &_CAllUpdateMail_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    45;
+    44;
 
   friend void swap(CAllUpdateMail& a, CAllUpdateMail& b) {
     a.Swap(&b);
@@ -8418,7 +8238,7 @@ class CSendMail final :
                &_CSendMail_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    46;
+    45;
 
   friend void swap(CSendMail& a, CSendMail& b) {
     a.Swap(&b);
@@ -8621,7 +8441,7 @@ class SSendMail final :
                &_SSendMail_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    47;
+    46;
 
   friend void swap(SSendMail& a, SSendMail& b) {
     a.Swap(&b);
@@ -8762,6 +8582,390 @@ class SSendMail final :
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protocol::ItemEquip > etcitems_;
   ::PROTOBUF_NAMESPACE_ID::int32 result_;
   ::PROTOBUF_NAMESPACE_ID::int32 gold_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_GameClient_2eproto;
+};
+// -------------------------------------------------------------------
+
+class CAttack final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:protocol.CAttack) */ {
+ public:
+  inline CAttack() : CAttack(nullptr) {}
+  ~CAttack() override;
+  explicit constexpr CAttack(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  CAttack(const CAttack& from);
+  CAttack(CAttack&& from) noexcept
+    : CAttack() {
+    *this = ::std::move(from);
+  }
+
+  inline CAttack& operator=(const CAttack& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CAttack& operator=(CAttack&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CAttack& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const CAttack* internal_default_instance() {
+    return reinterpret_cast<const CAttack*>(
+               &_CAttack_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    47;
+
+  friend void swap(CAttack& a, CAttack& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(CAttack* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(CAttack* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline CAttack* New() const final {
+    return new CAttack();
+  }
+
+  CAttack* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<CAttack>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const CAttack& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const CAttack& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(CAttack* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "protocol.CAttack";
+  }
+  protected:
+  explicit CAttack(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kPositionFieldNumber = 4,
+    kAttackNumberFieldNumber = 1,
+    kUuidFieldNumber = 2,
+    kSkillCodeFieldNumber = 3,
+  };
+  // .protocol.Position position = 4;
+  bool has_position() const;
+  private:
+  bool _internal_has_position() const;
+  public:
+  void clear_position();
+  const ::protocol::Position& position() const;
+  PROTOBUF_MUST_USE_RESULT ::protocol::Position* release_position();
+  ::protocol::Position* mutable_position();
+  void set_allocated_position(::protocol::Position* position);
+  private:
+  const ::protocol::Position& _internal_position() const;
+  ::protocol::Position* _internal_mutable_position();
+  public:
+  void unsafe_arena_set_allocated_position(
+      ::protocol::Position* position);
+  ::protocol::Position* unsafe_arena_release_position();
+
+  // int32 attackNumber = 1;
+  void clear_attacknumber();
+  ::PROTOBUF_NAMESPACE_ID::int32 attacknumber() const;
+  void set_attacknumber(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_attacknumber() const;
+  void _internal_set_attacknumber(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int32 uuid = 2;
+  void clear_uuid();
+  ::PROTOBUF_NAMESPACE_ID::int32 uuid() const;
+  void set_uuid(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_uuid() const;
+  void _internal_set_uuid(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int32 skillCode = 3;
+  void clear_skillcode();
+  ::PROTOBUF_NAMESPACE_ID::int32 skillcode() const;
+  void set_skillcode(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_skillcode() const;
+  void _internal_set_skillcode(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:protocol.CAttack)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::protocol::Position* position_;
+  ::PROTOBUF_NAMESPACE_ID::int32 attacknumber_;
+  ::PROTOBUF_NAMESPACE_ID::int32 uuid_;
+  ::PROTOBUF_NAMESPACE_ID::int32 skillcode_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_GameClient_2eproto;
+};
+// -------------------------------------------------------------------
+
+class UserAttack final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:protocol.UserAttack) */ {
+ public:
+  inline UserAttack() : UserAttack(nullptr) {}
+  ~UserAttack() override;
+  explicit constexpr UserAttack(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  UserAttack(const UserAttack& from);
+  UserAttack(UserAttack&& from) noexcept
+    : UserAttack() {
+    *this = ::std::move(from);
+  }
+
+  inline UserAttack& operator=(const UserAttack& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline UserAttack& operator=(UserAttack&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const UserAttack& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const UserAttack* internal_default_instance() {
+    return reinterpret_cast<const UserAttack*>(
+               &_UserAttack_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    48;
+
+  friend void swap(UserAttack& a, UserAttack& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(UserAttack* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(UserAttack* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline UserAttack* New() const final {
+    return new UserAttack();
+  }
+
+  UserAttack* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<UserAttack>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const UserAttack& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const UserAttack& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(UserAttack* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "protocol.UserAttack";
+  }
+  protected:
+  explicit UserAttack(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kTargetCodesFieldNumber = 4,
+    kPositionFieldNumber = 3,
+    kAttackNumberFieldNumber = 1,
+    kSkillCodeFieldNumber = 2,
+  };
+  // repeated int32 targetCodes = 4;
+  int targetcodes_size() const;
+  private:
+  int _internal_targetcodes_size() const;
+  public:
+  void clear_targetcodes();
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_targetcodes(int index) const;
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >&
+      _internal_targetcodes() const;
+  void _internal_add_targetcodes(::PROTOBUF_NAMESPACE_ID::int32 value);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >*
+      _internal_mutable_targetcodes();
+  public:
+  ::PROTOBUF_NAMESPACE_ID::int32 targetcodes(int index) const;
+  void set_targetcodes(int index, ::PROTOBUF_NAMESPACE_ID::int32 value);
+  void add_targetcodes(::PROTOBUF_NAMESPACE_ID::int32 value);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >&
+      targetcodes() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >*
+      mutable_targetcodes();
+
+  // .protocol.Position position = 3;
+  bool has_position() const;
+  private:
+  bool _internal_has_position() const;
+  public:
+  void clear_position();
+  const ::protocol::Position& position() const;
+  PROTOBUF_MUST_USE_RESULT ::protocol::Position* release_position();
+  ::protocol::Position* mutable_position();
+  void set_allocated_position(::protocol::Position* position);
+  private:
+  const ::protocol::Position& _internal_position() const;
+  ::protocol::Position* _internal_mutable_position();
+  public:
+  void unsafe_arena_set_allocated_position(
+      ::protocol::Position* position);
+  ::protocol::Position* unsafe_arena_release_position();
+
+  // int32 attackNumber = 1;
+  void clear_attacknumber();
+  ::PROTOBUF_NAMESPACE_ID::int32 attacknumber() const;
+  void set_attacknumber(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_attacknumber() const;
+  void _internal_set_attacknumber(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int32 skillCode = 2;
+  void clear_skillcode();
+  ::PROTOBUF_NAMESPACE_ID::int32 skillcode() const;
+  void set_skillcode(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_skillcode() const;
+  void _internal_set_skillcode(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:protocol.UserAttack)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 > targetcodes_;
+  mutable std::atomic<int> _targetcodes_cached_byte_size_;
+  ::protocol::Position* position_;
+  ::PROTOBUF_NAMESPACE_ID::int32 attacknumber_;
+  ::PROTOBUF_NAMESPACE_ID::int32 skillcode_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_GameClient_2eproto;
 };
@@ -10769,160 +10973,6 @@ inline void Attack::_internal_set_target_uuid(::PROTOBUF_NAMESPACE_ID::int32 val
 inline void Attack::set_target_uuid(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_target_uuid(value);
   // @@protoc_insertion_point(field_set:protocol.Attack.target_uuid)
-}
-
-// -------------------------------------------------------------------
-
-// CAttack
-
-// int32 uuid = 1;
-inline void CAttack::clear_uuid() {
-  uuid_ = 0;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int32 CAttack::_internal_uuid() const {
-  return uuid_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int32 CAttack::uuid() const {
-  // @@protoc_insertion_point(field_get:protocol.CAttack.uuid)
-  return _internal_uuid();
-}
-inline void CAttack::_internal_set_uuid(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  
-  uuid_ = value;
-}
-inline void CAttack::set_uuid(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _internal_set_uuid(value);
-  // @@protoc_insertion_point(field_set:protocol.CAttack.uuid)
-}
-
-// int32 skill_code = 2;
-inline void CAttack::clear_skill_code() {
-  skill_code_ = 0;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int32 CAttack::_internal_skill_code() const {
-  return skill_code_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int32 CAttack::skill_code() const {
-  // @@protoc_insertion_point(field_get:protocol.CAttack.skill_code)
-  return _internal_skill_code();
-}
-inline void CAttack::_internal_set_skill_code(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  
-  skill_code_ = value;
-}
-inline void CAttack::set_skill_code(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _internal_set_skill_code(value);
-  // @@protoc_insertion_point(field_set:protocol.CAttack.skill_code)
-}
-
-// int32 target_uuid = 3;
-inline void CAttack::clear_target_uuid() {
-  target_uuid_ = 0;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int32 CAttack::_internal_target_uuid() const {
-  return target_uuid_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int32 CAttack::target_uuid() const {
-  // @@protoc_insertion_point(field_get:protocol.CAttack.target_uuid)
-  return _internal_target_uuid();
-}
-inline void CAttack::_internal_set_target_uuid(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  
-  target_uuid_ = value;
-}
-inline void CAttack::set_target_uuid(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _internal_set_target_uuid(value);
-  // @@protoc_insertion_point(field_set:protocol.CAttack.target_uuid)
-}
-
-// .protocol.Position position = 4;
-inline bool CAttack::_internal_has_position() const {
-  return this != internal_default_instance() && position_ != nullptr;
-}
-inline bool CAttack::has_position() const {
-  return _internal_has_position();
-}
-inline void CAttack::clear_position() {
-  if (GetArenaForAllocation() == nullptr && position_ != nullptr) {
-    delete position_;
-  }
-  position_ = nullptr;
-}
-inline const ::protocol::Position& CAttack::_internal_position() const {
-  const ::protocol::Position* p = position_;
-  return p != nullptr ? *p : reinterpret_cast<const ::protocol::Position&>(
-      ::protocol::_Position_default_instance_);
-}
-inline const ::protocol::Position& CAttack::position() const {
-  // @@protoc_insertion_point(field_get:protocol.CAttack.position)
-  return _internal_position();
-}
-inline void CAttack::unsafe_arena_set_allocated_position(
-    ::protocol::Position* position) {
-  if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(position_);
-  }
-  position_ = position;
-  if (position) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:protocol.CAttack.position)
-}
-inline ::protocol::Position* CAttack::release_position() {
-  
-  ::protocol::Position* temp = position_;
-  position_ = nullptr;
-#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
-  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
-  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  if (GetArenaForAllocation() == nullptr) { delete old; }
-#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
-  if (GetArenaForAllocation() != nullptr) {
-    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  }
-#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
-  return temp;
-}
-inline ::protocol::Position* CAttack::unsafe_arena_release_position() {
-  // @@protoc_insertion_point(field_release:protocol.CAttack.position)
-  
-  ::protocol::Position* temp = position_;
-  position_ = nullptr;
-  return temp;
-}
-inline ::protocol::Position* CAttack::_internal_mutable_position() {
-  
-  if (position_ == nullptr) {
-    auto* p = CreateMaybeMessage<::protocol::Position>(GetArenaForAllocation());
-    position_ = p;
-  }
-  return position_;
-}
-inline ::protocol::Position* CAttack::mutable_position() {
-  ::protocol::Position* _msg = _internal_mutable_position();
-  // @@protoc_insertion_point(field_mutable:protocol.CAttack.position)
-  return _msg;
-}
-inline void CAttack::set_allocated_position(::protocol::Position* position) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
-  if (message_arena == nullptr) {
-    delete position_;
-  }
-  if (position) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<::protocol::Position>::GetOwningArena(position);
-    if (message_arena != submessage_arena) {
-      position = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, position, submessage_arena);
-    }
-    
-  } else {
-    
-  }
-  position_ = position;
-  // @@protoc_insertion_point(field_set_allocated:protocol.CAttack.position)
 }
 
 // -------------------------------------------------------------------
@@ -13962,9 +14012,346 @@ SSendMail::etcitems() const {
   return etcitems_;
 }
 
+// -------------------------------------------------------------------
+
+// CAttack
+
+// int32 attackNumber = 1;
+inline void CAttack::clear_attacknumber() {
+  attacknumber_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 CAttack::_internal_attacknumber() const {
+  return attacknumber_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 CAttack::attacknumber() const {
+  // @@protoc_insertion_point(field_get:protocol.CAttack.attackNumber)
+  return _internal_attacknumber();
+}
+inline void CAttack::_internal_set_attacknumber(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  attacknumber_ = value;
+}
+inline void CAttack::set_attacknumber(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_attacknumber(value);
+  // @@protoc_insertion_point(field_set:protocol.CAttack.attackNumber)
+}
+
+// int32 uuid = 2;
+inline void CAttack::clear_uuid() {
+  uuid_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 CAttack::_internal_uuid() const {
+  return uuid_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 CAttack::uuid() const {
+  // @@protoc_insertion_point(field_get:protocol.CAttack.uuid)
+  return _internal_uuid();
+}
+inline void CAttack::_internal_set_uuid(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  uuid_ = value;
+}
+inline void CAttack::set_uuid(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_uuid(value);
+  // @@protoc_insertion_point(field_set:protocol.CAttack.uuid)
+}
+
+// int32 skillCode = 3;
+inline void CAttack::clear_skillcode() {
+  skillcode_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 CAttack::_internal_skillcode() const {
+  return skillcode_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 CAttack::skillcode() const {
+  // @@protoc_insertion_point(field_get:protocol.CAttack.skillCode)
+  return _internal_skillcode();
+}
+inline void CAttack::_internal_set_skillcode(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  skillcode_ = value;
+}
+inline void CAttack::set_skillcode(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_skillcode(value);
+  // @@protoc_insertion_point(field_set:protocol.CAttack.skillCode)
+}
+
+// .protocol.Position position = 4;
+inline bool CAttack::_internal_has_position() const {
+  return this != internal_default_instance() && position_ != nullptr;
+}
+inline bool CAttack::has_position() const {
+  return _internal_has_position();
+}
+inline void CAttack::clear_position() {
+  if (GetArenaForAllocation() == nullptr && position_ != nullptr) {
+    delete position_;
+  }
+  position_ = nullptr;
+}
+inline const ::protocol::Position& CAttack::_internal_position() const {
+  const ::protocol::Position* p = position_;
+  return p != nullptr ? *p : reinterpret_cast<const ::protocol::Position&>(
+      ::protocol::_Position_default_instance_);
+}
+inline const ::protocol::Position& CAttack::position() const {
+  // @@protoc_insertion_point(field_get:protocol.CAttack.position)
+  return _internal_position();
+}
+inline void CAttack::unsafe_arena_set_allocated_position(
+    ::protocol::Position* position) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(position_);
+  }
+  position_ = position;
+  if (position) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:protocol.CAttack.position)
+}
+inline ::protocol::Position* CAttack::release_position() {
+  
+  ::protocol::Position* temp = position_;
+  position_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::protocol::Position* CAttack::unsafe_arena_release_position() {
+  // @@protoc_insertion_point(field_release:protocol.CAttack.position)
+  
+  ::protocol::Position* temp = position_;
+  position_ = nullptr;
+  return temp;
+}
+inline ::protocol::Position* CAttack::_internal_mutable_position() {
+  
+  if (position_ == nullptr) {
+    auto* p = CreateMaybeMessage<::protocol::Position>(GetArenaForAllocation());
+    position_ = p;
+  }
+  return position_;
+}
+inline ::protocol::Position* CAttack::mutable_position() {
+  ::protocol::Position* _msg = _internal_mutable_position();
+  // @@protoc_insertion_point(field_mutable:protocol.CAttack.position)
+  return _msg;
+}
+inline void CAttack::set_allocated_position(::protocol::Position* position) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete position_;
+  }
+  if (position) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<::protocol::Position>::GetOwningArena(position);
+    if (message_arena != submessage_arena) {
+      position = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, position, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  position_ = position;
+  // @@protoc_insertion_point(field_set_allocated:protocol.CAttack.position)
+}
+
+// -------------------------------------------------------------------
+
+// UserAttack
+
+// int32 attackNumber = 1;
+inline void UserAttack::clear_attacknumber() {
+  attacknumber_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 UserAttack::_internal_attacknumber() const {
+  return attacknumber_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 UserAttack::attacknumber() const {
+  // @@protoc_insertion_point(field_get:protocol.UserAttack.attackNumber)
+  return _internal_attacknumber();
+}
+inline void UserAttack::_internal_set_attacknumber(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  attacknumber_ = value;
+}
+inline void UserAttack::set_attacknumber(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_attacknumber(value);
+  // @@protoc_insertion_point(field_set:protocol.UserAttack.attackNumber)
+}
+
+// int32 skillCode = 2;
+inline void UserAttack::clear_skillcode() {
+  skillcode_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 UserAttack::_internal_skillcode() const {
+  return skillcode_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 UserAttack::skillcode() const {
+  // @@protoc_insertion_point(field_get:protocol.UserAttack.skillCode)
+  return _internal_skillcode();
+}
+inline void UserAttack::_internal_set_skillcode(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  skillcode_ = value;
+}
+inline void UserAttack::set_skillcode(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_skillcode(value);
+  // @@protoc_insertion_point(field_set:protocol.UserAttack.skillCode)
+}
+
+// .protocol.Position position = 3;
+inline bool UserAttack::_internal_has_position() const {
+  return this != internal_default_instance() && position_ != nullptr;
+}
+inline bool UserAttack::has_position() const {
+  return _internal_has_position();
+}
+inline void UserAttack::clear_position() {
+  if (GetArenaForAllocation() == nullptr && position_ != nullptr) {
+    delete position_;
+  }
+  position_ = nullptr;
+}
+inline const ::protocol::Position& UserAttack::_internal_position() const {
+  const ::protocol::Position* p = position_;
+  return p != nullptr ? *p : reinterpret_cast<const ::protocol::Position&>(
+      ::protocol::_Position_default_instance_);
+}
+inline const ::protocol::Position& UserAttack::position() const {
+  // @@protoc_insertion_point(field_get:protocol.UserAttack.position)
+  return _internal_position();
+}
+inline void UserAttack::unsafe_arena_set_allocated_position(
+    ::protocol::Position* position) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(position_);
+  }
+  position_ = position;
+  if (position) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:protocol.UserAttack.position)
+}
+inline ::protocol::Position* UserAttack::release_position() {
+  
+  ::protocol::Position* temp = position_;
+  position_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::protocol::Position* UserAttack::unsafe_arena_release_position() {
+  // @@protoc_insertion_point(field_release:protocol.UserAttack.position)
+  
+  ::protocol::Position* temp = position_;
+  position_ = nullptr;
+  return temp;
+}
+inline ::protocol::Position* UserAttack::_internal_mutable_position() {
+  
+  if (position_ == nullptr) {
+    auto* p = CreateMaybeMessage<::protocol::Position>(GetArenaForAllocation());
+    position_ = p;
+  }
+  return position_;
+}
+inline ::protocol::Position* UserAttack::mutable_position() {
+  ::protocol::Position* _msg = _internal_mutable_position();
+  // @@protoc_insertion_point(field_mutable:protocol.UserAttack.position)
+  return _msg;
+}
+inline void UserAttack::set_allocated_position(::protocol::Position* position) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete position_;
+  }
+  if (position) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<::protocol::Position>::GetOwningArena(position);
+    if (message_arena != submessage_arena) {
+      position = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, position, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  position_ = position;
+  // @@protoc_insertion_point(field_set_allocated:protocol.UserAttack.position)
+}
+
+// repeated int32 targetCodes = 4;
+inline int UserAttack::_internal_targetcodes_size() const {
+  return targetcodes_.size();
+}
+inline int UserAttack::targetcodes_size() const {
+  return _internal_targetcodes_size();
+}
+inline void UserAttack::clear_targetcodes() {
+  targetcodes_.Clear();
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 UserAttack::_internal_targetcodes(int index) const {
+  return targetcodes_.Get(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 UserAttack::targetcodes(int index) const {
+  // @@protoc_insertion_point(field_get:protocol.UserAttack.targetCodes)
+  return _internal_targetcodes(index);
+}
+inline void UserAttack::set_targetcodes(int index, ::PROTOBUF_NAMESPACE_ID::int32 value) {
+  targetcodes_.Set(index, value);
+  // @@protoc_insertion_point(field_set:protocol.UserAttack.targetCodes)
+}
+inline void UserAttack::_internal_add_targetcodes(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  targetcodes_.Add(value);
+}
+inline void UserAttack::add_targetcodes(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_add_targetcodes(value);
+  // @@protoc_insertion_point(field_add:protocol.UserAttack.targetCodes)
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >&
+UserAttack::_internal_targetcodes() const {
+  return targetcodes_;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >&
+UserAttack::targetcodes() const {
+  // @@protoc_insertion_point(field_list:protocol.UserAttack.targetCodes)
+  return _internal_targetcodes();
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >*
+UserAttack::_internal_mutable_targetcodes() {
+  return &targetcodes_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >*
+UserAttack::mutable_targetcodes() {
+  // @@protoc_insertion_point(field_mutable_list:protocol.UserAttack.targetCodes)
+  return _internal_mutable_targetcodes();
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

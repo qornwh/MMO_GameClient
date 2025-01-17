@@ -5,6 +5,7 @@
 
 #include "BJS_AnimInstance_Base.h"
 #include "BJS_BuffSkill.h"
+#include "BJS_Bullet.h"
 #include "BJS_CharaterSkill.h"
 #include "BJS_CharaterUIWidget.h"
 #include "BJS_WeaponActor.h"
@@ -20,7 +21,6 @@
 #include "SkillStruct.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
-// Sets default values
 ABJS_Character::ABJS_Character()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -52,7 +52,6 @@ ABJS_Character::ABJS_Character()
 	HpBar->SetRelativeScale3D(FVector(0.5f, 0.5f, 0.5f));
 }
 
-// Called when the game starts or when spawned
 void ABJS_Character::BeginPlay()
 {
 	Super::BeginPlay();
@@ -64,6 +63,12 @@ void ABJS_Character::BeginPlay()
 		WeaponMeshList = instance->GetWeaponMeshList();
 		FireStartFXList = instance->GetFireStartFX();
 		BulletFXList = instance->GetNiagaraSkillMap();
+	}
+
+	auto mode = Cast<UBJS_GameInstance>(GetGameInstance());
+	if (mode)
+	{
+		BulletClass = mode->GetSkillBulletMap()[0];		
 	}
 }
 
@@ -142,7 +147,6 @@ void ABJS_Character::UpdateBuff(float DeltaTime)
 	}
 }
 
-// Called every frame
 void ABJS_Character::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -150,6 +154,7 @@ void ABJS_Character::Tick(float DeltaTime)
 	UpdateHpWidget();
 	UpdateBuff(DeltaTime);
 	Move(DeltaTime);
+	SetAttackTimer(DeltaTime);
 }
 
 // Called to bind functionality to input
@@ -166,6 +171,19 @@ bool ABJS_Character::GetAim()
 void ABJS_Character::SetAim(bool flag)
 {
 	IsAim = flag;
+}
+
+void ABJS_Character::SetAttackTimer(float DeltaTime)
+{
+	// 총 쏘는 애니메이션 종료는 같이쓴다(나, 다른플레이어)
+	if (AttackTimer < 0)
+		return;
+	AttackTimer += DeltaTime;
+	if (AttackTimer >= AttackCheckTime)
+	{
+		AttackTimer = -1;
+		Weapon->FireEnd(nullptr);
+	}
 }
 
 void ABJS_Character::StopJump()
@@ -265,11 +283,35 @@ void ABJS_Character::PlayAttack(int32 Code, bool ignore)
 		{
 			return;
 		}
-
-		Weapon->FireStart(GetActorForwardVector());
+		Weapon->FireStart();
 		if (AnimInstance)
 			AnimInstance->PlayAttackAM();
 	}
+
+	FVector SpawnLocation = Weapon->GetSpawnLocation();
+	auto mode = Cast<UBJS_GameInstance>(GetGameInstance());
+
+	ABJS_Bullet* Bullet = nullptr;
+	if (Code == 0)
+	{
+		Bullet = GetWorld()->SpawnActor<ABJS_Bullet>(BulletClass, SpawnLocation, FRotator::ZeroRotator);
+		Bullet->InitStartDirection(GetActorForwardVector(), SpawnLocation, Code, PresentAttackNumber);
+		Bullet->SetState(State);
+		AttackTimer = 0;
+		AttackCheckTime = 0.25f;
+		if (PresentAttackNumber >= 0)
+			Bullets.Add(PresentAttackNumber, Bullet);
+	}
+	else
+	{
+		Bullet = GetWorld()->SpawnActor<ABJS_Bullet>(mode->GetSkillBulletMap()[Code], SpawnLocation, FRotator::ZeroRotator);
+		Bullet->InitStartDirection(FVector::ZeroVector, SpawnLocation, Code, PresentAttackNumber);
+		Bullet->SetActorRelativeRotation(FRotator(90, 0, 0));
+		Bullet->SetActorRelativeLocation(FVector(Bullet->GetHightSize(), 0, 0));
+		Bullet->SetState(State);
+	}
+	if (PresentAttackNumber >= 0 && Bullet != nullptr)
+		Bullets.Add(PresentAttackNumber, Bullet);
 }
 
 void ABJS_Character::PlaySkill(int32 Code, bool ignore)
@@ -297,7 +339,7 @@ void ABJS_Character::PlaySkill(int32 Code, bool ignore)
 				return;
 			}
 
-			Weapon->FireStart(GetActorForwardVector(), Code);
+			Weapon->FireStart();
 			if (AnimInstance)
 				AnimInstance->PlayAttackAM();
 		}
@@ -383,16 +425,6 @@ void ABJS_Character::TakeHeal(float Heal)
 			DemageActor->SetHeal(Heal);
 		}
 	}
-}
-
-void ABJS_Character::SetTarget(int32 UUid)
-{
-	TargetUUid = UUid;
-}
-
-int32 ABJS_Character::GetTarget()
-{
-	return TargetUUid;
 }
 
 bool ABJS_Character::GetHitted()

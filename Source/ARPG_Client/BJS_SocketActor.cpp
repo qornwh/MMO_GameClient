@@ -491,7 +491,6 @@ void ABJS_SocketActor::CharaterUpdateHandler(BYTE* Buffer, PacketHeader* Header,
 						{
 							if (!state.has_attack()) break;
 							auto& attack = state.attack();
-							MonsterState[uuid]->GetTarget()->SetTarget(attack.target_uuid());
 							MonsterState[uuid]->GetTarget()->Attack();
 						}
 						break;
@@ -569,7 +568,7 @@ void ABJS_SocketActor::AttackHandler(BYTE* Buffer, PacketHeader* Header, int32 O
 	protocol::CAttack pkt;
 	if (PacketHandlerUtils::ParsePacketHandler(pkt, Buffer, Header->GetSize() - Offset, Offset))
 	{
-		UE_LOG(LogTemp, Log, TEXT("ATTACK %d : %d!!!"), pkt.uuid(), pkt.skill_code());
+		UE_LOG(LogTemp, Log, TEXT("ATTACK %d : %d!!!"), pkt.uuid(), pkt.skillcode());
 		auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
 		check(mode);
 
@@ -577,59 +576,13 @@ void ABJS_SocketActor::AttackHandler(BYTE* Buffer, PacketHeader* Header, int32 O
 		auto& PlayerState = mode->GetCharaterStateList();
 		if (PlayerState.Contains(uuid) && PlayerState[uuid]->GetTarget())
 		{
-			PlayerState[uuid]->GetTarget()->PlayMotion(pkt.skill_code(), true);
+			PlayerState[uuid]->GetTarget()->PlayMotion(pkt.skillcode(), true);
 		}
 	}
 }
 
 void ABJS_SocketActor::CharaterDemageHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset)
 {
-	protocol::SUnitDemage pkt;
-	if (PacketHandlerUtils::ParsePacketHandler(pkt, Buffer, Header->GetSize() - Offset, Offset))
-	{
-		int32 uuid = pkt.uuid();
-		auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
-		check(mode);
-		auto& MonsterState = mode->GetMonsterStateList();
-		auto& PlayerState = mode->GetCharaterStateList();
-
-		for (auto& demage : pkt.demage())
-		{
-			bool isMonster = demage.is_monster();
-			int32 targetUUid = demage.uuid();
-			int32 demageVal = demage.demage();
-			bool hasPos = demage.has_position();
-
-			if (isMonster)
-			{
-				if (MonsterState.Contains(targetUUid) && MonsterState[targetUUid]->GetTarget())
-				{
-					MonsterState[targetUUid]->GetTarget()->TakeDemage(demageVal);
-					if (hasPos)
-					{
-						FVector loc = MonsterState[targetUUid]->GetTarget()->GetActorLocation();
-						loc.X = demage.position().x();
-						loc.Y = demage.position().y();
-						MonsterState[targetUUid]->GetTarget()->SetActorLocation(loc);
-					}
-				}
-			}
-			else
-			{
-				if (PlayerState.Contains(targetUUid) && PlayerState[targetUUid]->GetTarget())
-				{
-					if (demage.is_heal())
-					{
-						PlayerState[targetUUid]->GetTarget()->TakeHeal(demageVal);
-					}
-					else
-					{
-						PlayerState[targetUUid]->GetTarget()->TakeDemage(demageVal);
-					}
-				}
-			}
-		}
-	}
 }
 
 void ABJS_SocketActor::PlayerAimHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset)

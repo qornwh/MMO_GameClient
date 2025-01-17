@@ -147,87 +147,10 @@ void ABJS_InGameMode::SetTakeDemageList(TSharedPtr<class BJS_CharaterState> Stat
 
 void ABJS_InGameMode::TakeDemage(bool isMonster, int32 skillCode, TSharedPtr<class BJS_CharaterState> State)
 {
-	protocol::SUnitDemage pkt;
-	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
-	pkt.set_uuid(State->GetUUid());
-	pkt.set_is_monster(isMonster);
-	if (!State)
-	{
-		TakeDemageCnt = 0;
-		return;
-	}
-	for (int32 i = 0; i < TakeDemageCnt; i++)
-	{
-		auto targetState = TakeDemageList[i];
-		if (!targetState.Pin())
-			continue;
-
-		auto curState = targetState.Pin();
-		if (isMonster)
-		{
-			int32 attack = State->GetAttack();
-			// 레벨 1당 데미지 5퍼 증가
-			int32 lv = State->GetLv();
-			double skillAttackPer = 1.0f;
-			if (instance->GetSkillStructs().Contains(skillCode))
-			{
-				skillAttackPer = instance->GetSkillStructs()[skillCode]->Value / 100.f;
-			}
-			// 소수점 버림
-			int32 demageValue = attack * skillAttackPer * (1 + (lv - 1) * 0.05);
-			protocol::Demage* demage = pkt.add_demage();
-			demage->set_uuid(curState->GetUUid());
-			demage->set_is_monster(true);
-			demage->set_demage(demageValue);
-			protocol::Position* position = new protocol::Position();
-			position->set_x(curState->GetX());
-			position->set_y(curState->GetY());
-			position->set_yaw(curState->GetYaw());
-			demage->set_allocated_position(position);
-
-			curState->GetTarget()->TakeDemage(demageValue, State->GetTarget());
-		}
-		else
-		{
-			// 해당 경우 내가 맞음
-			int32 attack = State->GetAttack();
-			int32 lv = State->GetLv();
-			double skillAttackPer = 1.0f;
-			int32 demageValue = attack * skillAttackPer * (1 + (lv - 1) * 0.05);
-
-			protocol::Demage* demage = pkt.add_demage();
-			demage->set_uuid(State->GetUUid());
-			demage->set_is_monster(false);
-			demage->set_demage(demageValue);
-
-			curState->GetTarget()->TakeDemage(demageValue, State->GetTarget());
-		}
-	}
-	TakeDemageCnt = 0;
-	SocketActor->SendMessage(pkt, protocol::MessageCode::S_UNITDEMAGE);
 }
 
 void ABJS_InGameMode::TakeHeal(int32 SkillCode, TSharedPtr<class BJS_CharaterState> State)
 {
-	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
-	if (instance)
-	{
-		int32 heal = 0;
-		if (instance->GetSkillStructs().Contains(SkillCode))
-		{
-			heal = instance->GetSkillStructs()[SkillCode]->Value;
-		}
-		
-		protocol::SUnitDemage pkt;
-		pkt.set_uuid(State->GetUUid());
-		protocol::Demage* demage = pkt.add_demage();
-		demage->set_uuid(State->GetUUid());
-		demage->set_is_monster(false);
-		demage->set_demage(heal);
-		demage->set_is_heal(true);
-		SocketActor->SendMessage(pkt, protocol::MessageCode::S_UNITDEMAGE);
-		State->GetTarget()->TakeHeal(heal);
-	}
 }
 
 void ABJS_InGameMode::LoadGame()

@@ -47,6 +47,8 @@ enum MessageCode {
     
     C_UPDATEITEMS = 35; // 인벤토리 아이템 장착, 장착해제등
     
+    C_ATTACKS = 100; // 공격
+    
     // 더미용
     D_LOAD = 101;
 }
@@ -164,13 +166,6 @@ message Attack {
     int32 uuid = 1;
     int32 skill_code = 2;
     int32 target_uuid = 3;
-}
-
-message CAttack {
-    int32 uuid = 1;
-    int32 skill_code = 2;
-    int32 target_uuid = 3;
-    Position position = 4;
 }
 
 message Demage {
@@ -355,4 +350,18 @@ message SSendMail {
     int32 gold = 2;
     repeated ItemEquip itemEquips = 3; // 메시지보내고 소모된 아이템들
     repeated ItemEquip etcItems = 4; // 메시지보내고 소모된 아이템들
+}
+
+message CAttack {
+    int32 attackNumber = 1;
+    int32 uuid = 2;
+    int32 skillCode = 3;
+    Position position = 4;
+}
+
+message UserAttack {
+    int32 attackNumber = 1;
+    int32 skillCode = 2;
+    Position position = 3;
+    repeated int32 targetCodes = 4;
 }

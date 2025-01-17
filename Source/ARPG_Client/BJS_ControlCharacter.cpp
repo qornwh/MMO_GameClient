@@ -3,12 +3,13 @@
 
 #include "BJS_ControlCharacter.h"
 
-#include "BJS_AnimInstance_Base.h"
+#include "BJS_Bullet.h"
 #include "BJS_CharaterState.h"
 #include "BJS_GameInstance.h"
 #include "BJS_GameUI.h"
 #include "BJS_InGameMode.h"
 #include "BJS_SocketActor.h"
+#include "BulletCollisionUtils.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -58,6 +59,9 @@ ABJS_ControlCharacter::ABJS_ControlCharacter()
 	FpsCamera->SetActive(false);
 	SetInputAction();
 	HpBar->DestroyComponent();
+
+	// 불렛 초기화
+	PresentAttackNumber = 0;
 }
 
 void ABJS_ControlCharacter::PostInitializeComponents()
@@ -96,10 +100,9 @@ void ABJS_ControlCharacter::BeginPlay()
 
 void ABJS_ControlCharacter::Tick(float DeltaTime)
 {
-	// Super::Tick(DeltaSeconds);
-
 	SendMoveMessage();
 	UpdateBuff(DeltaTime);
+	SetAttackTimer(DeltaTime);
 	for (auto& entry : SkillList)
 	{
 		int32 keyBind = entry.Key;
@@ -114,10 +117,13 @@ void ABJS_ControlCharacter::Tick(float DeltaTime)
 			}
 		}
 	}
+	// 여기서 총알 충돌처리한다.
+	BulletAttackObject();
 }
 
 void ABJS_ControlCharacter::Move(float DeltaTime)
 {
+	// not use 
 }
 
 void ABJS_ControlCharacter::Move(const FInputActionValue& Value)
@@ -252,7 +258,7 @@ void ABJS_ControlCharacter::SetInputAction()
 		KeyCtrlAction = IA_Ctrl.Object;
 }
 
-void ABJS_ControlCharacter::SendAttackMessage(int32 Code)
+void ABJS_ControlCharacter::SendAttackMessage(int32 SkillCode)
 {
 	auto socketActor = Cast<ABJS_GameModeBase>(GetWorld()->GetAuthGameMode())->GetSocketActor();
 	if (socketActor)
@@ -260,8 +266,9 @@ void ABJS_ControlCharacter::SendAttackMessage(int32 Code)
 		protocol::CAttack pkt;
 		FVector CurPos = GetActorLocation();
 		FRotator CurRot = GetActorRotation();
-		pkt.set_skill_code(Code);
-		pkt.set_target_uuid(-1);
+		pkt.set_skillcode(SkillCode);
+		pkt.set_attacknumber(PresentAttackNumber);
+		pkt.set_uuid(State->GetUUid());
 		protocol::Position* position = new protocol::Position();
 		position->set_x(CurPos.X);
 		position->set_y(CurPos.Y);
@@ -322,10 +329,164 @@ void ABJS_ControlCharacter::SendMoveMessage()
 	}
 }
 
+void ABJS_ControlCharacter::SendAttackObjectMessage(int32 SkillCode, int32 AttackNumber, const TArray<TTuple<int, ABJS_Character*>>& successAttacks)
+{
+	FVector CurPos = GetActorLocation();
+	FRotator CurRot = GetActorRotation();
+	auto socketActor = Cast<ABJS_GameModeBase>(GetWorld()->GetAuthGameMode())->GetSocketActor();
+	if (socketActor)
+	{
+		protocol::UserAttack pkt;
+		pkt.set_skillcode(SkillCode);
+		pkt.set_attacknumber(AttackNumber);
+		protocol::Position* position = new protocol::Position();
+		position->set_x(CurPos.X);
+		position->set_y(CurPos.Y);
+		position->set_z(CurPos.Z);
+		position->set_yaw(CurRot.Yaw);
+		pkt.set_allocated_position(position);
+
+		for (int i = 0; i < successAttacks.Num(); i++)
+		{
+			auto success = successAttacks[i];
+			pkt.add_targetcodes(success.Value->GetState()->GetUUid());
+		}
+		socketActor->SendMessage(pkt, protocol::MessageCode::C_ATTACKS);
+	}
+}
+
+void ABJS_ControlCharacter::BulletAttackObject()
+{
+	auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
+	if (mode == nullptr)
+		return;
+			
+	for (auto e : Bullets)
+	{
+		ABJS_Bullet* bullet = e.Value;
+		if (bullet)
+		{
+			// 공격 판단.
+			// 서버 현재 포지션, 타겟, 공격 코드 전달.
+			float bulletRadius = bullet->GetScaledCapsuleRadius();
+			float bulletWidth = bullet->GetCollisionWidth();
+			int32 skillCode = bullet->GetSkillCode();
+			int32 attackNumber = e.Key;
+			FVector presentPos = bullet->GetPresentPos();
+			FVector position = bullet->GetActorLocation();
+
+			if (bulletWidth > 0.f)
+			{
+				FVector dVector = position.GetSafeNormal() * bulletWidth;
+				presentPos = position - dVector;			
+				presentPos = position + dVector;					
+			}
+
+			DrawDebugCapsule(GetWorld(), presentPos, bulletRadius, bulletRadius, bullet->GetActorRotation().Quaternion(), FColor::Yellow, true, -1, 0, 1);
+			DrawDebugCapsule(GetWorld(), position, bulletRadius, bulletRadius, bullet->GetActorRotation().Quaternion(), FColor::Yellow, true, -1, 0, 1);
+			
+			TArray<TTuple<int, ABJS_Character*>> successAttacks;
+			for (auto& monsterEntry : mode->GetMonsterStateList())
+			{
+				TSharedPtr<BJS_CharaterState> monsterState = monsterEntry.Value;
+				if (monsterState == nullptr)
+					continue;
+				
+				ABJS_Character* monster = monsterState->GetTarget();
+				FVector monsterPosition = monster->GetActorLocation();
+				auto monsterCollision = monster->GetCapsuleComponent();
+				float monsterRadius = monsterCollision->GetScaledCapsuleRadius();
+				float monsterHight = monsterCollision->GetScaledCapsuleHalfHeight();
+
+				if (BulletCollisionUtils::CheckAABB2D(position, presentPos, monsterPosition, bulletRadius - monsterRadius))
+				{
+					float d = BulletCollisionUtils::CapsuleToCircleDistance2D(position, presentPos, monsterPosition);
+
+					if (d <= monsterRadius + bulletRadius)
+					{
+						successAttacks.Add({d, monster});
+					}
+				}
+			
+				// AABB 비교
+				// if (FMath::Min(position.X, presentPos.X) - bulletRadius <= monsterPosition.X && monsterPosition.X <=  FMath::Max(position.X, presentPos.X) + bulletRadius)
+				// {
+				// 	if (FMath::Min(position.Y, presentPos.Y) - bulletRadius <= monsterPosition.Y && monsterPosition.Y <=  FMath::Max(position.Y, presentPos.Y) + bulletRadius)
+				// 	{
+				// 		선분(PresentPos-position)과 점(캐릭터는 전부 캡슐로 위에서보므로 원이된다)거리
+				// 		FVector bulletToPos = presentPos - position;
+				// 		FVector monsterToPos = monsterPosition - position;
+				// 		DrawDebugCapsule(GetWorld(), monster->GetActorLocation(), monsterHight, monsterRadius, monster->GetActorRotation().Quaternion(), FColor::Blue, true, -1, 0, 1);
+				// 		
+				// 		float dot = FVector::DotProduct(monsterToPos, bulletToPos);
+				// 		float let2sqrt = bulletToPos.SquaredLength();
+				// 		float t = dot / let2sqrt;
+				// 		float d;
+				// 		
+				// 		if (t < 0.f)
+				// 		{
+				// 			d = FVector(monsterPosition - position).Length();
+				// 		}
+				// 		else if (t > 1.f)
+				// 		{
+				// 			d = FVector(monsterPosition - presentPos).Length();
+				// 		}
+				// 		else
+				// 		{
+				// 			FVector h(position.X + t * bulletToPos.X, position.Y + t * bulletToPos.Y, position.Z);
+				// 			d = (monsterPosition - h).Length();
+				// 		}
+				// 		
+				// 		if (d <= monsterRadius + bulletRadius)
+				// 		{
+				// 			// 충돌 성공
+				// 			Bullets[attackNumber] = nullptr;
+				// 			Bullets.Remove(AttackNumber);
+				// 		}
+				// 	}
+				// }
+			}
+			
+			bullet->SetPresentPos();
+			if (Bullets[attackNumber] != nullptr && bullet->IsCoolDown())
+			{
+				Bullets[attackNumber] = nullptr;
+				Bullets.Remove(PresentAttackNumber);
+			}
+			
+			successAttacks.Sort([](TTuple<int, ABJS_Character*> a, TTuple<int, ABJS_Character*> b){
+				return a.Key < b.Key;	
+			});
+
+			if (successAttacks.Num() > 0)
+			{
+				while (successAttacks.Num() > 1)
+				{
+					successAttacks.Pop();
+				}
+				
+				SendAttackObjectMessage(skillCode, attackNumber, successAttacks);
+			}
+		}
+	}
+}
+
 void ABJS_ControlCharacter::SetState(TSharedPtr<BJS_CharaterState> state)
 {
 	check(state.IsValid());
 	State = state;
+}
+
+void ABJS_ControlCharacter::PlayAttack(int32 Code, bool ignore)
+{
+	Super::PlayAttack(Code, ignore);
+	++PresentAttackNumber;
+	PresentAttackNumber %= BulletNumberMax;
+}
+
+void ABJS_ControlCharacter::PlaySkill(int32 Code, bool ignore)
+{
+	Super::PlaySkill(Code, ignore);
 }
 
 void ABJS_ControlCharacter::ShowInventoryUI()

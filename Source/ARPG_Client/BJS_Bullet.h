@@ -2,8 +2,9 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "BJS_ControlCharacter.h"
+#include "CoreMinimal.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/Actor.h"
 #include "BJS_Bullet.generated.h"
 
@@ -28,38 +29,38 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	virtual void Destroyed() override;
 
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	void InitStartDirection(FVector Direction, FVector Pos);
+	void InitStartDirection(FVector Direction, FVector Pos, int32 SkillCode, int32 AttackNumber = 0);
 	void ChangeDirection(FVector TargetDirection = FVector::Zero());
-
-	UFUNCTION()
-	void OnHitEvent(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 	int32 GetHightSize();
 	int32 GetAttackTime();
-	void HitCheck();
-	void SetTarget(class ABJS_Character* Target, class ABJS_Character* Parent);
 	void SetSkillCode(int32 Code);
 	void SetState(TSharedPtr<class BJS_CharaterState> State);
+	int32 GetSkillCode() const { return _SkillCode; }
+	float GetScaledCapsuleRadius() const { return CollisionComponent->GetScaledCapsuleRadius(); }
+	void SetPresentPos();
+	FVector GetPresentPos() { return PresentPos; }
+	float GetCollisionWidth() const;
+	bool IsCoolDown();;
 
 private:
 	TWeakPtr<class BJS_CharaterState> CharaterState;
-	int32 SkillCode = 0;
-	FVector StartPos = FVector::Zero();
+	int32 _SkillCode = 0;
+	int32 _AttackNumber;
+	FVector PresentPos = FVector::Zero();
+	float AttackTimer = 0;
+	bool IsTargeting = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Input, meta = (AllowPrivateAccess = "true"))
 	float Speed = 3000.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Attack, meta = (AllowPrivateAccess = "true"))
-	bool isMultipleAttack = false;
+	bool IsMultipleAttack = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Attack, meta = (AllowPrivateAccess = "true"))
 	float AttackCheckTimer = 1.f;
-
-	float AttackTimer = 0;
-	class ABJS_Character* CurrentTarget;
-	class ABJS_Character* ParentTarget;
-	bool IsTargeting = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = InterVal, meta = (AllowPrivateAccess = "true"))
+	float InterVal = 0.2f;
 };

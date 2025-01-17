@@ -3,8 +3,6 @@
 
 #include "BJS_WeaponActor.h"
 
-#include "BJS_Bullet.h"
-#include "BJS_GameInstance.h"
 #include "BJS_InGameMode.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "NiagaraFunctionLibrary.h"
@@ -27,74 +25,21 @@ ABJS_WeaponActor::ABJS_WeaponActor()
 	SkillComponent = CreateDefaultSubobject<UNiagaraComponent>(TEXT("SkillFX"));
 	SkillComponent->SetupAttachment(RootComponent);
 	SkillComponent->bAutoActivate = false;
-	// 대처 필요!!
-	AttackTimer = -1.f;
-}
-
-// Called when the game starts or when spawned
-void ABJS_WeaponActor::BeginPlay()
-{
-	Super::BeginPlay();
-
-	auto mode = Cast<UBJS_GameInstance>(GetGameInstance());
-	if (mode)
-	{
-		BulletClass = mode->GetSkillBulletMap()[0];		
-	}
-}
-
-void ABJS_WeaponActor::Destroyed()
-{
-	Super::Destroyed();
-
-	UE_LOG(LogTemp, Log, TEXT("Destory Bullet !!!"));
 }
 
 // Called every frame
 void ABJS_WeaponActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	if (AttackTimer < 0) return;
-	
-	AttackTimer += DeltaTime;
-	if (AttackTimer >= AttackCheckTime)
-	{
-		AttackTimer = -1;
-		FireEnd(nullptr) ;
-	}
 }
 
-void ABJS_WeaponActor::FireStart(FVector Direction, int32 Code)
+void ABJS_WeaponActor::FireStart()
 {
 	Fire = true;
 
 	FName WeaponSocket(TEXT("MuzzleFlash"));
 	if (SkeletalMeshComponent->DoesSocketExist(WeaponSocket))
 	{
-		FVector SpawnLocation = SkeletalMeshComponent->GetSocketLocation(WeaponSocket);
-		if (Code == 0)
-		{
-			auto Bullet = GetWorld()->SpawnActor<ABJS_Bullet>(BulletClass, SpawnLocation, FRotator::ZeroRotator);
-			Bullet->InitStartDirection(Direction, SpawnLocation);
-			if (CharaterState.IsValid())
-				Bullet->SetState(CharaterState.Pin());
-			AttackTimer = 0;
-			AttackCheckTime = 0.25f;
-		}
-		else
-		{
-			auto Bullet = GetWorld()->SpawnActor<ABJS_Bullet>(SkillClass, SpawnLocation, FRotator::ZeroRotator);
-			Bullet->InitStartDirection(FVector::ZeroVector, SpawnLocation);
-			Bullet->AttachToActor(this, FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
-			Bullet->SetActorRelativeRotation(FRotator(90, 0, 0));
-			Bullet->SetActorRelativeLocation(FVector(Bullet->GetHightSize(), 0, 0));
-			Bullet->SetSkillCode(Code);
-			SkillComponent->Activate(true);
-			if (CharaterState.IsValid())
-				Bullet->SetState(CharaterState.Pin());
-		}
-
 		// 파티클 스타트
 		if (ParticleComponent && ParticleComponent->Template)
 		{
@@ -152,17 +97,19 @@ void ABJS_WeaponActor::SetBulletFX(TObjectPtr<class UNiagaraSystem> Particle, in
 			SkillComponent->AddLocalRotation(FRotator(0,180,0));
 		}
 	}
-	
-	auto mode = Cast<UBJS_GameInstance>(GetGameInstance());
-	if (mode)
-	{
-		SkillClass = mode->GetSkillBulletMap()[Code];		
-	}
-
-	check(SkillClass);
 }
 
 void ABJS_WeaponActor::SetState(TSharedPtr<BJS_CharaterState> State)
 {
 	CharaterState = State;
+}
+
+FVector ABJS_WeaponActor::GetSpawnLocation() const
+{
+	FName WeaponSocket(TEXT("MuzzleFlash"));
+	if (SkeletalMeshComponent->DoesSocketExist(WeaponSocket))
+	{
+		return SkeletalMeshComponent->GetSocketLocation(WeaponSocket);
+	}
+	return GetActorLocation();
 }

@@ -27,38 +27,21 @@ public:
 	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly)
 	class UNiagaraComponent* SkillComponent;
 
-	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly)
-	TSubclassOf<class AActor> BulletClass;
-
-	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly)
-	TSubclassOf<class AActor> SkillClass;
-
 	FOnAttackEnd OnAttackEnd;
-
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-	virtual void Destroyed() override;
-
-public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	void FireStart(FVector Direction, int32 Code = 0);
-	bool IsFire();
-
+	
 	UFUNCTION()
 	void FireEnd(UNiagaraComponent* FinishedComponent);
-
+	
+	virtual void Tick(float DeltaTime) override;
+	void FireStart();
+	bool IsFire();
 	void SetSkeletalMesh(TObjectPtr<class USkeletalMesh> CurrentMesh) const;
 	void SetMuzzleFX(TObjectPtr<class UParticleSystem> Particle) const;
 	void SetBulletFX(TObjectPtr<class UNiagaraSystem> Particle, int32 Code);
 	void SetState(TSharedPtr<class BJS_CharaterState> State);
+	FVector GetSpawnLocation() const;
 
 private:
 	TWeakPtr<class BJS_CharaterState> CharaterState;
 	bool Fire = false;
-
-	float AttackCheckTime = 0.25f;
-	float AttackTimer = 0.f;
 };

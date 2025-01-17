@@ -98,25 +98,25 @@ void ABJS_Monster::Attack()
 
 	int32 SkillCode = 0;
 	FVector SpawnLocation = GetActorLocation();
-	auto Bullet = GetWorld()->SpawnActor<ABJS_Bullet>(BulletClass, SpawnLocation, FRotator::ZeroRotator);
-	Bullet->InitStartDirection(GetActorForwardVector(), SpawnLocation);
-	Bullet->SetSkillCode(SkillCode);
-	if (TargetUUid >= 0)
-	{
-		auto instance = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
-		if (instance)
-		{
-			if (instance->GetCharaterStateList().Contains(TargetUUid))
-			{
-				auto BJS_Target = instance->GetCharaterStateList()[TargetUUid];
-				if (BJS_Target && BJS_Target->GetTarget())
-				{
-					Bullet->SetTarget(BJS_Target->GetTarget(), this);
-					UE_LOG(LogTemp, Log,  TEXT("Spawn Bullet !!!!"));
-				}
-			}
-		}
-	}
+	// auto Bullet = GetWorld()->SpawnActor<ABJS_Bullet>(BulletClass, SpawnLocation, FRotator::ZeroRotator);
+	// Bullet->InitStartDirection(GetActorForwardVector(), SpawnLocation);
+	// Bullet->SetSkillCode(SkillCode);
+	// if (TargetUUid >= 0)
+	// {
+	// 	auto instance = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
+	// 	if (instance)
+	// 	{
+	// 		if (instance->GetCharaterStateList().Contains(TargetUUid))
+	// 		{
+	// 			auto BJS_Target = instance->GetCharaterStateList()[TargetUUid];
+	// 			if (BJS_Target && BJS_Target->GetTarget())
+	// 			{
+	// 				Bullet->SetTarget(BJS_Target->GetTarget(), this);
+	// 				UE_LOG(LogTemp, Log,  TEXT("Spawn Bullet !!!!"));
+	// 			}
+	// 		}
+	// 	}
+	// }
 }
 
 void ABJS_Monster::AttackEnd()

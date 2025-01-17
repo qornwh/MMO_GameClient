@@ -28,9 +28,6 @@ protected:
 	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly)
 	class UStaticMeshComponent* MonsterMeshComponent;
 	
-	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly)
-	TSubclassOf<class AActor> BulletClass;
-	
 private:
 	TMap<int32, TObjectPtr<class UStaticMesh>> MonsterMeshList;
 };
