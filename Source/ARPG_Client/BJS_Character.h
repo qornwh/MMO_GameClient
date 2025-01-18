@@ -38,7 +38,7 @@ public:
 	virtual void Attack();
 	virtual void AttackEnd();
 	void PlayMotion(int32 Code, bool ignore = false);
-	virtual void PlayAttack(int32 Code, bool ignore = false);
+	virtual bool PlayAttack(int32 Code, bool ignore = false);
 	virtual void PlaySkill(int32 Code, bool ignore = false);
 	TSharedPtr<class BJS_CharaterState> GetState();
 	virtual void SetState(TSharedPtr<class BJS_CharaterState> state);

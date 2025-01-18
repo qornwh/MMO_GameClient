@@ -1,6 +1,8 @@
 ﻿#pragma once
 
-class BulletCollisionUtils
+#include "CoreMinimal.h"
+
+class ARPG_CLIENT_API BulletCollisionUtils
 {
 public:
 	static bool CheckAABB2D(const FVector& A, const FVector& B, const FVector& Target, float dLen)
@@ -39,7 +41,7 @@ public:
 		}
 		else
 		{
-			FVector h(A.X + t * AToTarget.X, A.Y + t * AToTarget.Y, A.Z);
+			FVector h(A.X + t * AToB.X, A.Y + t * AToB.Y, A.Z);
 			d = (Target - h).Length();
 		}
 

@@ -273,7 +273,7 @@ void ABJS_Character::PlayMotion(int32 Code, bool ignore)
 	}
 }
 
-void ABJS_Character::PlayAttack(int32 Code, bool ignore)
+bool ABJS_Character::PlayAttack(int32 Code, bool ignore)
 {
 	// 공격 스킬
 	if (IsAim && Weapon)
@@ -281,37 +281,38 @@ void ABJS_Character::PlayAttack(int32 Code, bool ignore)
 		IsAttack = false;
 		if (Weapon->IsFire() && !ignore)
 		{
-			return;
+			return false;
 		}
 		Weapon->FireStart();
 		if (AnimInstance)
 			AnimInstance->PlayAttackAM();
-	}
 
-	FVector SpawnLocation = Weapon->GetSpawnLocation();
-	auto mode = Cast<UBJS_GameInstance>(GetGameInstance());
+		FVector SpawnLocation = Weapon->GetSpawnLocation();
+		auto mode = Cast<UBJS_GameInstance>(GetGameInstance());
 
-	ABJS_Bullet* Bullet = nullptr;
-	if (Code == 0)
-	{
-		Bullet = GetWorld()->SpawnActor<ABJS_Bullet>(BulletClass, SpawnLocation, FRotator::ZeroRotator);
-		Bullet->InitStartDirection(GetActorForwardVector(), SpawnLocation, Code, PresentAttackNumber);
-		Bullet->SetState(State);
-		AttackTimer = 0;
-		AttackCheckTime = 0.25f;
-		if (PresentAttackNumber >= 0)
+		ABJS_Bullet* Bullet = nullptr;
+		if (Code == 0)
+		{
+			Bullet = GetWorld()->SpawnActor<ABJS_Bullet>(BulletClass, SpawnLocation, FRotator::ZeroRotator);
+			Bullet->InitStartDirection(GetActorForwardVector(), SpawnLocation, Code, PresentAttackNumber);
+			Bullet->SetState(State);
+			AttackTimer = 0;
+			AttackCheckTime = 0.25f;
+		}
+		else
+		{
+			Bullet = GetWorld()->SpawnActor<ABJS_Bullet>(mode->GetSkillBulletMap()[Code], SpawnLocation, FRotator::ZeroRotator);
+			Bullet->InitStartDirection(FVector::ZeroVector, SpawnLocation, Code, PresentAttackNumber);
+			Bullet->SetActorRelativeRotation(FRotator(90, 0, 0));
+			Bullet->SetActorRelativeLocation(FVector(Bullet->GetHightSize(), 0, 0));
+			Bullet->SetState(State);
+		}
+		if (PresentAttackNumber >= 0 && Bullet != nullptr)
 			Bullets.Add(PresentAttackNumber, Bullet);
+
+		return true;
 	}
-	else
-	{
-		Bullet = GetWorld()->SpawnActor<ABJS_Bullet>(mode->GetSkillBulletMap()[Code], SpawnLocation, FRotator::ZeroRotator);
-		Bullet->InitStartDirection(FVector::ZeroVector, SpawnLocation, Code, PresentAttackNumber);
-		Bullet->SetActorRelativeRotation(FRotator(90, 0, 0));
-		Bullet->SetActorRelativeLocation(FVector(Bullet->GetHightSize(), 0, 0));
-		Bullet->SetState(State);
-	}
-	if (PresentAttackNumber >= 0 && Bullet != nullptr)
-		Bullets.Add(PresentAttackNumber, Bullet);
+	return false;
 }
 
 void ABJS_Character::PlaySkill(int32 Code, bool ignore)

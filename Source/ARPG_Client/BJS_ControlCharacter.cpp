@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "BJS_ControlCharacter.h"
 
 #include "BJS_Bullet.h"
@@ -9,6 +8,7 @@
 #include "BJS_GameUI.h"
 #include "BJS_InGameMode.h"
 #include "BJS_SocketActor.h"
+#include "BJS_WeaponActor.h"
 #include "BulletCollisionUtils.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -264,7 +264,7 @@ void ABJS_ControlCharacter::SendAttackMessage(int32 SkillCode)
 	if (socketActor)
 	{
 		protocol::CAttack pkt;
-		FVector CurPos = GetActorLocation();
+		FVector CurPos = Weapon->GetSpawnLocation();
 		FRotator CurRot = GetActorRotation();
 		pkt.set_skillcode(SkillCode);
 		pkt.set_attacknumber(PresentAttackNumber);
@@ -407,44 +407,6 @@ void ABJS_ControlCharacter::BulletAttackObject()
 						successAttacks.Add({d, monster});
 					}
 				}
-			
-				// AABB 비교
-				// if (FMath::Min(position.X, presentPos.X) - bulletRadius <= monsterPosition.X && monsterPosition.X <=  FMath::Max(position.X, presentPos.X) + bulletRadius)
-				// {
-				// 	if (FMath::Min(position.Y, presentPos.Y) - bulletRadius <= monsterPosition.Y && monsterPosition.Y <=  FMath::Max(position.Y, presentPos.Y) + bulletRadius)
-				// 	{
-				// 		선분(PresentPos-position)과 점(캐릭터는 전부 캡슐로 위에서보므로 원이된다)거리
-				// 		FVector bulletToPos = presentPos - position;
-				// 		FVector monsterToPos = monsterPosition - position;
-				// 		DrawDebugCapsule(GetWorld(), monster->GetActorLocation(), monsterHight, monsterRadius, monster->GetActorRotation().Quaternion(), FColor::Blue, true, -1, 0, 1);
-				// 		
-				// 		float dot = FVector::DotProduct(monsterToPos, bulletToPos);
-				// 		float let2sqrt = bulletToPos.SquaredLength();
-				// 		float t = dot / let2sqrt;
-				// 		float d;
-				// 		
-				// 		if (t < 0.f)
-				// 		{
-				// 			d = FVector(monsterPosition - position).Length();
-				// 		}
-				// 		else if (t > 1.f)
-				// 		{
-				// 			d = FVector(monsterPosition - presentPos).Length();
-				// 		}
-				// 		else
-				// 		{
-				// 			FVector h(position.X + t * bulletToPos.X, position.Y + t * bulletToPos.Y, position.Z);
-				// 			d = (monsterPosition - h).Length();
-				// 		}
-				// 		
-				// 		if (d <= monsterRadius + bulletRadius)
-				// 		{
-				// 			// 충돌 성공
-				// 			Bullets[attackNumber] = nullptr;
-				// 			Bullets.Remove(AttackNumber);
-				// 		}
-				// 	}
-				// }
 			}
 			
 			bullet->SetPresentPos();
@@ -477,11 +439,17 @@ void ABJS_ControlCharacter::SetState(TSharedPtr<BJS_CharaterState> state)
 	State = state;
 }
 
-void ABJS_ControlCharacter::PlayAttack(int32 Code, bool ignore)
+bool ABJS_ControlCharacter::PlayAttack(int32 Code, bool ignore)
 {
-	Super::PlayAttack(Code, ignore);
-	++PresentAttackNumber;
-	PresentAttackNumber %= BulletNumberMax;
+	if (Super::PlayAttack(Code, ignore))
+	{
+		SendAttackMessage();
+		
+		++PresentAttackNumber;
+		PresentAttackNumber %= BulletNumberMax;
+		return true;
+	}
+	return false;
 }
 
 void ABJS_ControlCharacter::PlaySkill(int32 Code, bool ignore)
@@ -599,6 +567,5 @@ void ABJS_ControlCharacter::ViewMouse(const FInputActionValue& Value)
 
 void ABJS_ControlCharacter::Attack()
 {
-	SendAttackMessage();
 	PlayAttack(0);
 }

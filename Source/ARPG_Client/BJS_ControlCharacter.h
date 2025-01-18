@@ -90,7 +90,7 @@ protected:
 	void BulletAttackObject();
 	
 	virtual void SetState(TSharedPtr<BJS_CharaterState> state) override;
-	virtual void PlayAttack(int32 Code, bool ignore = false) override;
+	virtual bool PlayAttack(int32 Code, bool ignore = false) override;
 	virtual void PlaySkill(int32 Code, bool ignore = false) override;
 
 public:
