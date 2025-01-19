@@ -382,8 +382,8 @@ void ABJS_ControlCharacter::BulletAttackObject()
 				presentPos = position + dVector;					
 			}
 
-			DrawDebugCapsule(GetWorld(), presentPos, bulletRadius, bulletRadius, bullet->GetActorRotation().Quaternion(), FColor::Yellow, true, -1, 0, 1);
-			DrawDebugCapsule(GetWorld(), position, bulletRadius, bulletRadius, bullet->GetActorRotation().Quaternion(), FColor::Yellow, true, -1, 0, 1);
+			// DrawDebugCapsule(GetWorld(), presentPos, bulletRadius, bulletRadius, bullet->GetActorRotation().Quaternion(), FColor::Yellow, true, -1, 0, 1);
+			// DrawDebugCapsule(GetWorld(), position, bulletRadius, bulletRadius, bullet->GetActorRotation().Quaternion(), FColor::Yellow, true, -1, 0, 1);
 			
 			TArray<TTuple<int, ABJS_Character*>> successAttacks;
 			for (auto& monsterEntry : mode->GetMonsterStateList())
@@ -405,6 +405,7 @@ void ABJS_ControlCharacter::BulletAttackObject()
 					if (d <= monsterRadius + bulletRadius)
 					{
 						successAttacks.Add({d, monster});
+						UE_LOG(LogGameMode, Log, TEXT("attack ok %d : %lf"), monsterState->GetUUid(), d);
 					}
 				}
 			}

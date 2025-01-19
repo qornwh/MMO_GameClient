@@ -171,14 +171,11 @@ message Attack {
 message Demage {
     int32 uuid = 1;
     int32 demage = 2;
-    Position position = 3;
     bool is_heal = 4;
     bool is_monster = 10;
 }
 
 message SUnitDemage {
-    int32 uuid = 1;
-    bool is_monster = 2;
     repeated Demage demage = 3;
 }
 

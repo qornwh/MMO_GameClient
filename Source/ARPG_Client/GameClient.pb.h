@@ -3554,30 +3554,11 @@ class Demage final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kPositionFieldNumber = 3,
     kUuidFieldNumber = 1,
     kDemageFieldNumber = 2,
     kIsHealFieldNumber = 4,
     kIsMonsterFieldNumber = 10,
   };
-  // .protocol.Position position = 3;
-  bool has_position() const;
-  private:
-  bool _internal_has_position() const;
-  public:
-  void clear_position();
-  const ::protocol::Position& position() const;
-  PROTOBUF_MUST_USE_RESULT ::protocol::Position* release_position();
-  ::protocol::Position* mutable_position();
-  void set_allocated_position(::protocol::Position* position);
-  private:
-  const ::protocol::Position& _internal_position() const;
-  ::protocol::Position* _internal_mutable_position();
-  public:
-  void unsafe_arena_set_allocated_position(
-      ::protocol::Position* position);
-  ::protocol::Position* unsafe_arena_release_position();
-
   // int32 uuid = 1;
   void clear_uuid();
   ::PROTOBUF_NAMESPACE_ID::int32 uuid() const;
@@ -3621,7 +3602,6 @@ class Demage final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::protocol::Position* position_;
   ::PROTOBUF_NAMESPACE_ID::int32 uuid_;
   ::PROTOBUF_NAMESPACE_ID::int32 demage_;
   bool is_heal_;
@@ -3751,8 +3731,6 @@ class SUnitDemage final :
 
   enum : int {
     kDemageFieldNumber = 3,
-    kUuidFieldNumber = 1,
-    kIsMonsterFieldNumber = 2,
   };
   // repeated .protocol.Demage demage = 3;
   int demage_size() const;
@@ -3772,24 +3750,6 @@ class SUnitDemage final :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protocol::Demage >&
       demage() const;
 
-  // int32 uuid = 1;
-  void clear_uuid();
-  ::PROTOBUF_NAMESPACE_ID::int32 uuid() const;
-  void set_uuid(::PROTOBUF_NAMESPACE_ID::int32 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::int32 _internal_uuid() const;
-  void _internal_set_uuid(::PROTOBUF_NAMESPACE_ID::int32 value);
-  public:
-
-  // bool is_monster = 2;
-  void clear_is_monster();
-  bool is_monster() const;
-  void set_is_monster(bool value);
-  private:
-  bool _internal_is_monster() const;
-  void _internal_set_is_monster(bool value);
-  public:
-
   // @@protoc_insertion_point(class_scope:protocol.SUnitDemage)
  private:
   class _Internal;
@@ -3798,8 +3758,6 @@ class SUnitDemage final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protocol::Demage > demage_;
-  ::PROTOBUF_NAMESPACE_ID::int32 uuid_;
-  bool is_monster_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_GameClient_2eproto;
 };
@@ -11019,96 +10977,6 @@ inline void Demage::set_demage(::PROTOBUF_NAMESPACE_ID::int32 value) {
   // @@protoc_insertion_point(field_set:protocol.Demage.demage)
 }
 
-// .protocol.Position position = 3;
-inline bool Demage::_internal_has_position() const {
-  return this != internal_default_instance() && position_ != nullptr;
-}
-inline bool Demage::has_position() const {
-  return _internal_has_position();
-}
-inline void Demage::clear_position() {
-  if (GetArenaForAllocation() == nullptr && position_ != nullptr) {
-    delete position_;
-  }
-  position_ = nullptr;
-}
-inline const ::protocol::Position& Demage::_internal_position() const {
-  const ::protocol::Position* p = position_;
-  return p != nullptr ? *p : reinterpret_cast<const ::protocol::Position&>(
-      ::protocol::_Position_default_instance_);
-}
-inline const ::protocol::Position& Demage::position() const {
-  // @@protoc_insertion_point(field_get:protocol.Demage.position)
-  return _internal_position();
-}
-inline void Demage::unsafe_arena_set_allocated_position(
-    ::protocol::Position* position) {
-  if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(position_);
-  }
-  position_ = position;
-  if (position) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:protocol.Demage.position)
-}
-inline ::protocol::Position* Demage::release_position() {
-  
-  ::protocol::Position* temp = position_;
-  position_ = nullptr;
-#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
-  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
-  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  if (GetArenaForAllocation() == nullptr) { delete old; }
-#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
-  if (GetArenaForAllocation() != nullptr) {
-    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  }
-#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
-  return temp;
-}
-inline ::protocol::Position* Demage::unsafe_arena_release_position() {
-  // @@protoc_insertion_point(field_release:protocol.Demage.position)
-  
-  ::protocol::Position* temp = position_;
-  position_ = nullptr;
-  return temp;
-}
-inline ::protocol::Position* Demage::_internal_mutable_position() {
-  
-  if (position_ == nullptr) {
-    auto* p = CreateMaybeMessage<::protocol::Position>(GetArenaForAllocation());
-    position_ = p;
-  }
-  return position_;
-}
-inline ::protocol::Position* Demage::mutable_position() {
-  ::protocol::Position* _msg = _internal_mutable_position();
-  // @@protoc_insertion_point(field_mutable:protocol.Demage.position)
-  return _msg;
-}
-inline void Demage::set_allocated_position(::protocol::Position* position) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
-  if (message_arena == nullptr) {
-    delete position_;
-  }
-  if (position) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper<::protocol::Position>::GetOwningArena(position);
-    if (message_arena != submessage_arena) {
-      position = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, position, submessage_arena);
-    }
-    
-  } else {
-    
-  }
-  position_ = position;
-  // @@protoc_insertion_point(field_set_allocated:protocol.Demage.position)
-}
-
 // bool is_heal = 4;
 inline void Demage::clear_is_heal() {
   is_heal_ = false;
@@ -11152,46 +11020,6 @@ inline void Demage::set_is_monster(bool value) {
 // -------------------------------------------------------------------
 
 // SUnitDemage
-
-// int32 uuid = 1;
-inline void SUnitDemage::clear_uuid() {
-  uuid_ = 0;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int32 SUnitDemage::_internal_uuid() const {
-  return uuid_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int32 SUnitDemage::uuid() const {
-  // @@protoc_insertion_point(field_get:protocol.SUnitDemage.uuid)
-  return _internal_uuid();
-}
-inline void SUnitDemage::_internal_set_uuid(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  
-  uuid_ = value;
-}
-inline void SUnitDemage::set_uuid(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _internal_set_uuid(value);
-  // @@protoc_insertion_point(field_set:protocol.SUnitDemage.uuid)
-}
-
-// bool is_monster = 2;
-inline void SUnitDemage::clear_is_monster() {
-  is_monster_ = false;
-}
-inline bool SUnitDemage::_internal_is_monster() const {
-  return is_monster_;
-}
-inline bool SUnitDemage::is_monster() const {
-  // @@protoc_insertion_point(field_get:protocol.SUnitDemage.is_monster)
-  return _internal_is_monster();
-}
-inline void SUnitDemage::_internal_set_is_monster(bool value) {
-  
-  is_monster_ = value;
-}
-inline void SUnitDemage::set_is_monster(bool value) {
-  _internal_set_is_monster(value);
-  // @@protoc_insertion_point(field_set:protocol.SUnitDemage.is_monster)
-}
 
 // repeated .protocol.Demage demage = 3;
 inline int SUnitDemage::_internal_demage_size() const {

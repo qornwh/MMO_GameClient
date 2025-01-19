@@ -384,7 +384,7 @@ void ABJS_Character::SetState(TSharedPtr<BJS_CharaterState> state)
 	GetCharacterMovement()->MaxWalkSpeed = state->GetSpeed();
 }
 
-void ABJS_Character::TakeDemage(float Demage, ABJS_Character* Target)
+void ABJS_Character::CreateDamageUi(float Demage)
 {
 	auto PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	auto CameraActor = Cast<AActor>(PlayerController->GetViewTarget());
@@ -406,7 +406,7 @@ void ABJS_Character::TakeDemage(float Demage, ABJS_Character* Target)
 	}
 }
 
-void ABJS_Character::TakeHeal(float Heal)
+void ABJS_Character::CreateHealUi(float Heal)
 {
 	auto PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	auto CameraActor = Cast<AActor>(PlayerController->GetViewTarget());

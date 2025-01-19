@@ -275,8 +275,7 @@ struct AttackDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT AttackDefaultTypeInternal _Attack_default_instance_;
 constexpr Demage::Demage(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : position_(nullptr)
-  , uuid_(0)
+  : uuid_(0)
   , demage_(0)
   , is_heal_(false)
   , is_monster_(false){}
@@ -291,9 +290,7 @@ struct DemageDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT DemageDefaultTypeInternal _Demage_default_instance_;
 constexpr SUnitDemage::SUnitDemage(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : demage_()
-  , uuid_(0)
-  , is_monster_(false){}
+  : demage_(){}
 struct SUnitDemageDefaultTypeInternal {
   constexpr SUnitDemageDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -896,7 +893,6 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_GameClient_2eproto::offsets[] 
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::protocol::Demage, uuid_),
   PROTOBUF_FIELD_OFFSET(::protocol::Demage, demage_),
-  PROTOBUF_FIELD_OFFSET(::protocol::Demage, position_),
   PROTOBUF_FIELD_OFFSET(::protocol::Demage, is_heal_),
   PROTOBUF_FIELD_OFFSET(::protocol::Demage, is_monster_),
   ~0u,  // no _has_bits_
@@ -905,8 +901,6 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_GameClient_2eproto::offsets[] 
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::protocol::SUnitDemage, uuid_),
-  PROTOBUF_FIELD_OFFSET(::protocol::SUnitDemage, is_monster_),
   PROTOBUF_FIELD_OFFSET(::protocol::SUnitDemage, demage_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::protocol::SRoomQuest, _internal_metadata_),
@@ -1199,36 +1193,36 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 146, -1, -1, sizeof(::protocol::SUnitStates)},
   { 153, -1, -1, sizeof(::protocol::Attack)},
   { 162, -1, -1, sizeof(::protocol::Demage)},
-  { 173, -1, -1, sizeof(::protocol::SUnitDemage)},
-  { 182, -1, -1, sizeof(::protocol::SRoomQuest)},
-  { 191, -1, -1, sizeof(::protocol::CMovePotal)},
-  { 199, -1, -1, sizeof(::protocol::SEndGame)},
-  { 206, -1, -1, sizeof(::protocol::CBuyCharater)},
-  { 215, -1, -1, sizeof(::protocol::CBuyWeapon)},
-  { 223, -1, -1, sizeof(::protocol::SBuyResult)},
-  { 235, -1, -1, sizeof(::protocol::CPlayerJump)},
-  { 243, -1, -1, sizeof(::protocol::CPlayerAim)},
-  { 251, -1, -1, sizeof(::protocol::SExpLv)},
-  { 260, -1, -1, sizeof(::protocol::ItemEquip)},
-  { 272, -1, -1, sizeof(::protocol::ItemEtc)},
-  { 282, -1, -1, sizeof(::protocol::UpdateInventory)},
-  { 291, -1, -1, sizeof(::protocol::SLoadInventory)},
-  { 300, -1, -1, sizeof(::protocol::CSellItems)},
-  { 310, -1, -1, sizeof(::protocol::DLoad)},
-  { 317, -1, -1, sizeof(::protocol::Friend)},
-  { 327, -1, -1, sizeof(::protocol::SFriendSystem)},
-  { 335, -1, -1, sizeof(::protocol::CFriend)},
-  { 343, -1, -1, sizeof(::protocol::CUpdateItems)},
-  { 351, -1, -1, sizeof(::protocol::Mail)},
-  { 366, -1, -1, sizeof(::protocol::MailEquipItem)},
-  { 375, -1, -1, sizeof(::protocol::MailEtcItem)},
-  { 384, -1, -1, sizeof(::protocol::CLoadMail)},
-  { 394, -1, -1, sizeof(::protocol::CUpdateMail)},
-  { 402, -1, -1, sizeof(::protocol::CAllUpdateMail)},
-  { 412, -1, -1, sizeof(::protocol::CSendMail)},
-  { 422, -1, -1, sizeof(::protocol::SSendMail)},
-  { 432, -1, -1, sizeof(::protocol::CAttack)},
-  { 442, -1, -1, sizeof(::protocol::UserAttack)},
+  { 172, -1, -1, sizeof(::protocol::SUnitDemage)},
+  { 179, -1, -1, sizeof(::protocol::SRoomQuest)},
+  { 188, -1, -1, sizeof(::protocol::CMovePotal)},
+  { 196, -1, -1, sizeof(::protocol::SEndGame)},
+  { 203, -1, -1, sizeof(::protocol::CBuyCharater)},
+  { 212, -1, -1, sizeof(::protocol::CBuyWeapon)},
+  { 220, -1, -1, sizeof(::protocol::SBuyResult)},
+  { 232, -1, -1, sizeof(::protocol::CPlayerJump)},
+  { 240, -1, -1, sizeof(::protocol::CPlayerAim)},
+  { 248, -1, -1, sizeof(::protocol::SExpLv)},
+  { 257, -1, -1, sizeof(::protocol::ItemEquip)},
+  { 269, -1, -1, sizeof(::protocol::ItemEtc)},
+  { 279, -1, -1, sizeof(::protocol::UpdateInventory)},
+  { 288, -1, -1, sizeof(::protocol::SLoadInventory)},
+  { 297, -1, -1, sizeof(::protocol::CSellItems)},
+  { 307, -1, -1, sizeof(::protocol::DLoad)},
+  { 314, -1, -1, sizeof(::protocol::Friend)},
+  { 324, -1, -1, sizeof(::protocol::SFriendSystem)},
+  { 332, -1, -1, sizeof(::protocol::CFriend)},
+  { 340, -1, -1, sizeof(::protocol::CUpdateItems)},
+  { 348, -1, -1, sizeof(::protocol::Mail)},
+  { 363, -1, -1, sizeof(::protocol::MailEquipItem)},
+  { 372, -1, -1, sizeof(::protocol::MailEtcItem)},
+  { 381, -1, -1, sizeof(::protocol::CLoadMail)},
+  { 391, -1, -1, sizeof(::protocol::CUpdateMail)},
+  { 399, -1, -1, sizeof(::protocol::CAllUpdateMail)},
+  { 409, -1, -1, sizeof(::protocol::CSendMail)},
+  { 419, -1, -1, sizeof(::protocol::SSendMail)},
+  { 429, -1, -1, sizeof(::protocol::CAttack)},
+  { 439, -1, -1, sizeof(::protocol::UserAttack)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -1317,97 +1311,95 @@ const char descriptor_table_protodef_GameClient_2eproto[] PROTOBUF_SECTION_VARIA
   " \n\006attack\030\013 \001(\0132\020.protocol.Attack\"6\n\013SUn"
   "itStates\022\'\n\nunit_state\030\001 \003(\0132\023.protocol."
   "UnitState\"\?\n\006Attack\022\014\n\004uuid\030\001 \001(\005\022\022\n\nski"
-  "ll_code\030\002 \001(\005\022\023\n\013target_uuid\030\003 \001(\005\"q\n\006De"
-  "mage\022\014\n\004uuid\030\001 \001(\005\022\016\n\006demage\030\002 \001(\005\022$\n\010po"
-  "sition\030\003 \001(\0132\022.protocol.Position\022\017\n\007is_h"
-  "eal\030\004 \001(\010\022\022\n\nis_monster\030\n \001(\010\"Q\n\013SUnitDe"
-  "mage\022\014\n\004uuid\030\001 \001(\005\022\022\n\nis_monster\030\002 \001(\010\022 "
-  "\n\006demage\030\003 \003(\0132\020.protocol.Demage\"D\n\nSRoo"
-  "mQuest\022\020\n\010is_clear\030\001 \001(\010\022\022\n\nkill_count\030\002"
-  " \001(\005\022\020\n\010sum_kill\030\003 \001(\005\"7\n\nCMovePotal\022\023\n\013"
-  "pre_room_id\030\001 \001(\005\022\024\n\014next_room_id\030\002 \001(\005\""
-  "\034\n\010SEndGame\022\020\n\010end_game\030\001 \001(\010\"C\n\014CBuyCha"
-  "rater\022\024\n\014CharaterType\030\001 \001(\005\022\017\n\007useCash\030\002"
-  " \001(\005\022\014\n\004name\030\003 \001(\t\"1\n\nCBuyWeapon\022\022\n\nweap"
-  "onType\030\001 \001(\005\022\017\n\007useCash\030\002 \001(\005\"\224\001\n\nSBuyRe"
-  "sult\022\016\n\006result\030\001 \001(\005\022$\n\010charater\030\002 \003(\0132\022"
-  ".protocol.Charater\022\027\n\017curCharaterType\030\003 "
-  "\001(\005\022\025\n\rcurWeaponType\030\004 \001(\005\022\014\n\004cash\030\005 \001(\005"
-  "\022\022\n\nweaponList\030\006 \003(\005\"+\n\013CPlayerJump\022\016\n\006i"
-  "sJump\030\001 \001(\010\022\014\n\004uuid\030\002 \001(\005\")\n\nCPlayerAim\022"
-  "\r\n\005isAim\030\001 \001(\010\022\014\n\004uuid\030\002 \001(\005\"/\n\006SExpLv\022\014"
-  "\n\004uuid\030\001 \001(\005\022\n\n\002lv\030\002 \001(\005\022\013\n\003exp\030\003 \001(\005\"t\n"
-  "\tItemEquip\022\021\n\titem_code\030\001 \001(\005\022\021\n\titem_ty"
-  "pe\030\002 \001(\005\022\016\n\006attack\030\003 \001(\005\022\r\n\005speed\030\004 \001(\005\022"
-  "\020\n\010equipPos\030\005 \001(\005\022\020\n\010invenPos\030\007 \001(\005\"U\n\007I"
-  "temEtc\022\021\n\titem_code\030\001 \001(\005\022\022\n\nitem_count\030"
-  "\002 \001(\005\022\021\n\titem_type\030\003 \001(\005\022\020\n\010invenPos\030\004 \001"
-  "(\005\"m\n\017UpdateInventory\022\'\n\nitemEquips\030\001 \003("
-  "\0132\023.protocol.ItemEquip\022#\n\010itemEtcs\030\002 \003(\013"
-  "2\021.protocol.ItemEtc\022\014\n\004gold\030\003 \001(\005\"l\n\016SLo"
-  "adInventory\022\'\n\nitemEquips\030\001 \003(\0132\023.protoc"
-  "ol.ItemEquip\022#\n\010itemEtcs\030\002 \003(\0132\021.protoco"
-  "l.ItemEtc\022\014\n\004gold\030\003 \001(\005\"x\n\nCSellItems\022\'\n"
-  "\nitemEquips\030\001 \003(\0132\023.protocol.ItemEquip\022#"
-  "\n\010itemEtcs\030\002 \003(\0132\021.protocol.ItemEtc\022\014\n\004g"
-  "old\030\003 \001(\005\022\016\n\006result\030\004 \001(\010\"%\n\005DLoad\022\034\n\004un"
-  "it\030e \001(\0132\016.protocol.Unit\"M\n\006Friend\022\022\n\npl"
-  "ayerCode\030\001 \001(\005\022\022\n\nplayerName\030\002 \001(\t\022\016\n\006ac"
-  "cess\030\003 \001(\010\022\013\n\003add\030\004 \001(\010\"A\n\rSFriendSystem"
-  "\022 \n\006friend\030\001 \003(\0132\020.protocol.Friend\022\016\n\006re"
-  "sult\030\003 \001(\005\"9\n\007CFriend\022\014\n\004type\030\001 \001(\005\022 \n\006f"
-  "riend\030\002 \001(\0132\020.protocol.Friend\"2\n\014CUpdate"
-  "Items\022\020\n\010invenPos\030\001 \001(\005\022\020\n\010equipPos\030\002 \001("
-  "\005\"\234\001\n\004Mail\022\014\n\004code\030\001 \001(\005\022\014\n\004read\030\002 \001(\005\022\014"
-  "\n\004gold\030\003 \001(\005\022\017\n\007socket1\030\004 \001(\005\022\023\n\013socket1"
-  "Type\030\005 \001(\005\022\017\n\007socket2\030\006 \001(\005\022\023\n\013socket2Ty"
-  "pe\030\007 \001(\005\022\r\n\005title\030\t \001(\t\022\017\n\007message\030\n \001(\t"
-  "\"T\n\rMailEquipItem\022\020\n\010mailCode\030\001 \001(\005\022\016\n\006s"
-  "ocket\030\002 \001(\005\022!\n\004item\030\003 \001(\0132\023.protocol.Ite"
-  "mEquip\"P\n\013MailEtcItem\022\020\n\010mailCode\030\001 \001(\005\022"
-  "\016\n\006socket\030\002 \001(\005\022\037\n\004item\030\003 \001(\0132\021.protocol"
-  ".ItemEtc\"\216\001\n\tCLoadMail\022\014\n\004type\030\001 \001(\005\022\035\n\005"
-  "mails\030\002 \003(\0132\016.protocol.Mail\022+\n\nequipItem"
-  "s\030\003 \003(\0132\027.protocol.MailEquipItem\022\'\n\010etcI"
-  "tems\030\004 \003(\0132\025.protocol.MailEtcItem\"9\n\013CUp"
-  "dateMail\022\014\n\004type\030\001 \001(\005\022\034\n\004mail\030\002 \001(\0132\016.p"
-  "rotocol.Mail\"\223\001\n\016CAllUpdateMail\022\014\n\004type\030"
-  "\001 \001(\005\022\035\n\005mails\030\002 \003(\0132\016.protocol.Mail\022+\n\n"
-  "equipItems\030\003 \003(\0132\027.protocol.MailEquipIte"
-  "m\022\'\n\010etcItems\030\004 \003(\0132\025.protocol.MailEtcIt"
-  "em\"\216\001\n\tCSendMail\022\014\n\004type\030\001 \001(\005\022\035\n\005mails\030"
-  "\002 \001(\0132\016.protocol.Mail\022+\n\nequipItems\030\003 \003("
-  "\0132\027.protocol.MailEquipItem\022\'\n\010etcItems\030\004"
-  " \003(\0132\025.protocol.MailEtcItem\"y\n\tSSendMail"
-  "\022\016\n\006result\030\001 \001(\005\022\014\n\004gold\030\002 \001(\005\022\'\n\nitemEq"
-  "uips\030\003 \003(\0132\023.protocol.ItemEquip\022%\n\010etcIt"
-  "ems\030\004 \003(\0132\023.protocol.ItemEquip\"f\n\007CAttac"
-  "k\022\024\n\014attackNumber\030\001 \001(\005\022\014\n\004uuid\030\002 \001(\005\022\021\n"
-  "\tskillCode\030\003 \001(\005\022$\n\010position\030\004 \001(\0132\022.pro"
-  "tocol.Position\"p\n\nUserAttack\022\024\n\014attackNu"
-  "mber\030\001 \001(\005\022\021\n\tskillCode\030\002 \001(\005\022$\n\010positio"
-  "n\030\003 \001(\0132\022.protocol.Position\022\023\n\013targetCod"
-  "es\030\004 \003(\005*\371\004\n\013MessageCode\022\t\n\005LOGIN\020\000\022\n\n\006S"
-  "_LOAD\020\001\022\022\n\016S_INSERTPLAYER\020\002\022\n\n\006S_MOVE\020\003\022"
-  "\n\n\006S_CHAT\020\004\022\020\n\014S_PLAYERDATA\020\005\022\021\n\rS_CLOSE"
-  "PLAYER\020\006\022\020\n\014S_UNITSTATES\020\007\022\014\n\010C_ATTACK\020\010"
-  "\022\020\n\014S_UNITDEMAGE\020\n\022\017\n\013S_ROOMQUEST\020\014\022\017\n\013C"
-  "_MOVEPOTAL\020\r\022\r\n\tS_ENDGAME\020\016\022\017\n\013LOGINACCE"
-  "SS\020\017\022\n\n\006C_LOAD\020\021\022\023\n\017CREATECHARACTER\020\022\022\023\n"
-  "\017UPDATEINVENTROY\020\023\022\021\n\rC_BUYCHARATER\020\024\022\017\n"
-  "\013C_BUYWEAPON\020\025\022\023\n\017C_UPDATEACCOUNT\020\026\022\021\n\rS"
-  "_CURRENTINFO\020\027\022\017\n\013S_BUYRESULT\020\030\022\020\n\014C_PLA"
-  "YERJUMP\020\031\022\017\n\013C_PLAYERAIM\020\032\022\013\n\007S_EXPLV\020\033\022"
-  "\023\n\017S_LOADINVENTORY\020\036\022\017\n\013C_SELLITEMS\020\037\022\022\n"
-  "\016S_FRIENDSYSTEM\020 \022\014\n\010C_FRIEND\020\"\022\016\n\nC_LOA"
-  "DMAIL\020(\022\020\n\014C_UPDATEMAIL\020)\022\023\n\017C_ALLUPDATE"
-  "MAIL\020*\022\016\n\nC_SENDMAIL\020+\022\016\n\nS_SENDMAIL\020,\022\021"
-  "\n\rC_UPDATEITEMS\020#\022\r\n\tC_ATTACKS\020d\022\n\n\006D_LO"
-  "AD\020eb\006proto3"
+  "ll_code\030\002 \001(\005\022\023\n\013target_uuid\030\003 \001(\005\"K\n\006De"
+  "mage\022\014\n\004uuid\030\001 \001(\005\022\016\n\006demage\030\002 \001(\005\022\017\n\007is"
+  "_heal\030\004 \001(\010\022\022\n\nis_monster\030\n \001(\010\"/\n\013SUnit"
+  "Demage\022 \n\006demage\030\003 \003(\0132\020.protocol.Demage"
+  "\"D\n\nSRoomQuest\022\020\n\010is_clear\030\001 \001(\010\022\022\n\nkill"
+  "_count\030\002 \001(\005\022\020\n\010sum_kill\030\003 \001(\005\"7\n\nCMoveP"
+  "otal\022\023\n\013pre_room_id\030\001 \001(\005\022\024\n\014next_room_i"
+  "d\030\002 \001(\005\"\034\n\010SEndGame\022\020\n\010end_game\030\001 \001(\010\"C\n"
+  "\014CBuyCharater\022\024\n\014CharaterType\030\001 \001(\005\022\017\n\007u"
+  "seCash\030\002 \001(\005\022\014\n\004name\030\003 \001(\t\"1\n\nCBuyWeapon"
+  "\022\022\n\nweaponType\030\001 \001(\005\022\017\n\007useCash\030\002 \001(\005\"\224\001"
+  "\n\nSBuyResult\022\016\n\006result\030\001 \001(\005\022$\n\010charater"
+  "\030\002 \003(\0132\022.protocol.Charater\022\027\n\017curCharate"
+  "rType\030\003 \001(\005\022\025\n\rcurWeaponType\030\004 \001(\005\022\014\n\004ca"
+  "sh\030\005 \001(\005\022\022\n\nweaponList\030\006 \003(\005\"+\n\013CPlayerJ"
+  "ump\022\016\n\006isJump\030\001 \001(\010\022\014\n\004uuid\030\002 \001(\005\")\n\nCPl"
+  "ayerAim\022\r\n\005isAim\030\001 \001(\010\022\014\n\004uuid\030\002 \001(\005\"/\n\006"
+  "SExpLv\022\014\n\004uuid\030\001 \001(\005\022\n\n\002lv\030\002 \001(\005\022\013\n\003exp\030"
+  "\003 \001(\005\"t\n\tItemEquip\022\021\n\titem_code\030\001 \001(\005\022\021\n"
+  "\titem_type\030\002 \001(\005\022\016\n\006attack\030\003 \001(\005\022\r\n\005spee"
+  "d\030\004 \001(\005\022\020\n\010equipPos\030\005 \001(\005\022\020\n\010invenPos\030\007 "
+  "\001(\005\"U\n\007ItemEtc\022\021\n\titem_code\030\001 \001(\005\022\022\n\nite"
+  "m_count\030\002 \001(\005\022\021\n\titem_type\030\003 \001(\005\022\020\n\010inve"
+  "nPos\030\004 \001(\005\"m\n\017UpdateInventory\022\'\n\nitemEqu"
+  "ips\030\001 \003(\0132\023.protocol.ItemEquip\022#\n\010itemEt"
+  "cs\030\002 \003(\0132\021.protocol.ItemEtc\022\014\n\004gold\030\003 \001("
+  "\005\"l\n\016SLoadInventory\022\'\n\nitemEquips\030\001 \003(\0132"
+  "\023.protocol.ItemEquip\022#\n\010itemEtcs\030\002 \003(\0132\021"
+  ".protocol.ItemEtc\022\014\n\004gold\030\003 \001(\005\"x\n\nCSell"
+  "Items\022\'\n\nitemEquips\030\001 \003(\0132\023.protocol.Ite"
+  "mEquip\022#\n\010itemEtcs\030\002 \003(\0132\021.protocol.Item"
+  "Etc\022\014\n\004gold\030\003 \001(\005\022\016\n\006result\030\004 \001(\010\"%\n\005DLo"
+  "ad\022\034\n\004unit\030e \001(\0132\016.protocol.Unit\"M\n\006Frie"
+  "nd\022\022\n\nplayerCode\030\001 \001(\005\022\022\n\nplayerName\030\002 \001"
+  "(\t\022\016\n\006access\030\003 \001(\010\022\013\n\003add\030\004 \001(\010\"A\n\rSFrie"
+  "ndSystem\022 \n\006friend\030\001 \003(\0132\020.protocol.Frie"
+  "nd\022\016\n\006result\030\003 \001(\005\"9\n\007CFriend\022\014\n\004type\030\001 "
+  "\001(\005\022 \n\006friend\030\002 \001(\0132\020.protocol.Friend\"2\n"
+  "\014CUpdateItems\022\020\n\010invenPos\030\001 \001(\005\022\020\n\010equip"
+  "Pos\030\002 \001(\005\"\234\001\n\004Mail\022\014\n\004code\030\001 \001(\005\022\014\n\004read"
+  "\030\002 \001(\005\022\014\n\004gold\030\003 \001(\005\022\017\n\007socket1\030\004 \001(\005\022\023\n"
+  "\013socket1Type\030\005 \001(\005\022\017\n\007socket2\030\006 \001(\005\022\023\n\013s"
+  "ocket2Type\030\007 \001(\005\022\r\n\005title\030\t \001(\t\022\017\n\007messa"
+  "ge\030\n \001(\t\"T\n\rMailEquipItem\022\020\n\010mailCode\030\001 "
+  "\001(\005\022\016\n\006socket\030\002 \001(\005\022!\n\004item\030\003 \001(\0132\023.prot"
+  "ocol.ItemEquip\"P\n\013MailEtcItem\022\020\n\010mailCod"
+  "e\030\001 \001(\005\022\016\n\006socket\030\002 \001(\005\022\037\n\004item\030\003 \001(\0132\021."
+  "protocol.ItemEtc\"\216\001\n\tCLoadMail\022\014\n\004type\030\001"
+  " \001(\005\022\035\n\005mails\030\002 \003(\0132\016.protocol.Mail\022+\n\ne"
+  "quipItems\030\003 \003(\0132\027.protocol.MailEquipItem"
+  "\022\'\n\010etcItems\030\004 \003(\0132\025.protocol.MailEtcIte"
+  "m\"9\n\013CUpdateMail\022\014\n\004type\030\001 \001(\005\022\034\n\004mail\030\002"
+  " \001(\0132\016.protocol.Mail\"\223\001\n\016CAllUpdateMail\022"
+  "\014\n\004type\030\001 \001(\005\022\035\n\005mails\030\002 \003(\0132\016.protocol."
+  "Mail\022+\n\nequipItems\030\003 \003(\0132\027.protocol.Mail"
+  "EquipItem\022\'\n\010etcItems\030\004 \003(\0132\025.protocol.M"
+  "ailEtcItem\"\216\001\n\tCSendMail\022\014\n\004type\030\001 \001(\005\022\035"
+  "\n\005mails\030\002 \001(\0132\016.protocol.Mail\022+\n\nequipIt"
+  "ems\030\003 \003(\0132\027.protocol.MailEquipItem\022\'\n\010et"
+  "cItems\030\004 \003(\0132\025.protocol.MailEtcItem\"y\n\tS"
+  "SendMail\022\016\n\006result\030\001 \001(\005\022\014\n\004gold\030\002 \001(\005\022\'"
+  "\n\nitemEquips\030\003 \003(\0132\023.protocol.ItemEquip\022"
+  "%\n\010etcItems\030\004 \003(\0132\023.protocol.ItemEquip\"f"
+  "\n\007CAttack\022\024\n\014attackNumber\030\001 \001(\005\022\014\n\004uuid\030"
+  "\002 \001(\005\022\021\n\tskillCode\030\003 \001(\005\022$\n\010position\030\004 \001"
+  "(\0132\022.protocol.Position\"p\n\nUserAttack\022\024\n\014"
+  "attackNumber\030\001 \001(\005\022\021\n\tskillCode\030\002 \001(\005\022$\n"
+  "\010position\030\003 \001(\0132\022.protocol.Position\022\023\n\013t"
+  "argetCodes\030\004 \003(\005*\371\004\n\013MessageCode\022\t\n\005LOGI"
+  "N\020\000\022\n\n\006S_LOAD\020\001\022\022\n\016S_INSERTPLAYER\020\002\022\n\n\006S"
+  "_MOVE\020\003\022\n\n\006S_CHAT\020\004\022\020\n\014S_PLAYERDATA\020\005\022\021\n"
+  "\rS_CLOSEPLAYER\020\006\022\020\n\014S_UNITSTATES\020\007\022\014\n\010C_"
+  "ATTACK\020\010\022\020\n\014S_UNITDEMAGE\020\n\022\017\n\013S_ROOMQUES"
+  "T\020\014\022\017\n\013C_MOVEPOTAL\020\r\022\r\n\tS_ENDGAME\020\016\022\017\n\013L"
+  "OGINACCESS\020\017\022\n\n\006C_LOAD\020\021\022\023\n\017CREATECHARAC"
+  "TER\020\022\022\023\n\017UPDATEINVENTROY\020\023\022\021\n\rC_BUYCHARA"
+  "TER\020\024\022\017\n\013C_BUYWEAPON\020\025\022\023\n\017C_UPDATEACCOUN"
+  "T\020\026\022\021\n\rS_CURRENTINFO\020\027\022\017\n\013S_BUYRESULT\020\030\022"
+  "\020\n\014C_PLAYERJUMP\020\031\022\017\n\013C_PLAYERAIM\020\032\022\013\n\007S_"
+  "EXPLV\020\033\022\023\n\017S_LOADINVENTORY\020\036\022\017\n\013C_SELLIT"
+  "EMS\020\037\022\022\n\016S_FRIENDSYSTEM\020 \022\014\n\010C_FRIEND\020\"\022"
+  "\016\n\nC_LOADMAIL\020(\022\020\n\014C_UPDATEMAIL\020)\022\023\n\017C_A"
+  "LLUPDATEMAIL\020*\022\016\n\nC_SENDMAIL\020+\022\016\n\nS_SEND"
+  "MAIL\020,\022\021\n\rC_UPDATEITEMS\020#\022\r\n\tC_ATTACKS\020d"
+  "\022\n\n\006D_LOAD\020eb\006proto3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_GameClient_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_GameClient_2eproto = {
-  false, false, 4772, descriptor_table_protodef_GameClient_2eproto, "GameClient.proto", 
+  false, false, 4700, descriptor_table_protodef_GameClient_2eproto, "GameClient.proto", 
   &descriptor_table_GameClient_2eproto_once, nullptr, 0, 49,
   schemas, file_default_instances, TableStruct_GameClient_2eproto::offsets,
   file_level_metadata_GameClient_2eproto, file_level_enum_descriptors_GameClient_2eproto, file_level_service_descriptors_GameClient_2eproto,
@@ -5924,13 +5916,8 @@ void Attack::InternalSwap(Attack* other) {
 
 class Demage::_Internal {
  public:
-  static const ::protocol::Position& position(const Demage* msg);
 };
 
-const ::protocol::Position&
-Demage::_Internal::position(const Demage* msg) {
-  return *msg->position_;
-}
 Demage::Demage(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
@@ -5943,11 +5930,6 @@ Demage::Demage(::PROTOBUF_NAMESPACE_ID::Arena* arena,
 Demage::Demage(const Demage& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_position()) {
-    position_ = new ::protocol::Position(*from.position_);
-  } else {
-    position_ = nullptr;
-  }
   ::memcpy(&uuid_, &from.uuid_,
     static_cast<size_t>(reinterpret_cast<char*>(&is_monster_) -
     reinterpret_cast<char*>(&uuid_)) + sizeof(is_monster_));
@@ -5956,9 +5938,9 @@ Demage::Demage(const Demage& from)
 
 void Demage::SharedCtor() {
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&position_) - reinterpret_cast<char*>(this)),
+    reinterpret_cast<char*>(&uuid_) - reinterpret_cast<char*>(this)),
     0, static_cast<size_t>(reinterpret_cast<char*>(&is_monster_) -
-    reinterpret_cast<char*>(&position_)) + sizeof(is_monster_));
+    reinterpret_cast<char*>(&uuid_)) + sizeof(is_monster_));
 }
 
 Demage::~Demage() {
@@ -5970,7 +5952,6 @@ Demage::~Demage() {
 
 inline void Demage::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete position_;
 }
 
 void Demage::ArenaDtor(void* object) {
@@ -5989,10 +5970,6 @@ void Demage::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && position_ != nullptr) {
-    delete position_;
-  }
-  position_ = nullptr;
   ::memset(&uuid_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&is_monster_) -
       reinterpret_cast<char*>(&uuid_)) + sizeof(is_monster_));
@@ -6017,14 +5994,6 @@ const char* Demage::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::int
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
           demage_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // .protocol.Position position = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
-          ptr = ctx->ParseMessage(_internal_mutable_position(), ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -6086,14 +6055,6 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(2, this->_internal_demage(), target);
   }
 
-  // .protocol.Position position = 3;
-  if (this->_internal_has_position()) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        3, _Internal::position(this), target, stream);
-  }
-
   // bool is_heal = 4;
   if (this->_internal_is_heal() != 0) {
     target = stream->EnsureSpace(target);
@@ -6121,13 +6082,6 @@ size_t Demage::ByteSizeLong() const {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
-
-  // .protocol.Position position = 3;
-  if (this->_internal_has_position()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *position_);
-  }
 
   // int32 uuid = 1;
   if (this->_internal_uuid() != 0) {
@@ -6171,9 +6125,6 @@ void Demage::MergeFrom(const Demage& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_position()) {
-    _internal_mutable_position()->::protocol::Position::MergeFrom(from._internal_position());
-  }
   if (from._internal_uuid() != 0) {
     _internal_set_uuid(from._internal_uuid());
   }
@@ -6206,9 +6157,9 @@ void Demage::InternalSwap(Demage* other) {
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Demage, is_monster_)
       + sizeof(Demage::is_monster_)
-      - PROTOBUF_FIELD_OFFSET(Demage, position_)>(
-          reinterpret_cast<char*>(&position_),
-          reinterpret_cast<char*>(&other->position_));
+      - PROTOBUF_FIELD_OFFSET(Demage, uuid_)>(
+          reinterpret_cast<char*>(&uuid_),
+          reinterpret_cast<char*>(&other->uuid_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Demage::GetMetadata() const {
@@ -6237,17 +6188,10 @@ SUnitDemage::SUnitDemage(const SUnitDemage& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       demage_(from.demage_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&uuid_, &from.uuid_,
-    static_cast<size_t>(reinterpret_cast<char*>(&is_monster_) -
-    reinterpret_cast<char*>(&uuid_)) + sizeof(is_monster_));
   // @@protoc_insertion_point(copy_constructor:protocol.SUnitDemage)
 }
 
 void SUnitDemage::SharedCtor() {
-::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&uuid_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&is_monster_) -
-    reinterpret_cast<char*>(&uuid_)) + sizeof(is_monster_));
 }
 
 SUnitDemage::~SUnitDemage() {
@@ -6278,9 +6222,6 @@ void SUnitDemage::Clear() {
   (void) cached_has_bits;
 
   demage_.Clear();
-  ::memset(&uuid_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&is_monster_) -
-      reinterpret_cast<char*>(&uuid_)) + sizeof(is_monster_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -6290,22 +6231,6 @@ const char* SUnitDemage::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // int32 uuid = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          uuid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // bool is_monster = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
-          is_monster_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
       // repeated .protocol.Demage demage = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
@@ -6348,18 +6273,6 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int32 uuid = 1;
-  if (this->_internal_uuid() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_uuid(), target);
-  }
-
-  // bool is_monster = 2;
-  if (this->_internal_is_monster() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(2, this->_internal_is_monster(), target);
-  }
-
   // repeated .protocol.Demage demage = 3;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->_internal_demage_size()); i < n; i++) {
@@ -6391,16 +6304,6 @@ size_t SUnitDemage::ByteSizeLong() const {
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
-  // int32 uuid = 1;
-  if (this->_internal_uuid() != 0) {
-    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32SizePlusOne(this->_internal_uuid());
-  }
-
-  // bool is_monster = 2;
-  if (this->_internal_is_monster() != 0) {
-    total_size += 1 + 1;
-  }
-
   return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
@@ -6424,12 +6327,6 @@ void SUnitDemage::MergeFrom(const SUnitDemage& from) {
   (void) cached_has_bits;
 
   demage_.MergeFrom(from.demage_);
-  if (from._internal_uuid() != 0) {
-    _internal_set_uuid(from._internal_uuid());
-  }
-  if (from._internal_is_monster() != 0) {
-    _internal_set_is_monster(from._internal_is_monster());
-  }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -6448,12 +6345,6 @@ void SUnitDemage::InternalSwap(SUnitDemage* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   demage_.InternalSwap(&other->demage_);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(SUnitDemage, is_monster_)
-      + sizeof(SUnitDemage::is_monster_)
-      - PROTOBUF_FIELD_OFFSET(SUnitDemage, uuid_)>(
-          reinterpret_cast<char*>(&uuid_),
-          reinterpret_cast<char*>(&other->uuid_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SUnitDemage::GetMetadata() const {

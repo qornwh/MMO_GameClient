@@ -583,6 +583,53 @@ void ABJS_SocketActor::AttackHandler(BYTE* Buffer, PacketHeader* Header, int32 O
 
 void ABJS_SocketActor::CharaterDemageHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset)
 {
+	protocol::SUnitDemage pkt;
+	if (PacketHandlerUtils::ParsePacketHandler(pkt, Buffer, Header->GetSize() - Offset, Offset))
+	{
+		auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
+		if (mode)
+		{
+			for (auto damage : pkt.demage())
+			{
+				int32 uuid = damage.uuid();
+				int32 takeDamage = damage.demage();
+				bool isHeal = damage.is_heal();
+				bool isMonster = damage.is_monster();
+
+				if (isMonster)
+				{
+					auto& monsterStates = mode->GetMonsterStateList();
+					if (monsterStates.Contains(uuid))
+					{
+						auto monsterState = monsterStates[uuid];
+						auto monster = monsterState->GetTarget();
+
+						if (monster)
+						{
+							monster->CreateDamageUi(takeDamage);
+						}
+					}
+				}
+				else
+				{
+					auto& playerStates = mode->GetCharaterStateList();
+					if (playerStates.Contains(uuid))
+					{
+						auto playerState = playerStates[uuid];
+						auto player = playerState->GetTarget();
+
+						if (playerState)
+						{
+							if (!isHeal)
+								player->CreateDamageUi(takeDamage);
+							else
+								player->CreateHealUi(takeDamage);
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 void ABJS_SocketActor::PlayerAimHandler(BYTE* Buffer, PacketHeader* Header, int32 Offset)

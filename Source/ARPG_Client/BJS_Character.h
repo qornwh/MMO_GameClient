@@ -42,8 +42,8 @@ public:
 	virtual void PlaySkill(int32 Code, bool ignore = false);
 	TSharedPtr<class BJS_CharaterState> GetState();
 	virtual void SetState(TSharedPtr<class BJS_CharaterState> state);
-	void TakeDemage(float Demage, class ABJS_Character* Target = nullptr);
-	void TakeHeal(float Heal);
+	void CreateDamageUi(float Demage);
+	void CreateHealUi(float Heal);
 	bool GetHitted();
 	void LoadInfo(int32 MeshCode, int32 WeaponCode);
 	void SetActivate(bool Flag);
