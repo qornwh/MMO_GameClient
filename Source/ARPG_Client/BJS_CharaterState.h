@@ -84,6 +84,8 @@ public:
 
 	// 아이템의 스텟도 여기에 둔다
 	BJS_ExState ItemState;
+
+	void UpdateState(TSharedPtr<class InventoryItem> inventory);
 	
 private:
 	bool IsMonster = false;

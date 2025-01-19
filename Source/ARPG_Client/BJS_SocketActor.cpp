@@ -715,6 +715,7 @@ void ABJS_SocketActor::UpdateInventoryHandler(BYTE* Buffer, PacketHeader* Header
 			}
 			mode->GetMyInventory()->SetGold(pkt.gold());
 			mode->UpdateInventoryUI();
+			mode->GetMyState()->UpdateState(mode->GetMyInventory());
 		}
 	}
 }
@@ -743,15 +744,6 @@ void ABJS_SocketActor::LoadInventoryHandler(BYTE* Buffer, PacketHeader* Header, 
 				}
 				else if (item.equippos() >= 0)
 				{
-					// 일단 여기서 아이템 스텟을 상승 시킨다.
-					// int32 attack = item.attack();
-					// int32 speed = item.speed();
-					// if (item.is_equip() == 1)
-					// {
-					// 	auto state = mode->GetMyState();
-					// 	state->ItemState.AddAttack(attack);
-					// 	state->ItemState.AddSpeed(speed);
-					// }	
 					mode->UpdateEquippedItemUI(item.equippos(), 1);
 				}
 			}
@@ -763,6 +755,7 @@ void ABJS_SocketActor::LoadInventoryHandler(BYTE* Buffer, PacketHeader* Header, 
 			}
 			mode->GetMyInventory()->SetGold(pkt.gold());
 			mode->UpdateInventoryUI();
+			mode->GetMyState()->UpdateState(mode->GetMyInventory());
 		}
 	}
 }

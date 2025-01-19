@@ -3,6 +3,8 @@
 
 #include "BJS_CharaterState.h"
 
+#include "InventoryItem.h"
+
 void BJS_ExState::AddAttack(int32 Value)
 {
 	Attack += Value;
@@ -221,4 +223,20 @@ void BJS_CharaterState::SetIsMonster(bool isMonster)
 bool BJS_CharaterState::GetIsMonster()
 {
 	return IsMonster;
+}
+
+void BJS_CharaterState::UpdateState(TSharedPtr<class InventoryItem> inventory)
+{
+	if (inventory)
+	{
+		ItemState.Attack = 0;
+		ItemState.Speed = 0;
+		for (const EquipItem& item : inventory->GetEquippedItemList())
+		{
+			if (item.Attack > 0)
+				ItemState.Attack += item.Attack;
+			if (item.Speed > 0)
+				ItemState.Speed += item.Speed;
+		}
+	}
 }
