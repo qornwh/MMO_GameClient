@@ -1,8 +1,10 @@
 #include "BJS_Bullet.h"
 
 #include "BJS_CharaterState.h"
+#include "BJS_GameInstance.h"
 #include "BJS_GameModeBase.h"
 #include "BJS_InGameMode.h"
+#include "SkillStruct.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/MovementComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
@@ -33,27 +35,45 @@ ABJS_Bullet::ABJS_Bullet()
 void ABJS_Bullet::BeginPlay()
 {
 	Super::BeginPlay();
-	SetActorTickInterval(InterVal);
 }
 
 void ABJS_Bullet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	AttackCheckTimer -= DeltaTime;
-	if (AttackCheckTimer < 0.f)
+	if (OnBulletCollison.IsBound())
+	{
+		OnBulletCollison.Execute(_AttackNumber);
+	}
+
+	// AttackCheckTimer -= DeltaTime;
+	// if (AttackCheckTimer < 0.f)
+	// 	Destroy();
+	
+	--AttackCount;
+	if (AttackCount < 0)
+	{
 		Destroy();
+	}
 }
 
 void ABJS_Bullet::InitStartDirection(FVector Direction, FVector Pos, int32 SkillCode, int32 AttackNumber)
 {
-	auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
-	if (mode == nullptr) return;
-	
+	_SkillCode = SkillCode;
+	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
+	auto skillStruct = instance->GetSkillStructs();
+	check(skillStruct.Contains(_SkillCode));
+	auto skill = skillStruct[_SkillCode];
+
 	ProjectileMovementComponent->Velocity = Direction * ProjectileMovementComponent->InitialSpeed;
 	PresentPos = GetActorLocation();
-	_SkillCode = SkillCode;
 	_AttackNumber = AttackNumber;
+	TargetCount = skill->TargetCount;
+	IsTargetting = skill->IsTargetting;
+	InterVal = skill->AttackInterval;
+	AttackCount = skill->AttackCount;
+	MoveProjectileBullet = skill->MoveProjectile;
+	SetActorTickInterval(InterVal);
 }
 
 void ABJS_Bullet::ChangeDirection(FVector TargetDirection)
@@ -72,11 +92,6 @@ int32 ABJS_Bullet::GetHightSize()
 		return CollisionComponent->GetScaledCapsuleHalfHeight();
 	}
 	return 0;
-}
-
-int32 ABJS_Bullet::GetAttackTime()
-{
-	return AttackCheckTimer;
 }
 
 void ABJS_Bullet::SetSkillCode(int32 Code)
@@ -101,5 +116,5 @@ float ABJS_Bullet::GetCollisionWidth() const
 
 bool ABJS_Bullet::IsCoolDown()
 {
-	return AttackCheckTimer < 0.0f;
+	return AttackCount < 0;
 }

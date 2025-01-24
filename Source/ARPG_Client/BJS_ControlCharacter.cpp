@@ -82,12 +82,12 @@ void ABJS_ControlCharacter::BeginPlay()
 	}
 	FpsCamera->SetRelativeLocation(FpsCameraLocation);
 	FpsCamera->SetRelativeRotation(FRotator(0.f, 90.f, 0.f));
-	
+
 	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
 	instance->GetMyState()->SetTarget(this);
 	SetState(instance->GetMyState());
 	IsHitted = true;
-	
+
 	LoadInfo(instance->GetCurCharaterType(), instance->GetCurWeaponType());
 
 	// 현재 GameUi들고온다
@@ -117,8 +117,6 @@ void ABJS_ControlCharacter::Tick(float DeltaTime)
 			}
 		}
 	}
-	// 여기서 총알 충돌처리한다.
-	BulletAttackObject();
 }
 
 void ABJS_ControlCharacter::Move(float DeltaTime)
@@ -287,7 +285,7 @@ void ABJS_ControlCharacter::SendAimMessage()
 		protocol::CPlayerAim pkt;
 		pkt.set_isaim(IsAim);
 		pkt.set_uuid(State->GetUUid());
-		
+
 		socketActor->SendMessage(pkt, protocol::MessageCode::C_PLAYERAIM);
 	}
 }
@@ -300,7 +298,7 @@ void ABJS_ControlCharacter::SendJumpMessage(bool flag)
 		protocol::CPlayerJump pkt;
 		pkt.set_isjump(flag);
 		pkt.set_uuid(State->GetUUid());
-		
+
 		socketActor->SendMessage(pkt, protocol::MessageCode::C_PLAYERJUMP);
 	}
 }
@@ -355,82 +353,71 @@ void ABJS_ControlCharacter::SendAttackObjectMessage(int32 SkillCode, int32 Attac
 	}
 }
 
-void ABJS_ControlCharacter::BulletAttackObject()
+void ABJS_ControlCharacter::BulletAttackObject(int32 CurrentAttackNumber)
 {
 	auto mode = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
 	if (mode == nullptr)
 		return;
-			
-	for (auto e : Bullets)
+
+	ABJS_Bullet* bullet = Bullets[CurrentAttackNumber];
+	if (bullet)
 	{
-		ABJS_Bullet* bullet = e.Value;
-		if (bullet)
+		// 공격 판단.
+		// 서버 현재 포지션, 타겟, 공격 코드 전달.
+		float bulletRadius = bullet->GetScaledCapsuleRadius();
+		float bulletWidth = bullet->GetCollisionWidth();
+		int32 skillCode = bullet->GetSkillCode();
+		int32 attackNumber = CurrentAttackNumber;
+		FVector presentPos = bullet->GetPresentPos();
+		FVector position = bullet->GetActorLocation();
+
+		// 움직이지 않는 발사체인 경우
+		if (!bullet->IsMoveProjectileBullet())
 		{
-			// 공격 판단.
-			// 서버 현재 포지션, 타겟, 공격 코드 전달.
-			float bulletRadius = bullet->GetScaledCapsuleRadius();
-			float bulletWidth = bullet->GetCollisionWidth();
-			int32 skillCode = bullet->GetSkillCode();
-			int32 attackNumber = e.Key;
-			FVector presentPos = bullet->GetPresentPos();
-			FVector position = bullet->GetActorLocation();
+			FVector dVector = GetActorForwardVector() * bulletWidth;
+			presentPos = position;
+			position = position + 2 * dVector;
+		}
 
-			if (bulletWidth > 0.f)
+		DrawDebugCapsule(GetWorld(), presentPos, bulletRadius, bulletRadius, bullet->GetActorRotation().Quaternion(), FColor::Yellow, true, -1, 0, 1);
+		DrawDebugCapsule(GetWorld(), position, bulletRadius, bulletRadius, bullet->GetActorRotation().Quaternion(), FColor::Green, true, -1, 0, 1);
+
+		TArray<TTuple<int, ABJS_Character*>> successAttacks;
+		for (auto& monsterEntry : mode->GetMonsterStateList())
+		{
+			TSharedPtr<BJS_CharaterState> monsterState = monsterEntry.Value;
+			if (monsterState == nullptr)
+				continue;
+
+			ABJS_Character* monster = monsterState->GetTarget();
+			FVector monsterPosition = monster->GetActorLocation();
+			auto monsterCollision = monster->GetCapsuleComponent();
+			float monsterRadius = monsterCollision->GetScaledCapsuleRadius();
+
+			if (BulletCollisionUtils::CheckAABB2D(position, presentPos, monsterPosition, bulletRadius - monsterRadius))
 			{
-				FVector dVector = position.GetSafeNormal() * bulletWidth;
-				presentPos = position - dVector;			
-				presentPos = position + dVector;					
-			}
+				float d = BulletCollisionUtils::CapsuleToCircleDistance2D(position, presentPos, monsterPosition);
 
-			// DrawDebugCapsule(GetWorld(), presentPos, bulletRadius, bulletRadius, bullet->GetActorRotation().Quaternion(), FColor::Yellow, true, -1, 0, 1);
-			// DrawDebugCapsule(GetWorld(), position, bulletRadius, bulletRadius, bullet->GetActorRotation().Quaternion(), FColor::Yellow, true, -1, 0, 1);
-			
-			TArray<TTuple<int, ABJS_Character*>> successAttacks;
-			for (auto& monsterEntry : mode->GetMonsterStateList())
-			{
-				TSharedPtr<BJS_CharaterState> monsterState = monsterEntry.Value;
-				if (monsterState == nullptr)
-					continue;
-				
-				ABJS_Character* monster = monsterState->GetTarget();
-				FVector monsterPosition = monster->GetActorLocation();
-				auto monsterCollision = monster->GetCapsuleComponent();
-				float monsterRadius = monsterCollision->GetScaledCapsuleRadius();
-				float monsterHight = monsterCollision->GetScaledCapsuleHalfHeight();
-
-				if (BulletCollisionUtils::CheckAABB2D(position, presentPos, monsterPosition, bulletRadius - monsterRadius))
+				if (d <= monsterRadius + bulletRadius)
 				{
-					float d = BulletCollisionUtils::CapsuleToCircleDistance2D(position, presentPos, monsterPosition);
-
-					if (d <= monsterRadius + bulletRadius)
-					{
-						successAttacks.Add({d, monster});
-						UE_LOG(LogGameMode, Log, TEXT("attack ok %d : %lf"), monsterState->GetUUid(), d);
-					}
+					successAttacks.Add({d, monster});
+					UE_LOG(LogGameMode, Log, TEXT("attack ok %d : %lf"), monsterState->GetUUid(), d);
 				}
-			}
-			
-			bullet->SetPresentPos();
-			if (Bullets[attackNumber] != nullptr && bullet->IsCoolDown())
-			{
-				Bullets[attackNumber] = nullptr;
-				Bullets.Remove(PresentAttackNumber);
-			}
-			
-			successAttacks.Sort([](TTuple<int, ABJS_Character*> a, TTuple<int, ABJS_Character*> b){
-				return a.Key < b.Key;	
-			});
-
-			if (successAttacks.Num() > 0)
-			{
-				while (successAttacks.Num() > 1)
-				{
-					successAttacks.Pop();
-				}
-				
-				SendAttackObjectMessage(skillCode, attackNumber, successAttacks);
 			}
 		}
+
+		bullet->SetPresentPos();
+		if (Bullets[attackNumber] != nullptr && bullet->IsCoolDown())
+		{
+			Bullets[attackNumber] = nullptr;
+			Bullets.Remove(PresentAttackNumber);
+		}
+
+		successAttacks.Sort();
+
+		if (successAttacks.Num() > Bullets[attackNumber]->GetTargetCount())
+			successAttacks.SetNum(Bullets[attackNumber]->GetTargetCount());
+		SendAttackObjectMessage(skillCode, attackNumber, successAttacks);
 	}
 }
 
@@ -445,7 +432,8 @@ bool ABJS_ControlCharacter::PlayAttack(int32 Code, bool ignore)
 	if (Super::PlayAttack(Code, ignore))
 	{
 		SendAttackMessage();
-		
+
+		Bullets[PresentAttackNumber]->OnBulletCollison.BindUObject(this, &ABJS_ControlCharacter::BulletAttackObject);
 		++PresentAttackNumber;
 		PresentAttackNumber %= BulletNumberMax;
 		return true;
@@ -453,9 +441,20 @@ bool ABJS_ControlCharacter::PlayAttack(int32 Code, bool ignore)
 	return false;
 }
 
-void ABJS_ControlCharacter::PlaySkill(int32 Code, bool ignore)
+bool ABJS_ControlCharacter::PlaySkill(int32 Code, bool ignore)
 {
-	Super::PlaySkill(Code, ignore);
+	if (Super::PlaySkill(Code, ignore))
+	{
+		auto instance = Cast<UBJS_GameInstance>(GetWorld()->GetGameInstance());
+		if (instance)
+		{
+			if (instance->GetSkillStructs().Contains(Code))
+			{
+				return true;	
+			}
+		}
+	}
+	return false;
 }
 
 void ABJS_ControlCharacter::ShowInventoryUI()
@@ -493,7 +492,6 @@ void ABJS_ControlCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		//Jumping
-		// EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ABJS_ControlCharacter::StartJump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ABJS_ControlCharacter::StartJump);
 		//Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ABJS_ControlCharacter::Move);

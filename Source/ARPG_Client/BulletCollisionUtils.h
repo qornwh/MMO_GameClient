@@ -7,6 +7,7 @@ class ARPG_CLIENT_API BulletCollisionUtils
 public:
 	static bool CheckAABB2D(const FVector& A, const FVector& B, const FVector& Target, float dLen)
 	{
+		dLen = FMath::Abs(dLen);
 		if (FMath::Min(A.X, B.X) - dLen <= Target.X && Target.X <= FMath::Max(A.X, B.X) + dLen)
 		{
 			if (FMath::Min(A.Y, B.Y) - dLen <= Target.Y && Target.Y <=  FMath::Max(A.Y, B.Y) + dLen)

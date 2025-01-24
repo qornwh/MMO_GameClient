@@ -34,6 +34,7 @@ public:
 	
 	virtual void Tick(float DeltaTime) override;
 	void FireStart();
+	void SkillStart();
 	bool IsFire();
 	void SetSkeletalMesh(TObjectPtr<class USkeletalMesh> CurrentMesh) const;
 	void SetMuzzleFX(TObjectPtr<class UParticleSystem> Particle) const;

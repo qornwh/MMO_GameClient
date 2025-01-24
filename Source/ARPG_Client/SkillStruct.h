@@ -6,9 +6,6 @@
 #include "Engine/DataTable.h"
 #include "SkillStruct.generated.h"
 
-/**
- * 
- */
 USTRUCT(BlueprintType)
 struct FSkillStruct : public FTableRowBase
 {
@@ -40,6 +37,21 @@ public:
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="Name"))
 	FName Name;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="TargetCount", MakeStructureDefaultValue="0"))
+	int32 TargetCount;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="IsTargetting", MakeStructureDefaultValue="false"))
+	bool IsTargetting;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="AttackInterval", MakeStructureDefaultValue="0.000000"))
+	double AttackInterval;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="AttackCount", MakeStructureDefaultValue="0"))
+	int32 AttackCount;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="MoveProjectile", MakeStructureDefaultValue="false"))
+	bool MoveProjectile;
 
 	/** Image Path **/
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="Path"))

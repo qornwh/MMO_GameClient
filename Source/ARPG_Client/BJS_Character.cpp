@@ -252,6 +252,31 @@ void ABJS_Character::Attack()
 {
 }
 
+void ABJS_Character::AttackStart()
+{
+	if (AnimInstance)
+	{
+		AnimInstance->PlayAttackAM();
+		IsAttack = false;
+	}
+}
+
+void ABJS_Character::AttackPause()
+{
+	if (AnimInstance)
+	{
+		AnimInstance->PauseAttackAM();
+	}
+}
+
+void ABJS_Character::AttackResum()
+{
+	if (AnimInstance)
+	{
+		AnimInstance->ResumePauseAM();
+	}
+}
+
 void ABJS_Character::AttackEnd()
 {
 	if (AnimInstance)
@@ -278,19 +303,23 @@ bool ABJS_Character::PlayAttack(int32 Code, bool ignore)
 	// 공격 스킬
 	if (IsAim && Weapon)
 	{
-		IsAttack = false;
 		if (Weapon->IsFire() && !ignore)
 		{
 			return false;
 		}
+
+		if (Code > 0)
+		{
+			Weapon->SkillStart();
+		}
+
+		AttackStart();
 		Weapon->FireStart();
-		if (AnimInstance)
-			AnimInstance->PlayAttackAM();
 
 		FVector SpawnLocation = Weapon->GetSpawnLocation();
 		auto mode = Cast<UBJS_GameInstance>(GetGameInstance());
 
-		ABJS_Bullet* Bullet = nullptr;
+		ABJS_Bullet* Bullet;
 		if (Code == 0)
 		{
 			Bullet = GetWorld()->SpawnActor<ABJS_Bullet>(BulletClass, SpawnLocation, FRotator::ZeroRotator);
@@ -304,7 +333,6 @@ bool ABJS_Character::PlayAttack(int32 Code, bool ignore)
 			Bullet = GetWorld()->SpawnActor<ABJS_Bullet>(mode->GetSkillBulletMap()[Code], SpawnLocation, FRotator::ZeroRotator);
 			Bullet->InitStartDirection(FVector::ZeroVector, SpawnLocation, Code, PresentAttackNumber);
 			Bullet->SetActorRelativeRotation(FRotator(90, 0, 0));
-			Bullet->SetActorRelativeLocation(FVector(Bullet->GetHightSize(), 0, 0));
 			Bullet->SetState(State);
 		}
 		if (PresentAttackNumber >= 0 && Bullet != nullptr)
@@ -315,7 +343,7 @@ bool ABJS_Character::PlayAttack(int32 Code, bool ignore)
 	return false;
 }
 
-void ABJS_Character::PlaySkill(int32 Code, bool ignore)
+bool ABJS_Character::PlaySkill(int32 Code, bool ignore)
 {
 	auto instance = Cast<UBJS_GameInstance>(GetWorld()->GetGameInstance());
 	if (instance)
@@ -331,20 +359,12 @@ void ABJS_Character::PlaySkill(int32 Code, bool ignore)
 			State->BuffState.AddSpeed(Value);
 		}
 
-		if (IsAim && Weapon && Type == 0)
+		if (IsAim && Weapon && Type == CharaterSkill::SKILLTYPES::ATT)
 		{
 			// 공격 스킬
-			IsAttack = false;
-			if (Weapon->IsFire() && !ignore)
-			{
-				return;
-			}
-
-			Weapon->FireStart();
-			if (AnimInstance)
-				AnimInstance->PlayAttackAM();
+			return PlayAttack(Code, ignore);
 		}
-		else if (Type > 0)
+		if (Type > 0)
 		{
 			// 버프 스킬
 			ABJS_BuffSkill* BuffActor = GetWorld()->SpawnActor<ABJS_BuffSkill>(instance->GetBuffSkillClass());
@@ -355,8 +375,10 @@ void ABJS_Character::PlaySkill(int32 Code, bool ignore)
 		if (BuffList.Contains(Code))
 		{
 			BuffList[Code].Start();
+			return true;
 		}
 	}
+	return false;
 }
 
 TSharedPtr<BJS_CharaterState> ABJS_Character::GetState()

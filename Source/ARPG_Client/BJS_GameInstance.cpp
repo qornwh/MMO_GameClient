@@ -343,8 +343,11 @@ void UBJS_GameInstance::LoadSkillIcon()
 	for (auto skill : SkillStructs)
 	{
 		ConstructorHelpers::FObjectFinder<UTexture2D> Img(*skill->Path.ToString());
-		check(Img.Object);
-		SkillIconImgMap.Add(skill->Code, Img.Object);
+		if (skill->Code > 0)
+		{
+			check(Img.Object);
+			SkillIconImgMap.Add(skill->Code, Img.Object);
+		}
 	}
 }
 

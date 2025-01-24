@@ -36,10 +36,13 @@ public:
 	void SetMuzzleFX(class UParticleSystem* MuzzleFX);
 	void SetBulletFX(class UNiagaraSystem* SkillFx, int32 Code);
 	virtual void Attack();
-	virtual void AttackEnd();
+	void AttackStart();
+	void AttackPause();
+	void AttackResum();
+	void AttackEnd();
 	void PlayMotion(int32 Code, bool ignore = false);
 	virtual bool PlayAttack(int32 Code, bool ignore = false);
-	virtual void PlaySkill(int32 Code, bool ignore = false);
+	virtual bool PlaySkill(int32 Code, bool ignore = false);
 	TSharedPtr<class BJS_CharaterState> GetState();
 	virtual void SetState(TSharedPtr<class BJS_CharaterState> state);
 	void CreateDamageUi(float Demage);

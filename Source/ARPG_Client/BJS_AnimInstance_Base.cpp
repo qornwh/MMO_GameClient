@@ -4,7 +4,6 @@
 #include "BJS_AnimInstance_Base.h"
 
 #include "BJS_Character.h"
-#include "BJS_ControlCharacter.h"
 #include "KismetAnimationLibrary.h"
 #include "GameFramework/PawnMovementComponent.h"
 
@@ -81,12 +80,6 @@ void UBJS_AnimInstance_Base::NativeUpdateAnimation(float DeltaSeconds)
 		{
 			IsMove = false;
 		}
-
-		
-		if (!Cast<ABJS_ControlCharacter>(ParentPawn))
-		{
-			// UE_LOG(LogTemp, Log, TEXT("Other %lf %lf %d %d !!!"), GroundSpeed, CurrentDirection, IsJumping, IsMove);
-		}
 		
 		if (Montage_IsPlaying(AM_Fire))
 		{
@@ -98,13 +91,19 @@ void UBJS_AnimInstance_Base::NativeUpdateAnimation(float DeltaSeconds)
 void UBJS_AnimInstance_Base::PlayAttackAM()
 {
 	Montage_Play(AM_Fire, 1.f);
-	if (AM_Fire)
-		UE_LOG(LogTemp, Log, TEXT("Montage !!!"));
+}
+
+void UBJS_AnimInstance_Base::PauseAttackAM()
+{
+	Montage_Pause(AM_Fire);
+}
+
+void UBJS_AnimInstance_Base::ResumePauseAM()
+{
+	Montage_Resume(AM_Fire);
 }
 
 void UBJS_AnimInstance_Base::StopAttackAM()
 {
 	Montage_Stop(0.1f, AM_Fire);
-	if (AM_Fire)
-		UE_LOG(LogTemp, Log, TEXT("Montage Stop !!!"));
 }

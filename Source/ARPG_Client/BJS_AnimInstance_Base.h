@@ -21,6 +21,8 @@ public:
 	virtual void NativeInitializeAnimation() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 	void PlayAttackAM();
+	void PauseAttackAM();
+	void ResumePauseAM();
 	void StopAttackAM();
 
 private:

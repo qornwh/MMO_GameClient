@@ -87,11 +87,11 @@ protected:
 	void SendMoveMessage();
 	void SendAttackObjectMessage(int32 SkillCode, int32 AttackNumber, const TArray<TTuple<int, ABJS_Character*>>& successAttacks);
 
-	void BulletAttackObject();
+	void BulletAttackObject(int32 CurrentAttackNumber);
 	
 	virtual void SetState(TSharedPtr<BJS_CharaterState> state) override;
 	virtual bool PlayAttack(int32 Code, bool ignore = false) override;
-	virtual void PlaySkill(int32 Code, bool ignore = false) override;
+	virtual bool PlaySkill(int32 Code, bool ignore = false) override;
 
 public:
 	void ShowInventoryUI();

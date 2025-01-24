@@ -20,11 +20,8 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void Move(float DeltaTime) override;
 	virtual void Tick(float DeltaTime) override;
-	virtual void Attack() override;
-	virtual void AttackEnd() override;
-	
-	UFUNCTION()
-	void OnHitEvent(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	// virtual void Attack() override;
+	// virtual void AttackEnd() override;
 
 	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly)
 	class UStaticMeshComponent* MonsterMeshComponent;

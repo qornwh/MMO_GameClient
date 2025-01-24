@@ -52,6 +52,11 @@ void ABJS_WeaponActor::FireStart()
 	}
 }
 
+void ABJS_WeaponActor::SkillStart()
+{
+	SkillComponent->Activate(true);
+}
+
 bool ABJS_WeaponActor::IsFire()
 {
 	return Fire;
