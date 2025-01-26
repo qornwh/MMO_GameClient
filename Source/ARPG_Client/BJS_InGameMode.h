@@ -51,7 +51,7 @@ public:
 	void DestroyPlayer(bool IsMonster, int32 UUid);
 	void UpdateInventoryEquipUI(int32 InvenPos, int32 State);
 	void UpdateEquippedItemUI(int32 EquipPos, int32 State);
-	void UpdateInventoryEtcUI(int32 EtcItemCode, int32 State);
+	void UpdateInventoryEtcUI(int32 EtcPos, int32 State);
 	void UpdateInventoryUI();
 	void EquippedItemUI(int32 Invenpos, int32 Equippos);
 	void SendEquippedItem(int32 Invenpos, int32 Equippos);

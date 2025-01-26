@@ -188,12 +188,12 @@ void UBJS_InventoryWidget::UpdateEtcSlot(int32 InvenPos)
 	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
 	if (instance)
 	{
-		auto& item = instance->GetMyInventory()->GetInventoryEquipItemList()[InvenPos];
+		auto& item = instance->GetMyInventory()->GetInventoryEtcItemList()[InvenPos];
 		if (!item.IsEmpty())
 		{
-			auto& ImageMap = instance->GetItemEquipIconImgMap();
+			auto& ImageMap = instance->GetItemEtcIconImgMap();
 			auto slot = EtcSlot[InvenPos];
-			slot->SetEquip(item);
+			slot->SetEtc(item);
 			slot->SetSlots(true);
 			slot->SetImg(ImageMap[item.ItemCode]);
 		}

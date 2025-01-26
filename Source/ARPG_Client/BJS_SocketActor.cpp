@@ -778,7 +778,7 @@ void ABJS_SocketActor::SellItemsHandler(BYTE* Buffer, PacketHeader* Header, int3
 			for (auto& item : pkt.itemetcs())
 			{
 				mode->GetMyInventory()->UseEtcItem(item.invenpos(), item.item_count()); // 기존 아이템 개수및 삭제
-				mode->UpdateInventoryEtcUI(item.item_code(), 0);
+				mode->UpdateInventoryEtcUI(item.invenpos(), 0);
 			}
 
 			mode->GetMyInventory()->SetGold(pkt.gold());

@@ -89,32 +89,3 @@ private:
 	const int32 InventorySize = 20;
 	const int32 EquipSize = 3;
 };
-
-inline void InventoryItem::RemoveEquipItem(int32 Invenpos)
-{
-	InventoryEquipItemList[Invenpos].SetEmptyItem();
-}
-
-inline void InventoryItem::UseEtcItem(int32 Invenpos, int32 Count)
-{
-	if (!InventoryEtcItemList[Invenpos].IsEmpty())
-	{
-		InventoryEtcItemList[Invenpos].Count -= Count;
-		if (InventoryEtcItemList[Invenpos].Count <= 0)
-			InventoryEtcItemList[Invenpos].SetEmptyItem();
-	}
-}
-
-inline void InventoryItem::EquippedItem(int Invenpos, int Equippos)
-{
-	EquipItem& invenItem = InventoryEquipItemList[Invenpos];
-	EquipItem& equipItem = EquippedItemList[Equippos];
-
-	EquipItem tempItem = invenItem;
-	invenItem = equipItem;
-	equipItem = tempItem;
-	invenItem.InvenPos = Invenpos;
-	invenItem.EquipPos = -1;
-	equipItem.InvenPos = -1;
-	equipItem.EquipPos = Equippos;
-}

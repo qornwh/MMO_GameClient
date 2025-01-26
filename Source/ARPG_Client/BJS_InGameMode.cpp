@@ -451,13 +451,13 @@ void ABJS_InGameMode::UpdateEquippedItemUI(int32 EquipPos, int32 State)
 	}
 }
 
-void ABJS_InGameMode::UpdateInventoryEtcUI(int32 EtcItemCode, int32 State)
+void ABJS_InGameMode::UpdateInventoryEtcUI(int32 EtcPos, int32 State)
 {
 	auto ui = Cast<UBJS_InventoryWidget>(InventoryUi);
 	if (ui)
 	{
 		// etc는 그냥 업데이트만 한다.
-		ui->UpdateEtcSlot(EtcItemCode);
+		ui->UpdateEtcSlot(EtcPos);
 	}
 }
 
@@ -618,10 +618,11 @@ void ABJS_InGameMode::SellItems()
 
 	for (auto& itemEntry : SellEtcItems)
 	{
-		auto& item = itemEntry.Value;
 		protocol::ItemEtc* sellItem = pkt.add_itemetcs();
-		sellItem->set_item_code(item.ItemCode);
-		sellItem->set_item_count(item.Count);
+		sellItem->set_item_code(itemEntry.Value.ItemCode);
+		sellItem->set_item_count(itemEntry.Value.Count);
+		sellItem->set_invenpos(itemEntry.Value.InvenPos);
+		sellItem->set_item_type(itemEntry.Value.Type);
 	}
 	SocketActor->SendMessage(pkt, protocol::MessageCode::C_SELLITEMS);
 	ResetSellItems();

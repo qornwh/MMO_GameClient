@@ -65,6 +65,7 @@ EtcItem& EtcItem::operator=(const EtcItem& other)
 	ItemCode = other.ItemCode;
 	Count = other.Count;
 	Type = other.Type;
+	InvenPos = other.InvenPos;
 	return *this;
 }
 
@@ -93,7 +94,7 @@ void EtcItem::SetEmptyItem()
 
 bool EtcItem::IsEmpty()
 {
-	if (ItemCode > 0 && ItemCode > 0)
+	if (ItemCode < 0 || Count <= 0)
 	{
 		return true;
 	}
@@ -223,4 +224,33 @@ void InventoryItem::UseGold(int32 gold)
 void InventoryItem::SetGold(int32 gold)
 {
 	Gold = gold;
+}
+
+void InventoryItem::RemoveEquipItem(int32 Invenpos)
+{
+	InventoryEquipItemList[Invenpos].SetEmptyItem();
+}
+
+void InventoryItem::UseEtcItem(int32 Invenpos, int32 Count)
+{
+	if (!InventoryEtcItemList[Invenpos].IsEmpty())
+	{
+		InventoryEtcItemList[Invenpos].Count -= Count;
+		if (InventoryEtcItemList[Invenpos].Count <= 0)
+			InventoryEtcItemList[Invenpos].SetEmptyItem();
+	}
+}
+
+void InventoryItem::EquippedItem(int Invenpos, int Equippos)
+{
+	EquipItem& invenItem = InventoryEquipItemList[Invenpos];
+	EquipItem& equipItem = EquippedItemList[Equippos];
+
+	EquipItem tempItem = invenItem;
+	invenItem = equipItem;
+	equipItem = tempItem;
+	invenItem.InvenPos = Invenpos;
+	invenItem.EquipPos = -1;
+	equipItem.InvenPos = -1;
+	equipItem.EquipPos = Equippos;
 }
