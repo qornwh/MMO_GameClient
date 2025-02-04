@@ -43,12 +43,14 @@ void ABJS_Bullet::Tick(float DeltaTime)
 
 	if (OnBulletCollison.IsBound())
 	{
-		OnBulletCollison.Execute(_AttackNumber);
+		OnBulletCollison.Execute(AttackNumber);
+		if (MoveProjectileBullet && AccessAttacks.Num() > 0)
+		{
+			AttackCount = 0;
+			Destroy();
+			return;
+		}
 	}
-
-	// AttackCheckTimer -= DeltaTime;
-	// if (AttackCheckTimer < 0.f)
-	// 	Destroy();
 	
 	--AttackCount;
 	if (AttackCount < 0)
@@ -57,17 +59,17 @@ void ABJS_Bullet::Tick(float DeltaTime)
 	}
 }
 
-void ABJS_Bullet::InitStartDirection(FVector Direction, FVector Pos, int32 SkillCode, int32 AttackNumber)
+void ABJS_Bullet::InitStartDirection(FVector Direction, FVector Pos, int32 Code, int32 Number)
 {
-	_SkillCode = SkillCode;
+	SkillCode = Code;
 	auto instance = Cast<UBJS_GameInstance>(GetGameInstance());
 	auto skillStruct = instance->GetSkillStructs();
-	check(skillStruct.Contains(_SkillCode));
-	auto skill = skillStruct[_SkillCode];
+	check(skillStruct.Contains(SkillCode));
+	auto skill = skillStruct[SkillCode];
 
 	ProjectileMovementComponent->Velocity = Direction * ProjectileMovementComponent->InitialSpeed;
 	PresentPos = GetActorLocation();
-	_AttackNumber = AttackNumber;
+	AttackNumber = Number;
 	TargetCount = skill->TargetCount;
 	IsTargetting = skill->IsTargetting;
 	InterVal = skill->AttackInterval;
@@ -96,7 +98,7 @@ int32 ABJS_Bullet::GetHightSize()
 
 void ABJS_Bullet::SetSkillCode(int32 Code)
 {
-	_SkillCode = Code;
+	SkillCode = Code;
 }
 
 void ABJS_Bullet::SetState(TSharedPtr<BJS_CharaterState> State)
@@ -117,4 +119,12 @@ float ABJS_Bullet::GetCollisionWidth() const
 bool ABJS_Bullet::IsCoolDown()
 {
 	return AttackCount < 0;
+}
+
+bool ABJS_Bullet::AttackAccessCharater(int32 Code)
+{
+	if (AccessAttacks.Contains(Code))
+		return false;
+	AccessAttacks.Add(Code);
+	return true;
 }

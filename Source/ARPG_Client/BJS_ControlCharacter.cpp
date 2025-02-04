@@ -379,8 +379,8 @@ void ABJS_ControlCharacter::BulletAttackObject(int32 CurrentAttackNumber)
 			position = position + 2 * dVector;
 		}
 
-		DrawDebugCapsule(GetWorld(), presentPos, bulletRadius, bulletRadius, bullet->GetActorRotation().Quaternion(), FColor::Yellow, true, -1, 0, 1);
-		DrawDebugCapsule(GetWorld(), position, bulletRadius, bulletRadius, bullet->GetActorRotation().Quaternion(), FColor::Green, true, -1, 0, 1);
+		// DrawDebugCapsule(GetWorld(), presentPos, bulletRadius, bulletRadius, bullet->GetActorRotation().Quaternion(), FColor::Yellow, true, -1, 0, 1);
+		// DrawDebugCapsule(GetWorld(), position, bulletRadius, bulletRadius, bullet->GetActorRotation().Quaternion(), FColor::Green, true, -1, 0, 1);
 
 		TArray<TTuple<int, ABJS_Character*>> successAttacks;
 		for (auto& monsterEntry : mode->GetMonsterStateList())
@@ -413,11 +413,18 @@ void ABJS_ControlCharacter::BulletAttackObject(int32 CurrentAttackNumber)
 			Bullets.Remove(PresentAttackNumber);
 		}
 
-		successAttacks.Sort();
+		if (successAttacks.Num() > 0)
+		{
+			successAttacks.Sort();
+			if (successAttacks.Num() > Bullets[attackNumber]->GetTargetCount())
+				successAttacks.SetNum(Bullets[attackNumber]->GetTargetCount());
 
-		if (successAttacks.Num() > Bullets[attackNumber]->GetTargetCount())
-			successAttacks.SetNum(Bullets[attackNumber]->GetTargetCount());
-		SendAttackObjectMessage(skillCode, attackNumber, successAttacks);
+			for (int i = 0; i < successAttacks.Num(); i++)
+			{
+				bullet->AttackAccessCharater(successAttacks[i].Value->GetState()->GetCode());
+			}
+			SendAttackObjectMessage(skillCode, attackNumber, successAttacks);
+		}
 	}
 }
 
