@@ -37,32 +37,6 @@ void ABJS_StaticPawn::BeginPlay()
 	
 }
 
-void ABJS_StaticPawn::CreateDefaultMesh(FString MeshPath)
-{
-	DefaultMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DefaultMeshComp"));
-	DefaultMeshComponent->SetupAttachment(RootComponent);
-	
-	ConstructorHelpers::FObjectFinder<UStaticMesh> meshObj(*MeshPath);
-	if (meshObj.Succeeded())
-	{
-		if (DefaultMeshComponent)
-			DefaultMeshComponent->SetStaticMesh(meshObj.Object);
-	}
-}
-
-void ABJS_StaticPawn::CreateSKeletalDefaultMesh(FString MeshPath)
-{
-	DefaultSkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("DefaultMeshComp"));
-	DefaultSkeletalMeshComponent->SetupAttachment(RootComponent);
-	
-	ConstructorHelpers::FObjectFinder<USkeletalMesh> meshObj(*MeshPath);
-	if (meshObj.Succeeded())
-	{
-		if (DefaultSkeletalMeshComponent)
-			DefaultSkeletalMeshComponent->SetSkeletalMesh(meshObj.Object);
-	}
-}
-
 void ABJS_StaticPawn::CreateCamerCompoent()
 {
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
@@ -84,7 +58,6 @@ void ABJS_StaticPawn::SetSkeletalMesh(USkeletalMesh* Mesh)
 	}
 		
 	DefaultSkeletalMeshComponent->SetSkeletalMesh(Mesh);
-	// DefaultSkeletalMeshComponent->set
 }
 
 void ABJS_StaticPawn::SetStaticMesh(UStaticMesh* Mesh)
