@@ -208,10 +208,10 @@ bool UBJS_ItemSlotWidget::NativeOnDrop(const FGeometry& InGeometry, const FDragD
 	if (mode)
 	{
 		UItemDragDropOperation* Operation = Cast<UItemDragDropOperation>(InOperation);
-		if (Operation && Operation->WidgetReference)
+		if (Operation && Operation->GetWidgetReference())
 		{
 			// 드래그앤드롭 성공 시 수행할 동작
-			auto Target = Cast<UBJS_ItemSlotWidget>(Operation->WidgetReference);
+			auto Target = Cast<UBJS_ItemSlotWidget>(Operation->GetWidgetReference());
 			if (Target && !Target->GetEquip().IsEmpty())
 			{
 				if (CurSocketType == ITEMSOCKETTYPE::SENDMAIL)

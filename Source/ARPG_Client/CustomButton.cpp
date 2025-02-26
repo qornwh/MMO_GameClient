@@ -11,7 +11,7 @@ void UCustomButton::NativeOnDragDetected(const FGeometry& InGeometry, const FPoi
 {
 	UItemDragDropOperation* DragDropOperation = Cast<UItemDragDropOperation>(UWidgetBlueprintLibrary::CreateDragDropOperation(UItemDragDropOperation::StaticClass()));
 	DragDropOperation->DefaultDragVisual = this;
-	DragDropOperation->WidgetReference = this;
+	DragDropOperation->SetWidgetReference(this);
 	OutOperation = DragDropOperation;
 }
 

@@ -134,45 +134,6 @@ EtcItem& InventoryItem::AddEtcItem(int32 itemCode, int32 type, int32 count, int3
 	return InventoryEtcItemList[invenPos];
 }
 
-// EquipItem& InventoryItem::AddEquipItem(EquipItem& Equip)
-// {
-// 	if (Equip.InvenPos >= 0)
-// 	{
-// 		InventoryEquipItems[Equip.InvenPos] = Equip;
-// 	}
-// 	else if (Equip.EquipPos >= 0)
-// 	{
-// 		EquippedItems[Equip.EquipPos] = Equip;
-// 	}
-// 	return Equip;
-// }
-
-// EtcItem& InventoryItem::AddEtcItem(EtcItem& Etc)
-// {
-// 	int32 itemCode = Etc.ItemCode;
-// 	auto it = EtcItems.Find(itemCode);
-// 	if (EtcItems.Contains(itemCode))
-// 	{
-// 		it->UpdateItem(it->Count + Etc.Count);
-// 	}
-// 	else
-// 	{
-// 		EtcItems.Add(itemCode, Etc);
-// 	}
-// 	return Etc;
-// }
-
-// bool InventoryItem::UseEquipItem(int32 UniqueId)
-// {
-// 	if (!EquipItems.Contains(UniqueId))
-// 	{
-// 		return false;
-// 	}
-//
-// 	EquipItems.Remove(UniqueId);
-// 	return true;
-// }
-
 bool InventoryItem::ItemEquipped(int32 invenPos, int32 equipPos)
 {
 	if (invenPos >= 0 && equipPos >= 0)
@@ -191,25 +152,6 @@ bool InventoryItem::ItemEquipped(int32 invenPos, int32 equipPos)
 	}
 	return false;
 }
-
-// bool InventoryItem::UseEtcItem(int32 Code, int32 Count)
-// {
-// 	if (!EtcItems.Contains(Code))
-// 	{
-// 		return false;
-// 	}
-// 	
-// 	if (EtcItems.Find(Code)->Count >= Count)
-// 	{
-// 		EtcItems.Find(Code)->Count -= Count;
-// 		if (EtcItems.Find(Code)->Count == 0)
-// 		{
-// 			EtcItems.Remove(Code);
-// 		}
-// 		return true;
-// 	}
-// 	return false;
-// }
 
 void InventoryItem::AddGold(int32 gold)
 {

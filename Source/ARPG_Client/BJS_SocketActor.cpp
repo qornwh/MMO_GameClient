@@ -482,16 +482,18 @@ void ABJS_SocketActor::CharaterUpdateHandler(BYTE* Buffer, PacketHeader* Header,
 					case BJS_CharaterState::CharaterState::IDLE:
 						{
 							MonsterState[uuid]->SetHp(unit.hp());
-							// MonsterState[uuid]->GetTarget()->SetHidden(true);
 							// 로드된거 제거되고 재생성이라 lv, name, type등 고정된거는 패스한다
 							OnSpawnDelegate.Execute(true, unit.uuid());
 						}
 						break;
+					case BJS_CharaterState::CharaterState::READY_ATTACK:
+						{
+							// 공격 플레이 애니메이션
+							MonsterState[uuid]->GetTarget()->PlaySkill(0);
+						}
+						break;
 					case BJS_CharaterState::CharaterState::ATTACK:
 						{
-							if (!state.has_attack()) break;
-							auto& attack = state.attack();
-							MonsterState[uuid]->GetTarget()->Attack();
 						}
 						break;
 					case BJS_CharaterState::CharaterState::HITED:

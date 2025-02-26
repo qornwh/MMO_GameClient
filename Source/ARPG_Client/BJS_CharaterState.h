@@ -32,7 +32,8 @@ public:
 		ATTACK = 4,
 		SKILL1 = 5,
 		SKILL2 = 6,
-		HEAL = 7
+		HEAL = 7,
+		READY_ATTACK = 14,
 	};
 	
 	BJS_CharaterState();

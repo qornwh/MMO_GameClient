@@ -20,11 +20,13 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void Move(float DeltaTime) override;
 	virtual void Tick(float DeltaTime) override;
-	// virtual void Attack() override;
-	// virtual void AttackEnd() override;
+	virtual bool PlaySkill(int32 Code, bool ignore = false) override;
 
 	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly)
 	class UStaticMeshComponent* MonsterMeshComponent;
+
+	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly)
+	class UParticleSystemComponent* ParticleComponent;
 	
 private:
 	TMap<int32, TObjectPtr<class UStaticMesh>> MonsterMeshList;

@@ -42,8 +42,6 @@ void ABJS_Monster::Tick(float DeltaTime)
 
 void ABJS_Monster::Move(float DeltaTime)
 {
-	// Super::Move(DeltaTime);
-	
 	FRotator roc = GetActorRotation();
 	if (roc.Yaw != State->GetYaw())
 	{
@@ -78,35 +76,10 @@ void ABJS_Monster::SetState(TSharedPtr<BJS_CharaterState> state)
 	}
 }
 
-// void ABJS_Monster::Attack()
-// {
-// 	// Super::Attack();
-//
-// 	int32 SkillCode = 0;
-// 	FVector SpawnLocation = GetActorLocation();
-// 	// auto Bullet = GetWorld()->SpawnActor<ABJS_Bullet>(BulletClass, SpawnLocation, FRotator::ZeroRotator);
-// 	// Bullet->InitStartDirection(GetActorForwardVector(), SpawnLocation);
-// 	// Bullet->SetSkillCode(SkillCode);
-// 	// if (TargetUUid >= 0)
-// 	// {
-// 	// 	auto instance = Cast<ABJS_InGameMode>(GetWorld()->GetAuthGameMode());
-// 	// 	if (instance)
-// 	// 	{
-// 	// 		if (instance->GetCharaterStateList().Contains(TargetUUid))
-// 	// 		{
-// 	// 			auto BJS_Target = instance->GetCharaterStateList()[TargetUUid];
-// 	// 			if (BJS_Target && BJS_Target->GetTarget())
-// 	// 			{
-// 	// 				Bullet->SetTarget(BJS_Target->GetTarget(), this);
-// 	// 				UE_LOG(LogTemp, Log,  TEXT("Spawn Bullet !!!!"));
-// 	// 			}
-// 	// 		}
-// 	// 	}
-// 	// }
-// }
-
-// void ABJS_Monster::AttackEnd()
-// {
-// 	// Super::AttackEnd();
-// }
+bool ABJS_Monster::PlaySkill(int32 Code, bool ignore)
+{
+	
+	UE_LOG(LogTemp, Log, TEXT("Monster PlaySkill !!! "));
+	return true;
+}
 

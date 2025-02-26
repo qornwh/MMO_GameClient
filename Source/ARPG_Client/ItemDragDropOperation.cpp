@@ -3,3 +3,12 @@
 
 #include "ItemDragDropOperation.h"
 
+UUserWidget* UItemDragDropOperation::GetWidgetReference() const
+{
+	return WidgetReference;
+}
+
+void UItemDragDropOperation::SetWidgetReference(UUserWidget* WidgetReference)
+{
+	this->WidgetReference = WidgetReference;
+}

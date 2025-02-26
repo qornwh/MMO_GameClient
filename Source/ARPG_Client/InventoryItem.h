@@ -62,24 +62,19 @@ public:
 
 	EquipItem& AddEquipItem(int32 itemCode, int32 equipType, int32 attack, int32 speed, int32 equipPos, int32 invenPos);
 	EtcItem& AddEtcItem(int32 itemCode, int32 type, int32 count, int32 invenPos);
-	// EquipItem& AddEquipItem(EquipItem& Equip);
-	// EtcItem& AddEtcItem(EtcItem& Etc);
-	// bool UseEquipItem(int32 UniqueId);
+	
 	bool ItemEquipped(int32 invenPos, int32 equipPos);
-	// bool UseEtcItem(int32 Code, int32 Count);
-
 	void AddGold(int32 gold);
 	void UseGold(int32 gold);
 	void SetGold(int32 gold);
+	void RemoveEquipItem(int32 Invenpos);
+	void UseEtcItem(int32 Invenpos, int32 Count);
+	void EquippedItem(int Invenpos, int Equippos);
 
 	TArray<EquipItem>& GetInventoryEquipItemList() { return InventoryEquipItemList; }
 	TArray<EtcItem>& GetInventoryEtcItemList() { return InventoryEtcItemList; }
 	TArray<EquipItem>& GetEquippedItemList() { return EquippedItemList; }
 	int32 GetGold() { return Gold; }
-	void RemoveEquipItem(int32 Invenpos);
-	void UseEtcItem(int32 Invenpos, int32 Count);
-	void EquippedItem(int Invenpos, int Equippos);
-
 private:
 	TArray<EquipItem> InventoryEquipItemList;
 	TArray<EtcItem> InventoryEtcItemList;
