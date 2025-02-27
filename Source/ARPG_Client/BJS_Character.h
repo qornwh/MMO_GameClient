@@ -30,7 +30,6 @@ public:
 	void SetAttackTimer(float DeltaTime);
 	virtual void StopJump();
 	virtual void StartJump();
-
 	void CreateWeaponActor(class USkeletalMesh* WeaponMesh);
 	void ChangeWeaponSocket();
 	void SetMuzzleFX(class UParticleSystem* MuzzleFX);
@@ -51,10 +50,6 @@ public:
 	void LoadInfo(int32 MeshCode, int32 WeaponCode);
 	void SetActivate(bool Flag);
 
-private:
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<class ABJS_DemageActor> DefaultDamgeActor;
-
 protected:
 	void UpdateHpWidget();
 
@@ -64,6 +59,8 @@ protected:
 	TSubclassOf<class AActor> BulletClass;
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UBJS_AnimInstance_Base> AnimInstanceClass;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class ABJS_DemageActor> DefaultDamgeActor;
 
 	TObjectPtr<class ABJS_WeaponActor> Weapon;
 	TObjectPtr<class UBJS_AnimInstance_Base> AnimInstance;

@@ -489,7 +489,10 @@ void ABJS_SocketActor::CharaterUpdateHandler(BYTE* Buffer, PacketHeader* Header,
 					case BJS_CharaterState::CharaterState::READY_ATTACK:
 						{
 							// 공격 플레이 애니메이션
-							MonsterState[uuid]->GetTarget()->PlaySkill(0);
+							if (state.has_attack())
+							{
+								MonsterState[uuid]->GetTarget()->PlaySkill(state.attack().skill_code());
+							}
 						}
 						break;
 					case BJS_CharaterState::CharaterState::ATTACK:

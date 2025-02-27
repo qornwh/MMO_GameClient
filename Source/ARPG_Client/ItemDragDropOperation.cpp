@@ -8,7 +8,7 @@ UUserWidget* UItemDragDropOperation::GetWidgetReference() const
 	return WidgetReference;
 }
 
-void UItemDragDropOperation::SetWidgetReference(UUserWidget* WidgetReference)
+void UItemDragDropOperation::SetWidgetReference(UUserWidget* Widget)
 {
-	this->WidgetReference = WidgetReference;
+	this->WidgetReference = Widget;
 }

@@ -4,7 +4,7 @@
 #include "BJS_Character.h"
 
 #include "BJS_AnimInstance_Base.h"
-#include "BJS_BuffSkill.h"
+#include "BJS_AuraSkill.h"
 #include "BJS_Bullet.h"
 #include "BJS_CharaterSkill.h"
 #include "BJS_CharaterUIWidget.h"
@@ -366,10 +366,9 @@ bool ABJS_Character::PlaySkill(int32 Code, bool ignore)
 		}
 		if (Type > 0)
 		{
-			// 버프 스킬
-			ABJS_BuffSkill* BuffActor = GetWorld()->SpawnActor<ABJS_BuffSkill>(instance->GetBuffSkillClass());
+			ABJS_AuraSkill* BuffActor = GetWorld()->SpawnActor<ABJS_AuraSkill>(instance->GetBuffSkillClass());
 			BuffActor->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-			BuffActor->SetBuffInit(instance->GetParticleSkillMap()[Code], Duration);
+			BuffActor->SetBuffParticleInit(instance->GetParticleSkillMap()[Code], Duration);
 		}
 
 		if (BuffList.Contains(Code))

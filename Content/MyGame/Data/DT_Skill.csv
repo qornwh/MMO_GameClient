@@ -5,4 +5,5 @@ Skill201,"0","50.000000","0.000000","201","3.000000","2","201","6","False","0.20
 Skill202,"2","200.000000","10.000000","202","15.000000","2","202","0","False","0.000000","0","False","/Script/Engine.Texture2D'/Game/MyGame/Assets/Icon/Skill/skill_202.skill_202'"
 Skill301,"0","35.000000","0.000000","301","3.000000","3","301","6","False","0.200000","10","False","/Script/Engine.Texture2D'/Game/MyGame/Assets/Icon/Skill/skill_301.skill_301'"
 Skill302,"2","200.000000","10.000000","302","15.000000","3","302","0","False","0.000000","0","False","/Script/Engine.Texture2D'/Game/MyGame/Assets/Icon/Skill/skill_302.skill_302'"
-Attack,"0","100.000000","0.000000","0","0.000000","0","Attack","1","False","0.200000","1","True","None"
+Attack,"0","100.000000","0.000000","0","0.000000","0","Attack","1","False","0.200000","5","True","None"
+MonsterAttack,"3","0.000000","0.400000","1","0.000000","0","MonsterAttack","0","False","0.200000","0","False","None"

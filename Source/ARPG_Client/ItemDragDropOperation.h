@@ -15,7 +15,7 @@ class ARPG_CLIENT_API UItemDragDropOperation : public UDragDropOperation
 	GENERATED_BODY()
 public:
 	UUserWidget* GetWidgetReference() const;
-	void SetWidgetReference(UUserWidget* WidgetReference);
+	void SetWidgetReference(UUserWidget* Widget);
 
 private:
 	UUserWidget* WidgetReference;

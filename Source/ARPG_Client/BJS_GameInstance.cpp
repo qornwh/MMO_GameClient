@@ -297,6 +297,7 @@ void UBJS_GameInstance::LoadSkill()
 	ConstructorHelpers::FObjectFinder<UParticleSystem> Skill_102(TEXT("/Script/Engine.ParticleSystem'/Game/FXVarietyPack/Particles/P_ky_magicCircle1.P_ky_magicCircle1'"));
 	ConstructorHelpers::FObjectFinder<UParticleSystem> Skill_202(TEXT("/Script/Engine.ParticleSystem'/Game/FXVarietyPack/Particles/P_ky_healAura.P_ky_healAura'"));
 	ConstructorHelpers::FObjectFinder<UParticleSystem> Skill_302(TEXT("/Script/Engine.ParticleSystem'/Game/FXVarietyPack/Particles/P_ky_healAura.P_ky_healAura'"));
+	ConstructorHelpers::FObjectFinder<UParticleSystem> MonsterSkill_1(TEXT("/Script/Engine.ParticleSystem'/Game/FXVarietyPack/Particles/P_ky_explosion.P_ky_explosion'"));
 
 	check(Skill_101.Succeeded());
 	check(Skill_201.Succeeded());
@@ -304,12 +305,14 @@ void UBJS_GameInstance::LoadSkill()
 	check(Skill_102.Succeeded());
 	check(Skill_202.Succeeded());
 	check(Skill_302.Succeeded());
+	check(MonsterSkill_1.Succeeded());
 	NiagaraSkillMap.Add(101, Skill_101.Object);
 	NiagaraSkillMap.Add(201, Skill_201.Object);
 	NiagaraSkillMap.Add(301, Skill_301.Object);
 	ParticleSkillMap.Add(102, Skill_102.Object);
 	ParticleSkillMap.Add(202, Skill_202.Object);
 	ParticleSkillMap.Add(302, Skill_302.Object);
+	ParticleSkillMap.Add(1, MonsterSkill_1.Object);
 
 	ConstructorHelpers::FObjectFinder<UParticleSystem> FMuzzleFX(TEXT("/Script/Engine.ParticleSystem'/Game/FXVarietyPack/Particles/P_ky_hit2.P_ky_hit2'"));
 	ParticleMuzzleFX = FMuzzleFX.Object;
@@ -333,7 +336,7 @@ void UBJS_GameInstance::LoadSkill()
 	check(FMonsterBulletClass.Succeeded());
 	MonsterBullet = FMonsterBulletClass.Class;
 
-	static ConstructorHelpers::FClassFinder<AActor> FBuffSkillClass(TEXT("/Script/Engine.Blueprint'/Game/MyGame/BluePrint/BP_BuffSkill.BP_BuffSkill_C'"));
+	static ConstructorHelpers::FClassFinder<AActor> FBuffSkillClass(TEXT("/Script/Engine.Blueprint'/Game/MyGame/BluePrint/BP_AuraSkill.BP_AuraSkill_C'"));
 	check(FBuffSkillClass.Succeeded());
 	BuffSkill = FBuffSkillClass.Class;
 }
@@ -343,7 +346,7 @@ void UBJS_GameInstance::LoadSkillIcon()
 	for (auto skill : SkillStructs)
 	{
 		ConstructorHelpers::FObjectFinder<UTexture2D> Img(*skill->Path.ToString());
-		if (skill->Code > 0)
+		if (skill->Code > 100)
 		{
 			check(Img.Object);
 			SkillIconImgMap.Add(skill->Code, Img.Object);

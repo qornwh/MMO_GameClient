@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "BJS_ControlCharacter.h"
@@ -28,15 +26,9 @@ class ARPG_CLIENT_API ABJS_Bullet : public AActor
 public:
 	ABJS_Bullet();
 	FOnBulletCollison OnBulletCollison;
-
-protected:
-	virtual void BeginPlay() override;
-
-public:
-	virtual void Tick(float DeltaTime) override;
+	
 	void InitStartDirection(FVector Direction, FVector Pos, int32 Code, int32 Number = 0);
 	void ChangeDirection(FVector TargetDirection = FVector::Zero());
-
 	int32 GetHightSize();
 	void SetSkillCode(int32 Code);
 	void SetState(TSharedPtr<class BJS_CharaterState> State);
@@ -49,6 +41,10 @@ public:
 	bool IsMoveProjectileBullet() const { return MoveProjectileBullet; }
 	int32 GetTargetCount() const { return TargetCount; }
 	bool AttackAccessCharater(int32 Code);
+
+protected:
+	virtual void Tick(float DeltaTime) override;
+	virtual void BeginPlay() override;
 
 private:
 	TWeakPtr<class BJS_CharaterState> CharaterState;

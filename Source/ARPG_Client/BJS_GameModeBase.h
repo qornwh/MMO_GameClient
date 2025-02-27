@@ -23,8 +23,7 @@ protected:
 	TSubclassOf<AActor> SocketClass;
 	class ABJS_SocketActor* SocketActor;
 	class APlayerStart* PlayerStart;
-
-// private:
+	
 	// 일단 오브젝트 풀링을 사용한다.
 	TMap<UClass*, TArray<TObjectPtr<AActor>>> ActorPool;
 

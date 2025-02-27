@@ -1,5 +1,6 @@
 #include "BJS_Monster.h"
 
+#include "BJS_AuraSkill.h"
 #include "BJS_Bullet.h"
 #include "BJS_CharaterState.h"
 #include "BJS_GameInstance.h"
@@ -78,8 +79,21 @@ void ABJS_Monster::SetState(TSharedPtr<BJS_CharaterState> state)
 
 bool ABJS_Monster::PlaySkill(int32 Code, bool ignore)
 {
-	
-	UE_LOG(LogTemp, Log, TEXT("Monster PlaySkill !!! "));
-	return true;
+	auto instance = Cast<UBJS_GameInstance>(GetWorld()->GetGameInstance());
+	if (instance)
+	{
+		auto skill = instance->GetSkillStructs()[Code];
+		float Duration = skill->Duration;
+		int32 Type = skill->Type;
+		
+		if (Type > 0)
+		{
+			ABJS_AuraSkill* BuffActor = GetWorld()->SpawnActor<ABJS_AuraSkill>(instance->GetBuffSkillClass());
+			BuffActor->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+			BuffActor->SetBuffParticleInit(instance->GetParticleSkillMap()[Code], Duration);
+		}
+		return true;
+	}
+	return false;
 }
 
